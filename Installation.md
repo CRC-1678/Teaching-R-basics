@@ -62,12 +62,19 @@ If you prefer a graphical interface for Git, you can use [GitHub Desktop](https:
 ## R
 
 **Check if you have R installed**
+
+On Linux and macOS:
+
 1. Open a terminal.
 2. Type the following command and press Enter:
    ```bash
    R --version
    ```
 3. If R is installed, you will see the version number. If not, you will need to install it as described below.
+
+On Windows:
+
+Press the "Windows" key, type "R", and press Enter. If R is installed, the R console will open and display the version number. If not, you will need to install it as described below.
 
 ### Install R
 
@@ -129,7 +136,7 @@ Packages we will need: "knitr", "rmarkdown"
 ### Install R packages
 To install R packages, you can use the following command in the R console:
 ```R
-install.packages()
+install.packages("package_name")
 ```
 
 ### Upgrading

@@ -1,0 +1,437 @@
+---
+title: "R Basics - Pre-course Homework"
+author: "CRC1678 INF"
+date: "2025-07-14"
+output: html_document
+css: "copilot.css"
+---
+
+
+Welcome to R! This exercise will help you understand basic R concepts before our class. Run each code chunk and try to understand the output. Feel free to experiment by adding more chunks.
+
+---
+
+### Some useful RStudio Keyboard Shortcuts
+
+Large RStudio cheatsheet can be found at [Posit](https://posit.co/wp-content/uploads/2022/10/rstudio-ide-1.pdf).
+
+**General**
+
+| Action | Windows/Linux | Mac |
+|--------|--------------|-----|
+| Show all shortcuts | `Alt + Shift + K` |  `Option + Shift + K` |
+
+**Console (lower left window by default)**
+
+| Action | Windows/Linux | Mac |
+|--------|--------------|-----|
+| Autocompletion | `Tab` | `Tab` |
+| Move cursor to console | `Ctrl + 2` | `Cmd + 2` |
+| Search command history | `Ctrl + arrow-up` | `Cmd + arrow-up` |
+| Interrupt current command | `Esc` | `Esc` |
+
+
+**Source (upper left window by default)**
+
+| Action | Windows/Linux | Mac |
+|--------|--------------|-----|
+| Move cursor to source | `Ctrl + 1` | `Cmd + 1` |
+| Duplicate current line up or down | `Alt + Shift + Up/Down` | `Option + Shift + Up/Down` |
+| Delete the current line | `Ctrl + D` | `Cmd + D` |
+| Comment/Uncomment lines | `Ctrl + Shift + C` | `Cmd + Shift + C` |
+| Run current line/selection | `Ctrl + Enter` | `Cmd + Enter` |
+| Insert R chunk | `Ctrl + Alt + I` | `Cmd + Option + I` |
+| Run current chunk | `Ctrl + Shift + Enter` | `Cmd + Shift + Enter` |
+| Save file | `Ctrl + S` | `Cmd + S` |
+| Knit document | `Ctrl + Shift + K` | `Cmd + Shift + K` |
+
+---
+
+
+### 1. Variable Assignment
+
+In R, we can store values in variables. The preferred way is using `<-`, though `=` also works.
+
+```{r}
+# Try these assignments
+x <- 5
+y = 10
+
+# Print the values
+print(x)
+print(y)
+
+# Calculate with variables
+z <- x + y
+print(z)
+```
+
+Your turn - create some variables with different numbers:
+```{r}
+# Write your code here
+
+```
+
+## 2. Basic Data Types
+
+R has several basic data types:
+
+```{r}
+# Numeric (numbers with decimals)
+height <- 1.75
+print(class(height))
+
+# Integer (whole numbers)
+age <- 25L  # L makes it explicitly integer
+print(class(age))
+
+# Character (text)
+name <- "Alice"
+print(class(name))
+
+# Logical (TRUE/FALSE)
+is_student <- TRUE
+print(class(is_student))
+```
+
+Try creating variables of different types:
+```{r}
+# Write your code here
+
+```
+
+## 3. Vectors
+
+Vectors are collections of elements of the same type:
+
+```{r}
+# Create numeric vector
+numbers <- c(1, 2, 3, 4, 5)
+print(numbers)
+
+# Create character vector
+fruits <- c("apple", "banana", "orange")
+print(fruits)
+
+# Vector operations
+numbers + 2  # adds 2 to each element
+numbers * 3  # multiplies each element by 3
+
+# Access elements
+print(numbers[1])  # First element
+print(fruits[2])   # Second element
+```
+
+Create your own vectors and try operations:
+```{r}
+# Write your code here
+
+```
+
+## 4. Basic Statistics
+
+R has built-in functions for basic statistics:
+
+```{r}
+data <- c(15, 23, 42, 31, 58)
+
+mean(data)    # Average
+median(data)  # Middle value
+sum(data)     # Sum of all values
+length(data)  # Number of elements
+max(data)     # Maximum value
+min(data)     # Minimum value
+```
+
+Try these functions with your own numbers:
+```{r}
+# Write your code here
+
+```
+
+## 5. Data Frames
+
+Data frames are like spreadsheets in R:
+
+```{r}
+# Create a simple data frame
+students <- data.frame(
+  name = c("Alice", "Bob", "Charlie"),
+  age = c(20, 22, 21),
+  grade = c(85, 92, 78)
+)
+
+# Look at the data
+print(students)
+
+# Access columns
+print(students$name)
+print(students[, "age"])
+
+# Access rows
+print(students[1, ])  # First row
+```
+
+Create your own data frame about any topic:
+```{r}
+# Write your code here
+
+```
+
+## 6. Missing Values
+
+R uses `NA` to represent missing values:
+
+```{r}
+# Vector with missing values
+scores <- c(85, NA, 92, 78, NA)
+
+# Check for missing values
+is.na(scores)
+
+# Calculate mean with missing values
+mean(scores)  # Returns NA
+mean(scores, na.rm = TRUE)  # Ignores NA
+```
+
+Try working with missing values:
+```{r}
+# Write your code here
+
+```
+
+## 7. Basic Plotting
+
+Let's create a simple plot:
+
+```{r}
+# Create some data
+x <- 1:10
+y <- x^2
+
+# Make a basic plot
+plot(x, y, 
+     main = "Simple Plot",
+     xlab = "X axis",
+     ylab = "Y axis")
+```
+
+Try creating your own plot:
+```{r}
+# Write your code here
+
+```
+
+## Exercises
+
+1. Create a vector of 5 numbers and calculate their mean and sum.
+2. Create a data frame containing information about 3 movies (title, year, rating).
+3. Create a simple plot using different numbers than shown above.
+4. Try adding two vectors of the same length.
+5. Create a vector with some missing values and calculate its mean.
+
+Submit your completed homework before the class. Remember: experimentation is key to learning R!
+```
+
+This Rmd file:
+- Introduces key concepts progressively
+- Includes examples and explanations
+- Provides practice spaces
+- Has concrete exercises
+- Encourages experimentation
+
+Would you like me to modify any sections or add more concepts?// filepath: pre_course_basics.Rmd
+---
+title: "R Basics - Pre-course Homework"
+author: "Your Name"
+date: "2025-06-13"
+output: html_document
+---
+
+## Introduction
+
+Welcome to R programming! This homework will help you understand basic R concepts before our class. Run each code chunk and try to understand the output. Add your own experiments in the empty chunks provided.
+
+## 1. Variable Assignment
+
+In R, we can store values in variables. The preferred way is using `<-`, though `=` also works.
+
+```{r}
+# Try these assignments
+x <- 5
+y = 10
+
+# Print the values
+print(x)
+print(y)
+
+# Calculate with variables
+z <- x + y
+print(z)
+```
+
+Your turn - create some variables with different numbers:
+```{r}
+# Write your code here
+
+```
+
+## 2. Basic Data Types
+
+R has several basic data types:
+
+```{r}
+# Numeric (numbers with decimals)
+height <- 1.75
+print(class(height))
+
+# Integer (whole numbers)
+age <- 25L  # L makes it explicitly integer
+print(class(age))
+
+# Character (text)
+name <- "Alice"
+print(class(name))
+
+# Logical (TRUE/FALSE)
+is_student <- TRUE
+print(class(is_student))
+```
+
+Try creating variables of different types:
+```{r}
+# Write your code here
+
+```
+
+## 3. Vectors
+
+Vectors are collections of elements of the same type:
+
+```{r}
+# Create numeric vector
+numbers <- c(1, 2, 3, 4, 5)
+print(numbers)
+
+# Create character vector
+fruits <- c("apple", "banana", "orange")
+print(fruits)
+
+# Vector operations
+numbers + 2  # adds 2 to each element
+numbers * 3  # multiplies each element by 3
+
+# Access elements
+print(numbers[1])  # First element
+print(fruits[2])   # Second element
+```
+
+Create your own vectors and try operations:
+```{r}
+# Write your code here
+
+```
+
+## 4. Basic Statistics
+
+R has built-in functions for basic statistics:
+
+```{r}
+data <- c(15, 23, 42, 31, 58)
+
+mean(data)    # Average
+median(data)  # Middle value
+sum(data)     # Sum of all values
+length(data)  # Number of elements
+max(data)     # Maximum value
+min(data)     # Minimum value
+```
+
+Try these functions with your own numbers:
+```{r}
+# Write your code here
+
+```
+
+## 5. Data Frames
+
+Data frames are like spreadsheets in R:
+
+```{r}
+# Create a simple data frame
+students <- data.frame(
+  name = c("Alice", "Bob", "Charlie"),
+  age = c(20, 22, 21),
+  grade = c(85, 92, 78)
+)
+
+# Look at the data
+print(students)
+
+# Access columns
+print(students$name)
+print(students[, "age"])
+
+# Access rows
+print(students[1, ])  # First row
+```
+
+Create your own data frame about any topic:
+```{r}
+# Write your code here
+
+```
+
+## 6. Missing Values
+
+R uses `NA` to represent missing values:
+
+```{r}
+# Vector with missing values
+scores <- c(85, NA, 92, 78, NA)
+
+# Check for missing values
+is.na(scores)
+
+# Calculate mean with missing values
+mean(scores)  # Returns NA
+mean(scores, na.rm = TRUE)  # Ignores NA
+```
+
+Try working with missing values:
+```{r}
+# Write your code here
+
+```
+
+## 7. Basic Plotting
+
+Let's create a simple plot:
+
+```{r}
+# Create some data
+x <- 1:10
+y <- x^2
+
+# Make a basic plot
+plot(x, y, 
+     main = "Simple Plot",
+     xlab = "X axis",
+     ylab = "Y axis")
+```
+
+Try creating your own plot:
+```{r}
+# Write your code here
+
+```
+
+## Exercises
+
+1. Create a vector of 5 numbers and calculate their mean and sum.
+2. Create a data frame containing information about 3 movies (title, year, rating).
+3. Create a simple plot using different numbers than shown above.
+4. Try adding two vectors of the same length.
+5. Create a vector with some missing values and calculate its mean.
+
+Submit your completed homework before the class. Remember: experimentation is key to learning R!

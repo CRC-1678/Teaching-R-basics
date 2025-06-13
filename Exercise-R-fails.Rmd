@@ -1,0 +1,286 @@
+---
+title: "Correct errors in R code"
+author: "Copilot + Svetlana"
+date: "2025-06-13"
+output: html_document
+---
+
+## R fails
+
+I was too lazy learning R and asked Copilot to do the R course homework for me. Unfortunately, the code contained mistakes, and I got strage errors trying to run it. (Always check what your LLM gives you.)
+
+R is not always very explicit in its error messages, and sometimes it even passes an error silently on.
+
+Let's try to understand the errors and fix that faulty code! We will work in pairs because 2 brains is better than one :-) 
+
+### 1. Variable Assignment and Basic Operations
+Problem: What's wrong with this calculation?
+
+```{r}
+x <- 5
+y = 3
+z < - x + y
+print(z)
+```
+
+### 2. Vector Operations
+Problem: Why doesn't this vector operation work as expected?
+
+```{r}
+numbers <- c(1, 2, 3, 4, 5)
+text <- c("a", "b", "c")
+result <- numbers + text
+print(result)
+```
+
+### 3. Data Frame Indexing
+Problem: Fix the indexing error:
+
+```{r}
+df <- data.frame(
+  name = c("Alice", "Bob", "Charlie"),
+  age = c(25, 30, 35)
+)
+print(df[name == "Alice",])
+```
+
+### 4. Function Arguments
+Problem: Why does this function fail?
+
+```{r}
+calculate_mean <- function(x, na.rm) {
+  mean(x)
+}
+data <- c(1, 2, NA, 4, 5)
+calculate_mean(data)
+```
+
+### 5. Package Usage
+Problem: Identify the package-related issue:
+
+```{r}
+data <- ggplot(mtcars, aes(x = mpg, y = wt)) +
+  geom_point()
+```
+
+### 6. Loop Variable Scope
+Problem: Why doesn't this loop work as expected?
+
+```{r}
+total = 0
+for(i in 1:5){
+  value <- i * 2
+}
+print(value)
+```
+
+### 7. Data Type Conversion
+Problem: Fix the type conversion issue:
+
+```{r}
+numbers <- c("1", "2", "3", "4", "5")
+mean(numbers)
+```
+
+### 8. Missing Values
+Problem: What's wrong with this NA handling?
+
+```{r}
+data <- c(1, 2, NA, 4, 5)
+if(data == NA) {
+  print("Found NA")
+}
+```
+
+### 9. Factor Levels
+Problem: Why can't we add new categories?
+
+```{r}
+colors <- factor(c("red", "blue", "green"))
+colors[4] <- "yellow"
+print(colors)
+```
+
+### 10. String Manipulation
+Problem: Fix the string concatenation:
+
+```{r}
+first_name <- "John"
+last_name <- "Doe"
+full_name <- first_name + last_name
+print(full_name)
+```
+
+## Solutions
+
+<!-- Add solutions section that you can reveal during class discussion -->
+<!-- Each problem has specific learning points: -->
+
+1. Correct operator for assignment is <- (no spaces)
+2. Can't perform arithmetic operations between numeric and character vectors
+3. Need to use quotes for variable names or df$ syntax
+4. Missing na.rm parameter in mean() function
+5. Need to load ggplot2 package first
+6. Variable scope issues in loops
+7. Need to convert strings to numeric with as.numeric()
+8. NA comparison requires is.na()
+9. Need to add new levels to factors before assigning
+10. Use paste() or paste0() for string concatenation
+```
+
+This Rmd file includes:
+
+- Different difficulty levels
+- Common conceptual mistakes
+- Various R programming concepts
+- Clear descriptions of problems
+- Hidden solutions for class discussion
+
+During class you can:
+1. Let students work individually or in pairs
+2. Discuss each error and its solution
+3. Explain the underlying concepts
+4. Share best practices for avoiding these mistakes
+
+Would you like me to adjust any of the examples or add different types of errors?// filepath: common_r_mistakes.Rmd
+---
+title: "Common R Mistakes - Debug Challenge"
+author: "Your Name"
+date: "2025-06-13"
+output: html_document
+---
+
+## Introduction
+
+This document contains several code chunks with common R mistakes. Try to identify and fix the errors in each chunk. Think about why these errors occur and how to prevent them.
+
+### 1. Variable Assignment and Basic Operations
+Problem: What's wrong with this calculation?
+
+```{r}
+x <- 5
+y = 3
+z < - x + y
+print(z)
+```
+
+### 2. Vector Operations
+Problem: Why doesn't this vector operation work as expected?
+
+```{r}
+numbers <- c(1, 2, 3, 4, 5)
+text <- c("a", "b", "c")
+result <- numbers + text
+print(result)
+```
+
+### 3. Data Frame Indexing
+Problem: Fix the indexing error:
+
+```{r}
+df <- data.frame(
+  name = c("Alice", "Bob", "Charlie"),
+  age = c(25, 30, 35)
+)
+print(df[name == "Alice",])
+```
+
+### 4. Function Arguments
+Problem: Why does this function fail?
+
+```{r}
+calculate_mean <- function(x, na.rm) {
+  mean(x)
+}
+data <- c(1, 2, NA, 4, 5)
+calculate_mean(data)
+```
+
+### 5. Package Usage
+Problem: Identify the package-related issue:
+
+```{r}
+data <- ggplot(mtcars, aes(x = mpg, y = wt)) +
+  geom_point()
+```
+
+### 6. Loop Variable Scope
+Problem: Why doesn't this loop work as expected?
+
+```{r}
+total = 0
+for(i in 1:5){
+  value <- i * 2
+}
+print(value)
+```
+
+### 7. Data Type Conversion
+Problem: Fix the type conversion issue:
+
+```{r}
+numbers <- c("1", "2", "3", "4", "5")
+mean(numbers)
+```
+
+### 8. Missing Values
+Problem: What's wrong with this NA handling?
+
+```{r}
+data <- c(1, 2, NA, 4, 5)
+if(data == NA) {
+  print("Found NA")
+}
+```
+
+### 9. Factor Levels
+Problem: Why can't we add new categories?
+
+```{r}
+colors <- factor(c("red", "blue", "green"))
+colors[4] <- "yellow"
+print(colors)
+```
+
+### 10. String Manipulation
+Problem: Fix the string concatenation:
+
+```{r}
+first_name <- "John"
+last_name <- "Doe"
+full_name <- first_name + last_name
+print(full_name)
+```
+
+## Solutions
+
+<!-- Add solutions section that you can reveal during class discussion -->
+<!-- Each problem has specific learning points: -->
+
+1. Correct operator for assignment is <- (no spaces)
+2. Can't perform arithmetic operations between numeric and character vectors
+3. Need to use quotes for variable names or df$ syntax
+4. Missing na.rm parameter in mean() function
+5. Need to load ggplot2 package first
+6. Variable scope issues in loops
+7. Need to convert strings to numeric with as.numeric()
+8. NA comparison requires is.na()
+9. Need to add new levels to factors before assigning
+10. Use paste() or paste0() for string concatenation
+```
+
+This Rmd file includes:
+
+- Different difficulty levels
+- Common conceptual mistakes
+- Various R programming concepts
+- Clear descriptions of problems
+- Hidden solutions for class discussion
+
+During class you can:
+1. Let students work individually or in pairs
+2. Discuss each error and its solution
+3. Explain the underlying concepts
+4. Share best practices for avoiding these mistakes
+
+Would you like me to adjust any of the examples or add different types of errors?
