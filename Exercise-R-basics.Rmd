@@ -6,38 +6,49 @@ output: html_document
 css: "copilot.css"
 ---
 
-
 Welcome to R! This exercise will help you understand basic R concepts before our class. Run each code chunk and try to understand the output. Feel free to experiment by adding more chunks.
 
----
+### About R markdown
+
+This is a R markdown notebook which combines a markdown formatted text and executable R code placed in code chunks. This file has extension `.Rmd` and a new notebook can be created in RStudio by going to File -\> New File -\> R markdown... Try it and you will get a sample notebook which explains how to use markdown and provide you with example code chunks. To run a code chunk, click a small green "play" button on the right of the chunk or use a keyboard shortcut `Ctrl + Shift + Enter` / `Cmd + Shift + Enter`. Practice inserting new chunks and running them.
+
+Full R markdown cheatsheet can be found [here](https://github.com/rstudio/cheatsheets/raw/main/rmarkdown-2.0.pdf).
+
+------------------------------------------------------------------------
 
 ### Some useful RStudio Keyboard Shortcuts
 
 Large RStudio cheatsheet can be found at [Posit](https://posit.co/wp-content/uploads/2022/10/rstudio-ide-1.pdf).
 
+You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
+
 **General**
 
-| Action | Windows/Linux | Mac |
-|--------|--------------|-----|
-| Show all shortcuts | `Alt + Shift + K` |  `Option + Shift + K` |
+| Action                               | Windows/Linux      | Mac               |
+|--------------------------------------|--------------------|-------------------|
+| Insert assign operator `<-`          | `Alt + -`          | `Option + -`      |
+| Insert tidyverse pipe operator `%>%` | `Ctrl + Shift + M` | `Cmd + Shift + M` |
+| Clear line from cursor to beginning  | `Ctrl + U`         | `Cmd + U`         |
+| Clear line from cursor to end        | `Ctrl + K`         | `Cmd + K`         |
 
 **Console (lower left window by default)**
 
-| Action | Windows/Linux | Mac |
-|--------|--------------|-----|
-| Autocompletion | `Tab` | `Tab` |
-| Move cursor to console | `Ctrl + 2` | `Cmd + 2` |
-| Search command history | `Ctrl + arrow-up` | `Cmd + arrow-up` |
-| Interrupt current command | `Esc` | `Esc` |
-
+| Action                    | Windows/Linux     | Mac              |
+|---------------------------|-------------------|------------------|
+| Autocompletion            | `Tab`             | `Tab`            |
+| Move cursor to console    | `Ctrl + 2`        | `Cmd + 2`        |
+| Get previous command      | `arrow-up`        | `arrow-up`       |
+| Search command history    | `Ctrl + arrow-up` | `Cmd + arrow-up` |
+| Interrupt current command | `Esc`             | `Esc`            |
 
 **Source (upper left window by default)**
 
 | Action | Windows/Linux | Mac |
-|--------|--------------|-----|
+|----|----|----|
 | Move cursor to source | `Ctrl + 1` | `Cmd + 1` |
 | Duplicate current line up or down | `Alt + Shift + Up/Down` | `Option + Shift + Up/Down` |
 | Delete the current line | `Ctrl + D` | `Cmd + D` |
+| Type in multiple lines | `Alt + mouse click + drag` | `Option + mouse click + drag` |
 | Comment/Uncomment lines | `Ctrl + Shift + C` | `Cmd + Shift + C` |
 | Run current line/selection | `Ctrl + Enter` | `Cmd + Enter` |
 | Insert R chunk | `Ctrl + Alt + I` | `Cmd + Option + I` |
@@ -45,58 +56,172 @@ Large RStudio cheatsheet can be found at [Posit](https://posit.co/wp-content/upl
 | Save file | `Ctrl + S` | `Cmd + S` |
 | Knit document | `Ctrl + Shift + K` | `Cmd + Shift + K` |
 
----
+------------------------------------------------------------------------
 
+**Notes on typing syntax**
 
-### 1. Variable Assignment
+-   When you type R code, remember that R is case sensitive, so `data` is not the same as `Data`.
+-   For most cases, it does not matter if you have a space between variable, operator and value, so `2+2` is the same as `2 + 2`. In general it is recommended to use spaces for better code readability.
 
-In R, we can store values in variables. The preferred way is using `<-`, though `=` also works.
+### Variables assignment
+
+In R (and other languages), variables are used to store values. Basically, they are pointers to an object/location in memory ([Wikipedia](https://en.wikipedia.org/wiki/Variable_(computer_science)). In R, they don't need to be declared and are created at the moment when they are assigned a value.
+
+Things to remember:
+
+-   `<-` is preferred operator for assignment
+    -   Use `Alt + -` / `Option + -` shortcut to save typing `<-`.
+    -   `=` operator can also be used, but it is discouraged (see this [Extensive R bloggers post](https://www.r-bloggers.com/2018/07/assignment-in-r-slings-and-arrows/) with examples where `=` use for assignment can lead to problems).
+    -   Fun fact: `->` assignment also works!
+-   variable names:
+    -   cannot start with a number
+    -   cannot contain `-` (will be evaluated as minus sign)
+    -   prefer not to contain spaces, use backticks if you must `` `variable with space` <- 6 ``
+    -   should not overwrite built-in functions and variables names
+
+Experiment with assigning variables in the following chunk.
+
+In this chunk we also introduce:
+
+-   `#` character which denotes a comment and can be use to "switch off" lines in your code.
+-   `print()` function to output the value of the variable (more on functions below).
 
 ```{r}
-# Try these assignments
-x <- 5
-y = 10
+# Try it
+a <- 5 
+3 -> b
 
-# Print the values
-print(x)
-print(y)
+# Print function prints the values of its variable
+print(a)
+print(b)
 
-# Calculate with variables
-z <- x + y
-print(z)
+# Reassigning a variable overwrites it
+a <- 8
+print(a)
+
+# Typing a variable will return its value
+b
 ```
 
-Your turn - create some variables with different numbers:
-```{r}
-# Write your code here
+### Functions
 
+Functions in R have a form of `function(argument=value)` and are called as name of the function with parentheses, with respective arguments inside parentheses (here is where `=` operator comes in). There are a number of built-in functions which come with base R (you already saw `print()`).
+
+To obtain help on how to call a function and all possible arguments, type `?function` or `help("function")`. Tip: if you don't remember the exact name, try `apropos("approximate_name")`.
+
+You can use `ls()` function to list your variables and functions - or in RStudio, look at the "Environment" tab (in the top right quadrant by default):
+
+```{r}
+ls()
 ```
 
-## 2. Basic Data Types
-
-R has several basic data types:
+To delete an unwanted variable or function, you can use `rm()`
 
 ```{r}
-# Numeric (numbers with decimals)
-height <- 1.75
-print(class(height))
-
-# Integer (whole numbers)
-age <- 25L  # L makes it explicitly integer
-print(class(age))
-
-# Character (text)
-name <- "Alice"
-print(class(name))
-
-# Logical (TRUE/FALSE)
-is_student <- TRUE
-print(class(is_student))
+rm(a)
+ls()
 ```
 
-Try creating variables of different types:
+You can create your own function in R using the curly brackets syntax:
+
 ```{r}
-# Write your code here
+# By including  comment inside our function, we will help user to understand what it does
+my_function <- function(a){
+  # This function will print the value of the variable given
+  print(a)
+}
+```
+
+And call it:
+
+```{r}
+my_function(b)
+```
+
+You can see the code of the function by calling its name without brackets:
+
+```{r}
+# See the source code of the function
+my_function
+```
+
+Calling it without an argument leads to an error:
+
+```{r}
+my_function()
+```
+
+**A note on scope**
+
+You may have noticed that:
+
+-   we have assigned variable `a` and deleted it
+-   we have used `a` as an argument inside `my_function` definition and R did not complain that `a` was not found - we have called it on the variable `b` and R did not complain that it wants `a` as input
+
+There are 2 types of variables in R (and other languages): global and local. Global variables can be accessed from anywhere in the code. In our case, `b` is global. Local variables are valid for a part of the code - such as the `a` inside our function. In this case, when the function is called, its argument is assigned to local variable `a`, and this local variable `a` disappears after the function call is finished.
+
+More examples on scope [here](https://www.geeksforgeeks.org/r-language/scope-of-variable-in-r/).
+
+### Data Types in R
+
+Main data types in R are:
+
+-   Numeric types:
+    -   integer `1L`, `as.integer(1)`
+    -   double `1`, `1.0`, `Inf`
+-   Complex `1 + 2i`
+-   Character: `"1"`
+-   Logical: `TRUE` and `FALSE` (alias `T` and `F`)
+
+You can check a type of variable with `class()` or `str()` (shows a compact representation of object structure).
+
+Note: Special value `NA` (stands for "Not available") represents missing data. By default, `NA` is logical, but it can be converted to other types.
+
+```{r}
+class(NA)
+```
+
+Additionally, special value `NaN` which stands for "Not a Number". This value is numeric (double) and identifies an undefined number (for example, `0/0`).
+
+You can use operators to perform various operations with these types (tables taken from [here](https://www.w3schools.com/r/r_operators.asp):
+
+**Arithmetic**
+
+| Operator | Action                            | Example  | Result |
+|----------|-----------------------------------|----------|--------|
+| `+`      | Addition                          | `1 + 1`  | `2`    |
+| `-`      | Subtraction                       | `3 - 2`  | `1`    |
+| `*`      | Multiplication                    | `2 * 3`  | `6`    |
+| `/`      | Division                          | `6 / 2`  | `3`    |
+| `^`      | Exponent                          | `2 ^ 3`  | `8`    |
+| `%%`     | Modulus (Remainder from division) | `7 %% 3` | `1`    |
+| `%/%`    | Integer Division                  | `7%/%3`  | `2`    |
+
+```{r}
+# Try out arithmetic operators here
+9 %/% 5
+```
+
+**Logical**
+
+| Operator | Action | Example | Result |
+|----------|--------|---------|--------|
+
+| `==` \| Equal \| `3 == 2` \| `FALSE` \|
+| `!=` \| Not equal \| `"a" != 3` \| `TRUE` \|
+| `>` \| Greater than \| `5 > 3` \| `TRUE` \|
+| `<` \| Less than \| `2 < 3` \| `TRUE` \|
+| `>=` \| Greater than or equal to \| `1 >= 0` \| `TRUE` \|
+| `<=` \| Less than or equal to \| `1 <= 0` \| `FALSE` \|
+
+```{r}
+# Try out logical operators here
+2 == 3
+```
+
+You can use a number of built-in functions to test for specific data type and to convert between data types:
+
+```{r}
 
 ```
 
@@ -104,11 +229,15 @@ Try creating variables of different types:
 
 Vectors are collections of elements of the same type:
 
+-   `NULL` <https://adv-r.hadley.nz/vectors-chap.html?q=NULL#null> (e.g. empty `c()`)
+
 ```{r}
 # Create numeric vector
 numbers <- c(1, 2, 3, 4, 5)
 print(numbers)
 
+# same can be done with 
+x <- 1:5
 # Create character vector
 fruits <- c("apple", "banana", "orange")
 print(fruits)
@@ -122,28 +251,12 @@ print(numbers[1])  # First element
 print(fruits[2])   # Second element
 ```
 
+Indexing: R uses 1 -based indexing
+
+vector operators: :, %in%, %\*%(matmul)
+
 Create your own vectors and try operations:
-```{r}
-# Write your code here
 
-```
-
-## 4. Basic Statistics
-
-R has built-in functions for basic statistics:
-
-```{r}
-data <- c(15, 23, 42, 31, 58)
-
-mean(data)    # Average
-median(data)  # Middle value
-sum(data)     # Sum of all values
-length(data)  # Number of elements
-max(data)     # Maximum value
-min(data)     # Minimum value
-```
-
-Try these functions with your own numbers:
 ```{r}
 # Write your code here
 
@@ -173,12 +286,13 @@ print(students[1, ])  # First row
 ```
 
 Create your own data frame about any topic:
+
 ```{r}
 # Write your code here
 
 ```
 
-## 6. Missing Values
+### Missing Values
 
 R uses `NA` to represent missing values:
 
@@ -195,144 +309,13 @@ mean(scores, na.rm = TRUE)  # Ignores NA
 ```
 
 Try working with missing values:
+
 ```{r}
 # Write your code here
 
 ```
 
-## 7. Basic Plotting
-
-Let's create a simple plot:
-
-```{r}
-# Create some data
-x <- 1:10
-y <- x^2
-
-# Make a basic plot
-plot(x, y, 
-     main = "Simple Plot",
-     xlab = "X axis",
-     ylab = "Y axis")
-```
-
-Try creating your own plot:
-```{r}
-# Write your code here
-
-```
-
-## Exercises
-
-1. Create a vector of 5 numbers and calculate their mean and sum.
-2. Create a data frame containing information about 3 movies (title, year, rating).
-3. Create a simple plot using different numbers than shown above.
-4. Try adding two vectors of the same length.
-5. Create a vector with some missing values and calculate its mean.
-
-Submit your completed homework before the class. Remember: experimentation is key to learning R!
-```
-
-This Rmd file:
-- Introduces key concepts progressively
-- Includes examples and explanations
-- Provides practice spaces
-- Has concrete exercises
-- Encourages experimentation
-
-Would you like me to modify any sections or add more concepts?// filepath: pre_course_basics.Rmd
----
-title: "R Basics - Pre-course Homework"
-author: "Your Name"
-date: "2025-06-13"
-output: html_document
----
-
-## Introduction
-
-Welcome to R programming! This homework will help you understand basic R concepts before our class. Run each code chunk and try to understand the output. Add your own experiments in the empty chunks provided.
-
-## 1. Variable Assignment
-
-In R, we can store values in variables. The preferred way is using `<-`, though `=` also works.
-
-```{r}
-# Try these assignments
-x <- 5
-y = 10
-
-# Print the values
-print(x)
-print(y)
-
-# Calculate with variables
-z <- x + y
-print(z)
-```
-
-Your turn - create some variables with different numbers:
-```{r}
-# Write your code here
-
-```
-
-## 2. Basic Data Types
-
-R has several basic data types:
-
-```{r}
-# Numeric (numbers with decimals)
-height <- 1.75
-print(class(height))
-
-# Integer (whole numbers)
-age <- 25L  # L makes it explicitly integer
-print(class(age))
-
-# Character (text)
-name <- "Alice"
-print(class(name))
-
-# Logical (TRUE/FALSE)
-is_student <- TRUE
-print(class(is_student))
-```
-
-Try creating variables of different types:
-```{r}
-# Write your code here
-
-```
-
-## 3. Vectors
-
-Vectors are collections of elements of the same type:
-
-```{r}
-# Create numeric vector
-numbers <- c(1, 2, 3, 4, 5)
-print(numbers)
-
-# Create character vector
-fruits <- c("apple", "banana", "orange")
-print(fruits)
-
-# Vector operations
-numbers + 2  # adds 2 to each element
-numbers * 3  # multiplies each element by 3
-
-# Access elements
-print(numbers[1])  # First element
-print(fruits[2])   # Second element
-```
-
-Create your own vectors and try operations:
-```{r}
-# Write your code here
-
-```
-
-## 4. Basic Statistics
+### Basic Statistics
 
 R has built-in functions for basic statistics:
 
@@ -348,63 +331,13 @@ min(data)     # Minimum value
 ```
 
 Try these functions with your own numbers:
+
 ```{r}
 # Write your code here
 
 ```
 
-## 5. Data Frames
-
-Data frames are like spreadsheets in R:
-
-```{r}
-# Create a simple data frame
-students <- data.frame(
-  name = c("Alice", "Bob", "Charlie"),
-  age = c(20, 22, 21),
-  grade = c(85, 92, 78)
-)
-
-# Look at the data
-print(students)
-
-# Access columns
-print(students$name)
-print(students[, "age"])
-
-# Access rows
-print(students[1, ])  # First row
-```
-
-Create your own data frame about any topic:
-```{r}
-# Write your code here
-
-```
-
-## 6. Missing Values
-
-R uses `NA` to represent missing values:
-
-```{r}
-# Vector with missing values
-scores <- c(85, NA, 92, 78, NA)
-
-# Check for missing values
-is.na(scores)
-
-# Calculate mean with missing values
-mean(scores)  # Returns NA
-mean(scores, na.rm = TRUE)  # Ignores NA
-```
-
-Try working with missing values:
-```{r}
-# Write your code here
-
-```
-
-## 7. Basic Plotting
+### Plotting
 
 Let's create a simple plot:
 
@@ -421,17 +354,20 @@ plot(x, y,
 ```
 
 Try creating your own plot:
+
 ```{r}
 # Write your code here
 
 ```
 
-## Exercises
+### Control flow
 
-1. Create a vector of 5 numbers and calculate their mean and sum.
-2. Create a data frame containing information about 3 movies (title, year, rating).
-3. Create a simple plot using different numbers than shown above.
-4. Try adding two vectors of the same length.
-5. Create a vector with some missing values and calculate its mean.
+if an for loops
 
-Submit your completed homework before the class. Remember: experimentation is key to learning R!
+vectorized operations
+
+internal pipe (apply to self made functions)
+
+```{r}
+
+```
