@@ -59,6 +59,17 @@ If you don't have a GitHub account, create one at https://github.com.
 
 If you prefer a graphical interface for Git, you can use [GitHub Desktop](https://desktop.github.com/).
 
+### Clone this repository:
+
+1. Open a terminal.
+2. Navigate to the directory where you want to clone the repository.
+3. Use the following command to clone the repository: 
+```bash
+git clone https://github.com/CRC-1678/Teaching-R-basics.git
+```
+
+It will download the contents of this repository into a Teaching-R-basics folder in your current directory.
+
 ## R
 
 **Check if you have R installed**
