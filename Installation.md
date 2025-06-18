@@ -114,14 +114,17 @@ Go to "Download R for Linux" and follow the instructions for your specific distr
    # make sure helper packages are installed:
    sudo apt install --no-install-recommends software-properties-common dirmngr
    # add the signing key (by Michael Rutter) for these repos
-   # To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
-   # Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
    wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+   # Optional: to verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
+   # Fingerprint will be: E298A3A825C0D65DFD57CBB651716619E084DAB9
    # add the repo from CRAN -- lsb_release adjusts to 'noble' or 'jammy' or ... as needed
    sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+   # You will need to press [Enter] to finish
    # install R itself
    sudo apt install --no-install-recommends r-base
    ```
+
+Check your R version after install - it should be `4.5.1` or higher.
 
 ### Install Rstudio
 
@@ -140,19 +143,87 @@ Run the installer (for example, `RStudio-2025.05.1-513.dmg`) and follow the inst
 **Linux**
 1. Open a terminal.
 2. Download the latest RStudio .deb package, for example `rstudio-2025.05.1-513-amd64.deb`.
-3. Install the package using the following command:
+3. Enter the directory with the downloaded .deb (such as `Downloads`) and install the RStudio:
    ```bash
-   sudo dpkg -i rstudio-*.deb
+   sudo apt install ./rstudio-*.deb
    ```
+*Note:* if you get the error `E: unmet dependencies.` or similar, try `sudo apt --fix-broken-install` as suggested. It may happen if you follow the instructions on Posit website and use `dpkg` instead of `apt`.
 
-Launch RStudio after installation and follow the instructions to create an R project and install necessary packages.
+You can delete the downloaded .deb file now.
 
-Packages we will need: "knitr", "rmarkdown"
+Open RStudio by searching for it in your system's app menu and clicking on the logo. You should see a default screen similar to this:
+
+![](images/rstudio_start.png)
 
 ### Install R packages
-To install R packages, you can use the following command in the R console:
+
+R packages are collections of R functions, data, and documentation that extend the functionality of R. 
+
+*CRAN*
+
+R packages come from several sources. Most stable and reliable source is CRAN (Comprehensive R Archive Network), which provides the R itself. Basic command to install an R package from CRAN:
+
 ```R
 install.packages("package_name")
+```
+
+*Bioconductor*
+
+Bioconductor is a repository of R packages for bioinformatics and computational biology. To install Bioconductor packages, you first need to install the BiocManager package and then use it to install other packages. Follow the [instructions on Bioconductor website](https://www.bioconductor.org/install/):
+
+```R
+# this will check if you have BiocManager installed and install it if not
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install() #will install the latest version of Bioconductor
+# now install a package
+BiocManager::install("package_name")
+```
+
+*Note:* you may get an error similar to `installation path not writeable, unable to update packages: Matrix, mgcv, ...` . Unfortunately, this is a problem, for example with Ubuntu, because a number of packages are installed together with R itself when you use `sudo apt install r-base` command, and they are not updateable by you running RStudio as a normal user (and you should not run RStudio as root). One solution to this is to compile R from source as a user, but we don't want to do that in the beginning. Usually this does not prevent you from using Bioconductor. If it does, try to see if you could update R with `sudo apt update && sudo apt upgrade r-base` command.
+
+*GitHub*
+
+Many packages are available on GitHub, especially those that are in development. To install a package from GitHub, you need the `remotes` package:
+
+```R
+install.packages("remotes")
+remotes::install_github("username/repository")
+```
+
+**System dependencies**
+
+More often than not, you will try to install a package with the above command and get a message `installation of package '...' had non-zero exit status`. The convention is, that exit status 0 means success, so this message means that your package failed to install. Often this lies in missing dependencies on your host system outside of R. You can solve this by scrolling your log in the R console looking for something like `ERROR: dependency '...' is not available for package '...'` or `ERROR: failed to compile ...`. Then you might find out by looking for this error on the internet, which system dependency is missing, and install it. This can quickly get cumbersome for large packages which may have chain dependencies. 
+
+One way to reduce this problem is to try using Posit's [Package Manager](https://packagemanager.posit.co/client/#/) - choose a repository (for example, "cran") and enter the package name (for example, "tidyverse"). Scroll down to the section "Install System Prerequisites for SOURCE", click on SOURCE and select your OS. It will show you the list of system dependencies you need to install before installing this package in R. Try this for the "tidyverse" package, and you should get, for example, for Ubuntu:
+
+```bash
+apt-get install -y libx11-dev
+apt-get install -y libcurl4-openssl-dev
+apt-get install -y libssl-dev
+apt-get install -y make
+apt-get install -y zlib1g-dev
+apt-get install -y pandoc
+apt-get install -y libfreetype6-dev
+apt-get install -y libjpeg-dev
+apt-get install -y libpng-dev
+apt-get install -y libtiff-dev
+apt-get install -y libicu-dev
+apt-get install -y libfontconfig1-dev
+apt-get install -y libfribidi-dev
+apt-get install -y libharfbuzz-dev
+apt-get install -y libxml2-dev
+```
+
+Go to terminal and run these commands with `sudo`. After installing the system dependencies, install the package in RStudio:
+
+```R
+install.packages("tidyverse")
+```
+
+You can list all installed packages in RStudio by running:
+```R
+installed.packages()
 ```
 
 ### Upgrading
@@ -161,22 +232,51 @@ You will need to upgrade R and RStudio on a regular basis to be able to use newe
 
 **R**
 
+*Windows and macOS*
+
+Download the latest version of R from the [CRAN website](https://cran.r-project.org/) and install it as described above.
+
+*Linux*
+
+Use your package manager to update R. For example, on Debian/Ubuntu:
+```bash
+sudo apt update
+sudo apt upgrade r-base
+```
+
 **RStudio**
+
+Go to Help -> Check for Updates in RStudio. If there is a new version available, follow the instructions to download and install it.
 
 **R packages**
 
+To update all installed R packages, you can use the following command in the R console:
+```R
+update.packages(ask = FALSE)
+```
 
 ### Uninstalling
 
 This project sets up a learning environment locally, but you may decide to switch to a different setup, be it conda or a containerized environment or the RStudio server provided on your HPC cluster. In this case, you may want to uninstall the software you installed on your local laptop.
 
-**R**
+**R and RStudio**
 
-**RStudio**
+*Windows and macOS*
+
+Follow usual uninstall procedure for your operating system. On Windows, you can do it via "Add or remove programs" in the Settings. On macOS, you can drag the R and RStudio applications to the Trash.
+
+*Linux*
+
+1. Open a terminal.
+2. Use your package manager to remove R and RStudio. For example, on Debian/Ubuntu:
+   ```bash
+   sudo apt remove --purge r-base rstudio
+   sudo apt autoremove
+   ```
 
 **R packages**
 
-To uninstall a single package, type the R console:
+To uninstall a single R package, type the R console:
 ```R
 remove.packages("package_name")
 ```
