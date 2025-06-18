@@ -109,8 +109,9 @@ Go to "Download R for Linux" and follow the instructions for your specific distr
 1. Open a terminal.
 2. Add the CRAN repository and install R:
    ```bash
+   # update indices
    sudo apt update
-   # install helper packages
+   # make sure helper packages are installed:
    sudo apt install --no-install-recommends software-properties-common dirmngr
    # add the signing key (by Michael Rutter) for these repos
    # To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
