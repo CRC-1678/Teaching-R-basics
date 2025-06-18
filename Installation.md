@@ -40,7 +40,6 @@ Git is the version control system which is central to modern code development. G
    brew install git
    ```
 
-
 **Linux**
 
 1. Open a terminal.
@@ -55,9 +54,7 @@ Git is the version control system which is central to modern code development. G
 
 If you don't have a GitHub account, create one at https://github.com.
 
-#### Optional: GitHub Desktop
-
-If you prefer a graphical interface for Git, you can use [GitHub Desktop](https://desktop.github.com/).
+*Optional: GitHub Desktop:* If you prefer a graphical interface for Git, you can install [GitHub Desktop](https://desktop.github.com/).
 
 ### Clone this repository:
 
@@ -74,7 +71,7 @@ It will download the contents of this repository into a Teaching-R-basics folder
 
 **Check if you have R installed**
 
-On Linux and macOS:
+**Linux and macOS**
 
 1. Open a terminal.
 2. Type the following command and press Enter:
@@ -88,9 +85,9 @@ Note: on linux, you may see a hint saying:
 Command 'R' not found, but can be installed with:
 sudo apt install r-base-core
 ```
-Usually R version that comes with apt is older than the actual one and is not recommended. 
+Usually R version that comes with apt by default is older than the actual one and is not recommended. Follow instructions below to add a different source with the newer version first.
 
-On Windows:
+**Windows**
 
 Press the "Windows" key, type "R", and press Enter. If R is installed, the R console will open and display the version number. If not, you will need to install it as described below.
 
