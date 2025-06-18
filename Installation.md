@@ -83,6 +83,13 @@ On Linux and macOS:
    ```
 3. If R is installed, you will see the version number. If not, you will need to install it as described below.
 
+Note: on linux, you may see a hint saying:
+```
+Command 'R' not found, but can be installed with:
+sudo apt install r-base-core
+```
+Usually R version that comes with apt is older than the actual one and is not recommended. 
+
 On Windows:
 
 Press the "Windows" key, type "R", and press Enter. If R is installed, the R console will open and display the version number. If not, you will need to install it as described below.
