@@ -166,6 +166,12 @@ R packages come from several sources. Most stable and reliable source is CRAN (C
 ```R
 install.packages("package_name")
 ```
+If install was successful, you should see something like:
+```
+** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (package_name)
+```
 
 *Bioconductor*
 
@@ -184,35 +190,36 @@ BiocManager::install("package_name")
 
 *GitHub*
 
-Many packages are available on GitHub, especially those that are in development. To install a package from GitHub, you need the `remotes` package:
+Many packages are available on GitHub, especially those that are in development. There are several ways to install a package from GitHub, for example, you can use `remotes` or `pak` package:
 
 ```R
 install.packages("remotes")
 remotes::install_github("username/repository")
+# or
+install.packages("pak")
+pak::pkg_install("username/repository")
 ```
 
 **System dependencies**
 
 More often than not, you will try to install a package with the above command and get a message `installation of package '...' had non-zero exit status`. The convention is, that exit status 0 means success, so this message means that your package failed to install. Often this lies in missing dependencies on your host system outside of R. You can solve this by scrolling your log in the R console looking for something like `ERROR: dependency '...' is not available for package '...'` or `ERROR: failed to compile ...`. Then you might find out by looking for this error on the internet, which system dependency is missing, and install it. This can quickly get cumbersome for large packages which may have chain dependencies. 
 
-One way to reduce this problem is to try using Posit's [Package Manager](https://packagemanager.posit.co/client/#/) - choose a repository (for example, "cran") and enter the package name (for example, "tidyverse"). Scroll down to the section "Install System Prerequisites for SOURCE", click on SOURCE and select your OS. It will show you the list of system dependencies you need to install before installing this package in R. Try this for the "tidyverse" package, and you should get, for example, for Ubuntu:
+One way to reduce this problem is to use `pak` package's function to calculate system requirements before installing a package, for example for tidyverse on ubuntu, run:
+```R
+pak::pkg_sysreqs("tidyverse", sysreqs_platform="ubuntu")
+```
+
+You will get a list of packages tidyverse depends on and their system dependencies, as well as a command to install them on your platform, for example:
+```
+apt-get -y install libx11-dev libcurl4-openssl-dev ..... [etc]
+```
+
+If `pak` fails to install itself, you can use Posit's [Package Manager](https://packagemanager.posit.co/client/#/) - choose a repository (for example, "cran") and enter the package name (for example, "tidyverse"). Scroll down to the section "Install System Prerequisites for SOURCE", click on SOURCE and select your OS. It will show you the list of system dependencies you need to install before installing this package in R. Try this for the "tidyverse" package, and you should get, for example, for Ubuntu:
 
 ```bash
 apt-get install -y libx11-dev
 apt-get install -y libcurl4-openssl-dev
-apt-get install -y libssl-dev
-apt-get install -y make
-apt-get install -y zlib1g-dev
-apt-get install -y pandoc
-apt-get install -y libfreetype6-dev
-apt-get install -y libjpeg-dev
-apt-get install -y libpng-dev
-apt-get install -y libtiff-dev
-apt-get install -y libicu-dev
-apt-get install -y libfontconfig1-dev
-apt-get install -y libfribidi-dev
-apt-get install -y libharfbuzz-dev
-apt-get install -y libxml2-dev
+... [etc]
 ```
 
 Go to terminal and run these commands with `sudo`. After installing the system dependencies, install the package in RStudio:
