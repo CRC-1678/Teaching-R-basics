@@ -2,7 +2,7 @@
 title: "R Basics - Pre-course Homework"
 author: "CRC1678 INF"
 date: "2025-07-14"
-output: html_document
+output: html_notebook
 css: "copilot.css"
 ---
 
@@ -10,7 +10,7 @@ Welcome to R! This exercise will help you understand basic R concepts before our
 
 ### About R markdown
 
-This is a R markdown notebook which combines a markdown formatted text and executable R code placed in code chunks. This file has extension `.Rmd` and a new notebook can be created in RStudio by going to File -\> New File -\> R markdown... Try it and you will get a sample notebook which explains how to use markdown and provide you with example code chunks. To run a code chunk, click a small green "play" button on the right of the chunk or use a keyboard shortcut `Ctrl + Shift + Enter` / `Cmd + Shift + Enter`. Practice inserting new chunks and running them.
+This is a R markdown notebook which combines a markdown formatted text and executable R code placed in code chunks. This file has extension `.Rmd` and a new notebook can be created in RStudio by going to File -\> New File -\> R markdown... / R notebook... Try it and you will get a sample notebook which explains how to use markdown and provide you with example code chunks. You can switch between "source" and "visual" modes with buttons on top left - use visual mode to have markdown (especially tables) shown nicely. To run a code chunk, click a small green "play" button on the right of the chunk or use a keyboard shortcut `Ctrl + Shift + Enter` / `Cmd + Shift + Enter`. Practice inserting new chunks and running them.
 
 Full R markdown cheatsheet can be found [here](https://github.com/rstudio/cheatsheets/raw/main/rmarkdown-2.0.pdf).
 
@@ -183,7 +183,7 @@ class(NA)
 
 Additionally, special value `NaN` which stands for "Not a Number". This value is numeric (double) and identifies an undefined number (for example, `0/0`).
 
-You can use operators to perform various operations with these types (tables taken from [here](https://www.w3schools.com/r/r_operators.asp):
+You can use operators to perform various operations with these types (tables taken from [w3schools](https://www.w3schools.com/r/r_operators.asp)). To get help on any of the operators, enclose them in backticks (`` ?`%/%` ``)
 
 **Arithmetic**
 
@@ -200,84 +200,207 @@ You can use operators to perform various operations with these types (tables tak
 ```{r}
 # Try out arithmetic operators here
 9 %/% 5
+# Using arithmetic on logical types considers TRUE as 1 and FALSE as 0
+TRUE + TRUE
 ```
+
+**Comparison**
+
+These operators return a logical value.
+
+| Operator | Action                   | Example    | Result  |
+|----------|--------------------------|------------|---------|
+| `==`     | Equal                    | `3 == 2`   | `FALSE` |
+| `!=`     | Not equal                | `"a" != 3` | `TRUE`  |
+| `>`      | Greater than             | `5 > 3`    | `TRUE`  |
+| `<`      | Less than                | `2 < 3`    | `TRUE`  |
+| `>=`     | Greater than or equal to | `1 >= 0`   | `TRUE`  |
+| `<=`     | Less than or equal to    | `1 <= 0`   | `FALSE` |
 
 **Logical**
 
-| Operator | Action | Example | Result |
-|----------|--------|---------|--------|
+These operators are for logical calculation.
 
-| `==` \| Equal \| `3 == 2` \| `FALSE` \|
-| `!=` \| Not equal \| `"a" != 3` \| `TRUE` \|
-| `>` \| Greater than \| `5 > 3` \| `TRUE` \|
-| `<` \| Less than \| `2 < 3` \| `TRUE` \|
-| `>=` \| Greater than or equal to \| `1 >= 0` \| `TRUE` \|
-| `<=` \| Less than or equal to \| `1 <= 0` \| `FALSE` \|
+| Operator | Action      | Example        | Result  |
+|----------|-------------|----------------|---------|
+| `&`,`&&` | Logical AND | `1 & 2`        | `TRUE`  |
+| `|`,`||` | Logical OR  | `FALSE | TRUE` | `TRUE`  |
+| `!`      | Logical NOT | `! TRUE`       | `FALSE` |
+
+*Note:* yes, single and double logical operators are confusing. The rule of thumb:
+
+-   single forms are "element-wise" and thus are used for vectors (see below).
+
+-   double forms are for `if` statements (see below).
 
 ```{r}
-# Try out logical operators here
+# Try out comparison and logical operators here
 2 == 3
 ```
 
 You can use a number of built-in functions to test for specific data type and to convert between data types:
 
 ```{r}
-
+# Try out checking if a variable is of specific type - returns logical
+is.double(1L)
 ```
 
-## 3. Vectors
+```{r}
+# Try converting between types
+as.integer("345")
+```
 
-Vectors are collections of elements of the same type:
+### Data structures in R
 
--   `NULL` <https://adv-r.hadley.nz/vectors-chap.html?q=NULL#null> (e.g. empty `c()`)
+Single elements can be combined together in a data structure. This table is modified from [Advanced R](http://adv-r.had.co.nz/Data-structures.html) and summarizes them:
+
+| Name | Dimensions | Type | Example command |
+|----|----|----|----|
+| (atomic) vector | 1D | homogeneous | `num_vector <- c(1,2,3)` |
+| list | 1D | heterogeneous | `my_list <- list(1, "foo", TRUE)` |
+| matrix | 2D | homogeneous | `m <- matrix(1:4, nrow=2, ncol=2)` |
+| array | ND | homogeneous | `a <- array(1:8, dim = c(2,2,2))` |
+| data.frame | 2D | heterogeneous | `df <- data.frame(id=1:10, letter=letters[1:10])` |
+
+"Homogeneous" means all elements must be of the same type; heterogeneous allows combining different data types together.
+
+**Vectors and lists**
+
+Vectors and lists are 1-dimensional (they only have length).
 
 ```{r}
+# Practice vectors
+
 # Create numeric vector
 numbers <- c(1, 2, 3, 4, 5)
+# ":" operator is a shorthand to create numeric vector of integer range
+numbers <- 1:5
 print(numbers)
+# to get decimal ranges, use the seq() function:
+decimals <- seq(from=0.1, to=0.9, by=0.05)
+print(decimals)
 
-# same can be done with 
-x <- 1:5
-# Create character vector
-fruits <- c("apple", "banana", "orange")
-print(fruits)
+# Vectorized operations act on each element of the vector:
+print(numbers + 2)  # adds 2 to each element
+print(numbers * 3)  # multiplies each element by 3
 
-# Vector operations
-numbers + 2  # adds 2 to each element
-numbers * 3  # multiplies each element by 3
+# Find out vector length
+print(length(numbers))
 
+# We can assign names to elements of the vector
+print(names(numbers)) #returns NULL
+names(numbers) <- as.character(1:5) #convert numeric vector to character
+print(numbers)
+```
+
+*Note:* `NULL` is a specific data type representing "null object". If you create an empty vector with `c()`, it will return `NULL`. See the chapter in [Advanced R](https://adv-r.hadley.nz/vectors-chap.html?q=NULL#null).
+
+**Type coercion**
+
+We said that atomic vectors should contain the same data type. However, if you try to mix data types in a vector, R will not give you an error:
+
+```{r}
+my_vector <- c(1,2,"3")
+my_vector
+```
+
+You see that instead R silently converted integers to characters! This is called type coercion and could lead to some unexpected behavior - see some more examples [here](https://annakrystalli.me/rrresearchACCE20/data-types-structures-and-classes.html#type-coercion).
+
+**Factors**
+
+`factor` in R represents specialized vector to encode categories. Implicitly, it takes a character vector, enumerates all types of words that occur in it, making categories (`levels`) and encodes the vector (internally) as integer with the numbers corresponding to categories.
+
+```{r}
+# Practice factors
+codons <- as.factor(c("ATG", "ATG", "AAG", "ATG", "AGG", "ATG"))
+codons
+```
+
+Factors look very similar to character vectors but be aware that they behave differently. Later you will learn `ggplot2` package - it coerces characters to factors for plotting. For modeling, factors are used to encode categorical variables. One useful function that uses factors is `table()` - it counts occurrences for each combination of categories.
+
+```{r}
+table(codons)
+```
+
+```{r}
+# Practice lists here
+
+# Create a list by converting our numeric vector
+my_list <- as.list(numbers)
+# Lists can be nested (can contain other lists as elements)
+nested_list <- list(my_list, 10)
+# Name list elements
+names(nested_list) <- c("fisrt_list", "addition")
+# Length of the list
+length(nested_list)
+nested_list
+```
+
+**Indexing**
+
+R uses 1-based indexing meaning the first element index is 1. Use square brackets to access elements of a vector:
+
+```{r}
 # Access elements
 print(numbers[1])  # First element
-print(fruits[2])   # Second element
+# Putting - in front of the index removes the element:
+print(numbers[-2])
+# Using : operator returns the range of elements:
+print(numbers[2:4])
 ```
 
-Indexing: R uses 1 -based indexing
-
-vector operators: :, %in%, %\*%(matmul)
-
-Create your own vectors and try operations:
+For lists, there is an important distinction: single brackets return a `list` (even if it is one element, it is a list of length 1); use double brackets to return the element itself:
 
 ```{r}
-# Write your code here
+# Return a list which is a subset of parent list
+print(my_list[1])
+print(typeof(my_list[1]))
 
+# Use double bracket to return the element itself
+print(my_list[[1]])
+print(typeof(my_list[[1]]))
+
+# Set names of the list
+# letters is built-in vector or English letters
+names(my_list) <- letters[1:5]
+# You can use `$` to access an element by name
+print(my_list$b)
 ```
 
-## 5. Data Frames
+**Matrices, arrays and data.frames**
 
-Data frames are like spreadsheets in R:
+A lot of data is represented in 2 dimensions (rows and columns), and for this we use matrices and (mostly, in biology) data.frames. For data with more dimensions, we use arrays.
+
+Matrices and arrays only contain 1 data type:
 
 ```{r}
-# Create a simple data frame
+m <- matrix(1:12, nrow = 3, ncol = 4)
+print(m)
+# use dim() to access matrix dimensions
+print(dim(m))
+# use comma to separate indices while accessing the elements
+# [row,col]
+print(m[2,3])
+# array with 3 dimensions: nrow, ncol, nmat 
+# (number of rows, columns and matrices with this number of row/columns)
+a <- array(1:24, dim = c(3,4,2))
+print(a)
+# a matrix is an array (with 2 dimensions)
+print(is.array(m))
+```
+
+Data.frames can combine multiple types over a row, but column must be of the same type. Essentially, a data.frame can be seen as a list of columns, each of which is a vector of a specific type.
+
+```{r}
+# Create a data frame by listing the columns
 students <- data.frame(
   name = c("Alice", "Bob", "Charlie"),
   age = c(20, 22, 21),
   grade = c(85, 92, 78)
 )
-
-# Look at the data
 print(students)
 
-# Access columns
+# Access columns (2 ways):
 print(students$name)
 print(students[, "age"])
 
@@ -285,89 +408,138 @@ print(students[, "age"])
 print(students[1, ])  # First row
 ```
 
-Create your own data frame about any topic:
+*Note:* with lists and data.frames (but not with vectors, matrices and arrays), you can use `$` notation to access elements by name. In case of data.frames, you can you it to access a column like `data.frame$column_name`. If you get an error `$ operator is invalid for atomic vectors`, that means that you tried to use it on a data structure which is not a list (or a data.frame).
+
+*Note:* a useful vector operator `%in%` allows you to test if some element is present inside a given data structure:
 
 ```{r}
-# Write your code here
-
+10 %in% 1:100
 ```
 
-### Missing Values
+### Statistics and plotting in base R
 
-R uses `NA` to represent missing values:
-
-```{r}
-# Vector with missing values
-scores <- c(85, NA, 92, 78, NA)
-
-# Check for missing values
-is.na(scores)
-
-# Calculate mean with missing values
-mean(scores)  # Returns NA
-mean(scores, na.rm = TRUE)  # Ignores NA
-```
-
-Try working with missing values:
-
-```{r}
-# Write your code here
-
-```
+You will learn `tidyverse` and `ggplot2` packages for tabular data manipulation and plotting, but it is possible to do this with base R functions, too.
 
 ### Basic Statistics
 
-R has built-in functions for basic statistics:
+Some R built-in functions for basic statistics:
 
 ```{r}
 data <- c(15, 23, 42, 31, 58)
 
 mean(data)    # Average
 median(data)  # Middle value
-sum(data)     # Sum of all values
-length(data)  # Number of elements
+sd(data)      # Standard deviation
 max(data)     # Maximum value
 min(data)     # Minimum value
 ```
 
-Try these functions with your own numbers:
+**Note on missing values**
+
+As you remember, `NA` stands for missing value and can be of any type, so vectors (and also, lists, arrays and data.frame columns) can contain `NA`. One needs to be aware that `NA` could propagate silenty, because any operation involving `NA` will return `NA`. Use `na.rm=TRUE` argument to ignore missing values:
 
 ```{r}
-# Write your code here
+# Example vector with missing values
+scores <- c(85, NA, 92, 78, NA)
 
+# Function to for missing values (returns a logical vector)
+is.na(scores)
+
+# Calculate mean with missing values
+mean(scores)  # Returns NA
+mean(scores, na.rm = TRUE)  # Returns a number
 ```
 
-### Plotting
+### Basic Plotting Function
 
-Let's create a simple plot:
+Use `plot()` function to create simple R plots. Most important arguments are `x` , `y` (the data to plot) and `type` (such as dots, lines, histogram) - `?base::plot` is helpful for a quick reference for these and many other parameters.
 
 ```{r}
 # Create some data
 x <- 1:10
 y <- x^2
 
-# Make a basic plot
+# Make a basic xy point plot
 plot(x, y, 
      main = "Simple Plot",
+     type = "b",
      xlab = "X axis",
      ylab = "Y axis")
 ```
 
-Try creating your own plot:
-
-```{r}
-# Write your code here
-
-```
-
 ### Control flow
 
-if an for loops
+Control flow in programming allows you to execute commands based on a condition (`if` and `while` loops) and also to execute the same command on each element of many (`for` loops and `apply` functions).
 
-vectorized operations
+**Conditions**
 
-internal pipe (apply to self made functions)
+Conditions have a form of:
+
+```         
+if (condition) {
+  perform action
+} 
+```
+
+If a condition evaluates to `TRUE`, the command under `if` is executed, otherwise it is not, or a different command (under `else`) is executed, if provided.
 
 ```{r}
+# Simple example of an if-else condition statements
+# Try changing the value of x and see what happens
+x <- 5
+if (x == 5) {
+  print("Correct!")
+} else {
+  print("Wrong!")
+}
+```
 
+**Loops**
+
+Loops allow you to write a command once instead of repeating it for each element you want to execute it on. A simple loop in R has a form of:
+
+```         
+for (element in vector) {
+  perform action (element)
+}
+```
+
+Usually, `for` loops in base R are replaced by a family of `apply` functions. The generic `apply` function has a form of `apply(X, MARGIN, FUNCTION)` where X is the data structure (can also be a matrix or array), MARGIN specifies dimensions to which we want to apply the FUNCTION (for example, 1 means rows, 2 means columns if X is a matrix). The syntax of `apply` is not very intuitive, but we can practice one often used `lapply(X, FUN)` function which performs operation on all elements of a vector or a list:
+
+```{r}
+# lapply applies function to a vector/list
+# for example, we take a squre root (built-in sqrt() function)
+# from the grade from our students dataframe
+# lapply always returns a list
+lapply(students$grade, sqrt)
+```
+
+Some more information on the `apply` family and many examples can be found [here](https://rpubs.com/Richard_h/888425).
+
+**Vectorized operations**
+
+Vectorized functions in R can perform operations on all elements of a vector at the same time, avoiding use of `for` loop and `apply`. Those are very effective, and if possible, it is better to use them instead of loops. Many built-in R functions such as arithmetic operators, `log()` and similar perform vectorized operations automatically. For example, our example with `lapply` is better run like this, returning a simple vector:
+
+```{r}
+sqrt(students$grade)
+```
+
+**Vectorized conditions**
+
+`ifelse()` is a vectorized form of `if` if you provide a a vector of mixed `TRUE` and `FALSE` as a condition. It has a form of `ifelse(condition_vector, action1, action2)`, where action1 is performed if the condition in `TRUE` and action2 if the condition is `FALSE`. For example, we can create a vector based on student's grade:
+
+```{r}
+ifelse(students$grade>80, "excellent", "poor")
+```
+
+**Pipe**
+
+Pipe is an operator to direct a variable or a result of a statement into a next statement, allowing to chain several statements after each other. The pipe of the form `%>%` comes with the `tidyverse` package, however, base R has a built-in pipe of the form `|>` (since R 4.0). Mainly the pipe serves to make your code more readable and allows to better break it over several lines:
+
+```{r}
+# instead of nesting functions like log(sum(sqrt(numbers))), you can write:
+numbers |>
+  sqrt() |>
+  sum() |>
+  log()
 ```
