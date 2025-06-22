@@ -416,6 +416,17 @@ print(students[1, ])  # First row
 10 %in% 1:100
 ```
 
+**Note on vector recycling**
+
+If you try to create a `data.frame` using vectors of different length, R will not complain, and also not fill in missing values of the shorter vector with `NA`. Instead, it will recycle the shorter vector to fill in missing values, which could lead to unexpected results later. If however the longer vector's length is not a multiple of shorter vector's length, R will return an error:
+
+```{r}
+# no warning, x is recycled
+print(data.frame(x = 1:2, y = 1:6))
+# error
+print(data.frame(x = 1:2, y = 1:5))
+```
+
 ### Statistics and plotting in base R
 
 You will learn `tidyverse` and `ggplot2` packages for tabular data manipulation and plotting, but it is possible to do this with base R functions, too.
