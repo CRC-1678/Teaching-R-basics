@@ -1,8 +1,18 @@
 ---
 title: "Introduction to R"
 author: "Svetlana / CRC1678"
-format: revealjs
-smaller: true
+format: 
+  revealjs:
+    smaller: true
+    slide-number: true
+    show-slide-number: all
+include-in-header: 
+  text: |
+    <style>
+      .custom-small table {
+        font-size: .8em
+      }
+    </style>
 editor: visual
 ---
 
@@ -67,25 +77,14 @@ editor: visual
 
 -   ask on R-specific resources: [R-bloggers](https://www.r-bloggers.com/), [Posit community](https://forum.posit.co/)
 
-## R start up
+## Set up
 
-You can change the behavior or R/Rstudio at startup by modifying several files. The full overview can be found at [Posit](https://docs.posit.co/ide/user/ide/guide/environments/r/managing-r.html).
+You should have already:
 
-Most useful are `.Rprofile` and `.Renviron` which are executed at the start of R session.
+-   R+RStudio installed
+-   necessary packages installed
 
-`.Renviron` is used to set environment variables. This is useful for providing credentials such as API keys. This is not R code but a simple text file with `KEY=VALUE` pairs, one per line. For example, you can set your GitHub token like this:
-
-``` bash
-GITHUB_PAT=your_github_token_here
-```
-
-`.Rprofile` is used to set options and this is R code. You can use it to set options, load packages which you always use or provide custom functions. For example, you can change your default prompt to always be sure when you are in R console:
-
-```{r}
-options(prompt = "R> ")
-```
-
-## Projects in RStudio
+**RStudio projects**
 
 Projects in RStudio are helpful to make your work more shareable and reproducible.
 
@@ -95,9 +94,57 @@ Projects in RStudio are helpful to make your work more shareable and reproducibl
 
 -   You can use version control (Git) to track changes
 
-```{r}
-# does not work on your collaborator's mac
+``` r
+# does not work on your collaborator's unix-based system
 data_file <- "C:/Users/svetlana/Documents/R/learning-r-beginners-2025/data/data.csv"
-# use relative path or a package here:: - works on all systems
+# use relative path (or a package "here") - works on all systems
 data_file <- "data/data.csv"
 ```
+
+## R startup
+
+You can change the behavior or R/Rstudio at startup by modifying several files. The full overview can be found at [Posit](https://docs.posit.co/ide/user/ide/guide/environments/r/managing-r.html).
+
+Most useful are `.Rprofile` and `.Renviron` which are executed at the start of R session.
+
+-   `.Renviron` is used to set environment variables. This is useful for providing credentials such as API keys. This is not R code but a simple text file with `KEY=VALUE` pairs, one per line. For example, you can set your GitHub token like this:
+
+``` bash
+GITHUB_PAT=your_github_token_here
+```
+
+-   `.Rprofile` is used to set options and this is R code. You can use it to set options, load packages which you always use or provide custom functions. For example, you can change your default prompt to always be sure when you are in R console:
+
+``` r
+options(prompt = "R> ")
+```
+
+## Live coding
+
+-   Open RStudio
+-   If you haven't, open `Exercise-R-basics.Rmd` - we will go through it together
+-   If you already did: open `Exercise-R-fails.Rmd` and work on it on your own
+
+## R environment setup {.custom-small}
+
+There are many possibilities to set up your development environment with R.
+
+| Setup | Pro | Con |
+|----|----|----|
+| local installation (what we did in `Installation.md`) | stable, fast, works offline | user vs system package (Linux), limited resources |
+| local installation but compile from source (Linux) | \-"- | error prone, manual update, limited resources |
+| get R in an isolated `conda` environment | simple set up | not all R packages available |
+| your institution's rserver on HPC (if available) | large resources | no control over set-up / update |
+| container ([rocker](https://rocker-project.org/images/) images are a good start) | full control, reproducible, portable | needs machine with root to set up |
+| cloud ([Posit cloud](https://posit.cloud/) or [Colab notebooks](https://colab.research.google.com/)) | simple and fast setup | limited free resources, internet-dependent, not for confidential data |
+
+## Resources
+
+A subjective selection of books and resources to keep learning:
+
+-   [CECAD bioinformatics core facility basic R course](https://github.com/CECADBioinformaticsCoreFacility/Basic_R_course_CGA?tab=readme-ov-file)
+-   Hadley Wickham's [R for data science](https://r4ds.hadley.nz/) - basic knowledge about base R and tidyverse
+-   Patrick Burns' [R inferno](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf) - "If you are using R and you think you’re in hell, this is a map for you"
+-   A list of books from [Bioconductor](https://www.bioconductor.org/help/bioconductor-books/) - includes orchestrated analysis of HiC, single cell and mass spectrometry
+-   [Computational genomics with R](https://compgenomr.github.io/book/)(2020) - covers basics to classical machine learning on genomics data
+-   [Efficient R programming](https://csgillespie.github.io/efficientR/) - how to increase both computational and programming efficiency in R :::
