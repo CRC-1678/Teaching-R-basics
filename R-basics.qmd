@@ -2,6 +2,7 @@
 title: "Introduction to R"
 author: "Svetlana / CRC1678"
 format: revealjs
+smaller: true
 editor: visual
 ---
 
@@ -52,23 +53,23 @@ editor: visual
 
 **From us**
 
--   slack channel #learning-r-beginners-2025
+-   slack channel [#learning-r-beginners-2025](https://crc1678-inf.slack.com/archives/C090Z8C91M2)
 
--   crc1678-inf\@uni-koeln.de
+-   [crc1678-inf\@uni-koeln.de](mailto:crc1678-inf@uni-koeln.de)
 
--   open an issue in course GitHub repository
+-   [open an issue](https://github.com/CRC-1678/Teaching-R-basics/issues/new/choose) in course GitHub repository
 
--   book a Zoom consultation
+-   [book a Zoom consultation](https://doodle.com/bp/crc1678/crc1678inf-introductory-meeting)
 
 **In general**
 
 -   Use `?` or `help()` inside R
 
--   ask on R-specific resources: R-bloggers and Posit community
+-   ask on R-specific resources: [R-bloggers](https://www.r-bloggers.com/), [Posit community](https://forum.posit.co/)
 
 ## R start up
 
-You can change the behavior or R/Rstudio at startup by modifying several files. The full overview can be found at [Posit]().
+You can change the behavior or R/Rstudio at startup by modifying several files. The full overview can be found at [Posit](https://docs.posit.co/ide/user/ide/guide/environments/r/managing-r.html).
 
 Most useful are `.Rprofile` and `.Renviron` which are executed at the start of R session.
 
@@ -80,7 +81,7 @@ GITHUB_PAT=your_github_token_here
 
 `.Rprofile` is used to set options and this is R code. You can use it to set options, load packages which you always use or provide custom functions. For example, you can change your default prompt to always be sure when you are in R console:
 
-``` r
+```{r}
 options(prompt = "R> ")
 ```
 
