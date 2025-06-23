@@ -1,0 +1,102 @@
+---
+title: "Introduction to R"
+author: "Svetlana / CRC1678"
+format: revealjs
+editor: visual
+---
+
+## **Credits**
+
+-   Yashna for co-working on many aspects
+-   CECAD core facility for sharing their materials
+-   Julian for providing reasons not to use R
+-   Copilot for helping with the exercises
+
+## Code of Conduct
+
+-   Treat everyone with dignity
+
+-   Respect different learning pace
+
+-   Share your code
+
+-   Credit authors of the code you use
+
+-   There are no stupid questions!
+
+-   Use AI but check their answers 🤖
+
+-   Help each other 😇
+
+## Why R (and why not)?
+
+😊
+
+-   Good packages for statistical analysis
+
+-   Advanced and interactive graphics
+
+-   Open source and free
+
+-   Biology-oriented packages in Bioconductor
+
+😰
+
+-   Conflicts between versions
+
+-   Relatively slow
+
+-   Relatively memory-hungry
+
+## Getting help
+
+**From us**
+
+-   slack channel #learning-r-beginners-2025
+
+-   crc1678-inf\@uni-koeln.de
+
+-   open an issue in course GitHub repository
+
+-   book a Zoom consultation
+
+**In general**
+
+-   Use `?` or `help()` inside R
+
+-   ask on R-specific resources: R-bloggers and Posit community
+
+## R start up
+
+You can change the behavior or R/Rstudio at startup by modifying several files. The full overview can be found at [Posit]().
+
+Most useful are `.Rprofile` and `.Renviron` which are executed at the start of R session.
+
+`.Renviron` is used to set environment variables. This is useful for providing credentials such as API keys. This is not R code but a simple text file with `KEY=VALUE` pairs, one per line. For example, you can set your GitHub token like this:
+
+``` bash
+GITHUB_PAT=your_github_token_here
+```
+
+`.Rprofile` is used to set options and this is R code. You can use it to set options, load packages which you always use or provide custom functions. For example, you can change your default prompt to always be sure when you are in R console:
+
+``` r
+options(prompt = "R> ")
+```
+
+## Projects in RStudio
+
+Projects in RStudio are helpful to make your work more shareable and reproducible.
+
+-   Code and data are organized in a directory - you can use relative file paths
+
+-   You can store and share project-specific settings in `.Rproj` file
+
+-   You can use version control (Git) to track changes
+
+```{r}
+# does not work on your collaborator's mac
+data_file <- "C:/Users/svetlana/Documents/R/learning-r-beginners-2025/data/data.csv"
+# use relative path or a package here:: - works on all systems
+data_file <- "data/data.csv"
+```
