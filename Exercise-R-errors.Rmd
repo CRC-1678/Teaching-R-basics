@@ -1,0 +1,149 @@
+---
+title: "Correct errors in R code"
+author: "Copilot + Svetlana"
+date: "2025-07-14"
+output: html_document
+css: "copilot.css"
+---
+
+```{r setup, echo=FALSE}
+# let rmarkdown not stop on error and knit the document
+knitr::opts_chunk$set(error=TRUE)
+```
+
+## R errors
+
+I was too lazy learning R and asked Copilot to do the R course homework for me. Unfortunately, the code contained mistakes, and I got errors and unexpected results. (Always check what your LLM gives you.)
+
+R is not always very explicit in its error messages, and sometimes it even passes an error silently on.
+
+Let's try to understand the errors and fix that faulty code! Feel free to work in pairs because 2 brains is better than one :-) :-)
+
+### 1. Variables naming
+
+```{r}
+4u <- "There is a dataset for you"
+```
+
+```{r}
+lucky-number <- 42
+```
+
+```{r}
+data <- 1000
+print(Data)
+```
+
+```{r}
+print <- "Printing answer.."
+help(print)
+```
+
+### 2. Basic data types and operations
+
+```{r}
+pi <- as.numeric("3.14p")
+pi
+```
+
+```{r}
+n <- 10
+print("Reporting " + n + " top results")
+```
+
+```{r}
+x <- list(1, 2, 3)
+sum(x)
+```
+
+```{r}
+f <- factor(c("10", "20", "30"))
+as.numeric(f)
+```
+
+```{r}
+colors <- factor(c("red", "blue", "green"))
+colors[4] <- "yellow"
+print(colors)
+```
+
+### 3. Scope
+
+```{r}
+func = function(){
+  age = 18    
+} 
+
+print(age)
+```
+
+```{r}
+# we want to double the i every time (expect 32)
+for(i in 1:5){
+  value <- i * 2
+}
+print(value)
+```
+
+### 4. Vector Operations
+
+```{r}
+# we want to subset x based on mask and accidentally chose the wrong one - no error
+x <- c(5, 10, 15, 20, 25)
+mask <- c(TRUE, FALSE)
+result <- x[mask]
+print(result)
+```
+
+### 5. Indexing
+
+```{r}
+x <- 1:4
+x[0]
+```
+
+```{r}
+df <- data.frame(
+  name = c("Alice", "Bob", "Charlie"),
+  age = c(25, 30, 35)
+)
+
+# take mean age of persons
+mean(df[2])
+```
+
+```{r}
+# filter for those who are called Alice
+print(df[name == "Alice",])
+```
+
+### 6. Missing values
+
+```{r}
+# imagine the real data has thousands of points and we cannot check missing value by eye
+data <- c(1, 2, NA, 4, 5)
+mean(data)
+```
+
+```{r}
+# here we are trying to deterimne if data contains NA
+data <- c(1, 2, NA, 4, 5)
+if(data == NA) {
+  print("Found NA")
+}
+```
+
+### 7. Namespace
+
+These two chunks of code should give the same result, or?
+
+```{r}
+x <- 1:100
+filter(x, rep(1, 3))
+```
+
+```{r}
+library(tidyverse)
+x <- 1:100
+filter(x, rep(1, 3))
+```

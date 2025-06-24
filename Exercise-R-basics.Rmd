@@ -2,8 +2,10 @@
 title: "R Basics - Pre-course Homework"
 author: "CRC1678 INF"
 date: "2025-07-14"
-output: html_notebook
-css: "copilot.css"
+output:
+  html_document:
+    df_print: paged
+css: copilot.css
 ---
 
 Welcome to R! This exercise will help you understand basic R concepts before our class. Run each code chunk and try to understand the output. Feel free to experiment by adding more chunks.
@@ -25,7 +27,7 @@ You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 **General**
 
 | Action                               | Windows/Linux      | Mac               |
-|--------------------------------------|--------------------|-------------------|
+|-----------------------------------|-------------------|------------------|
 | Insert assign operator `<-`          | `Alt + -`          | `Option + -`      |
 | Insert tidyverse pipe operator `%>%` | `Ctrl + Shift + M` | `Cmd + Shift + M` |
 | Clear line from cursor to beginning  | `Ctrl + U`         | `Cmd + U`         |
@@ -44,7 +46,7 @@ You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 **Source (upper left window by default)**
 
 | Action | Windows/Linux | Mac |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Move cursor to source | `Ctrl + 1` | `Cmd + 1` |
 | Duplicate current line up or down | `Alt + Shift + Up/Down` | `Option + Shift + Up/Down` |
 | Delete the current line | `Ctrl + D` | `Cmd + D` |
@@ -86,7 +88,7 @@ In this chunk we also introduce:
 -   `#` character which denotes a comment and can be use to "switch off" lines in your code.
 -   `print()` function to output the value of the variable (more on functions below).
 
-```{r}
+```{r assignment}
 # Try it
 a <- 5 
 3 -> b
@@ -111,20 +113,20 @@ To obtain help on how to call a function and all possible arguments, type `?func
 
 You can use `ls()` function to list your variables and functions - or in RStudio, look at the "Environment" tab (in the top right quadrant by default):
 
-```{r}
+```{r ls}
 ls()
 ```
 
 To delete an unwanted variable or function, you can use `rm()`
 
-```{r}
+```{r rm}
 rm(a)
 ls()
 ```
 
 You can create your own function in R using the curly brackets syntax:
 
-```{r}
+```{r function}
 # By including  comment inside our function, we will help user to understand what it does
 my_function <- function(a){
   # This function will print the value of the variable given
@@ -134,20 +136,20 @@ my_function <- function(a){
 
 And call it:
 
-```{r}
+```{r function2}
 my_function(b)
 ```
 
 You can see the code of the function by calling its name without brackets:
 
-```{r}
+```{r function3}
 # See the source code of the function
 my_function
 ```
 
 Calling it without an argument leads to an error:
 
-```{r}
+```{r function4, error=TRUE}
 my_function()
 ```
 
@@ -177,7 +179,7 @@ You can check a type of variable with `class()` or `str()` (shows a compact repr
 
 Note: Special value `NA` (stands for "Not available") represents missing data. By default, `NA` is logical, but it can be converted to other types.
 
-```{r}
+```{r na}
 class(NA)
 ```
 
@@ -197,7 +199,7 @@ You can use operators to perform various operations with these types (tables tak
 | `%%`     | Modulus (Remainder from division) | `7 %% 3` | `1`    |
 | `%/%`    | Integer Division                  | `7%/%3`  | `2`    |
 
-```{r}
+```{r calculus}
 # Try out arithmetic operators here
 9 %/% 5
 # Using arithmetic on logical types considers TRUE as 1 and FALSE as 0
@@ -233,19 +235,19 @@ These operators are for logical calculation.
 
 -   double forms are for `if` statements (see below).
 
-```{r}
+```{r logical}
 # Try out comparison and logical operators here
 2 == 3
 ```
 
 You can use a number of built-in functions to test for specific data type and to convert between data types:
 
-```{r}
+```{r is.type}
 # Try out checking if a variable is of specific type - returns logical
 is.double(1L)
 ```
 
-```{r}
+```{r as.type}
 # Try converting between types
 as.integer("345")
 ```
@@ -255,7 +257,7 @@ as.integer("345")
 Single elements can be combined together in a data structure. This table is modified from [Advanced R](http://adv-r.had.co.nz/Data-structures.html) and summarizes them:
 
 | Name | Dimensions | Type | Example command |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | (atomic) vector | 1D | homogeneous | `num_vector <- c(1,2,3)` |
 | list | 1D | heterogeneous | `my_list <- list(1, "foo", TRUE)` |
 | matrix | 2D | homogeneous | `m <- matrix(1:4, nrow=2, ncol=2)` |
@@ -268,7 +270,7 @@ Single elements can be combined together in a data structure. This table is modi
 
 Vectors and lists are 1-dimensional (they only have length).
 
-```{r}
+```{r vectors}
 # Practice vectors
 
 # Create numeric vector
@@ -299,18 +301,18 @@ print(numbers)
 
 We said that atomic vectors should contain the same data type. However, if you try to mix data types in a vector, R will not give you an error:
 
-```{r}
+```{r coercion}
 my_vector <- c(1,2,"3")
 my_vector
 ```
 
-You see that instead R silently converted integers to characters! This is called type coercion and could lead to some unexpected behavior - see some more examples [here](https://annakrystalli.me/rrresearchACCE20/data-types-structures-and-classes.html#type-coercion).
+You see that instead R silently converted integers to characters! This is called type coercion and could lead to some unexpected behavior - see some more examples [here](#0). And a [meme]([https://x.com/data_question/status/1379690005136695296](#0){.uri}).
 
 **Factors**
 
 `factor` in R represents specialized vector to encode categories. Implicitly, it takes a character vector, enumerates all types of words that occur in it, making categories (`levels`) and encodes the vector (internally) as integer with the numbers corresponding to categories.
 
-```{r}
+```{r factor}
 # Practice factors
 codons <- as.factor(c("ATG", "ATG", "AAG", "ATG", "AGG", "ATG"))
 codons
@@ -318,11 +320,11 @@ codons
 
 Factors look very similar to character vectors but be aware that they behave differently. Later you will learn `ggplot2` package - it coerces characters to factors for plotting. For modeling, factors are used to encode categorical variables. One useful function that uses factors is `table()` - it counts occurrences for each combination of categories.
 
-```{r}
+```{r table}
 table(codons)
 ```
 
-```{r}
+```{r list}
 # Practice lists here
 
 # Create a list by converting our numeric vector
@@ -340,7 +342,7 @@ nested_list
 
 R uses 1-based indexing meaning the first element index is 1. Use square brackets to access elements of a vector:
 
-```{r}
+```{r index}
 # Access elements
 print(numbers[1])  # First element
 # Putting - in front of the index removes the element:
@@ -351,7 +353,7 @@ print(numbers[2:4])
 
 For lists, there is an important distinction: single brackets return a `list` (even if it is one element, it is a list of length 1); use double brackets to return the element itself:
 
-```{r}
+```{r double bracket}
 # Return a list which is a subset of parent list
 print(my_list[1])
 print(typeof(my_list[1]))
@@ -373,7 +375,7 @@ A lot of data is represented in 2 dimensions (rows and columns), and for this we
 
 Matrices and arrays only contain 1 data type:
 
-```{r}
+```{r matrix}
 m <- matrix(1:12, nrow = 3, ncol = 4)
 print(m)
 # use dim() to access matrix dimensions
@@ -391,7 +393,7 @@ print(is.array(m))
 
 Data.frames can combine multiple types over a row, but column must be of the same type. Essentially, a data.frame can be seen as a list of columns, each of which is a vector of a specific type.
 
-```{r}
+```{r df}
 # Create a data frame by listing the columns
 students <- data.frame(
   name = c("Alice", "Bob", "Charlie"),
@@ -412,7 +414,7 @@ print(students[1, ])  # First row
 
 *Note:* a useful vector operator `%in%` allows you to test if some element is present inside a given data structure:
 
-```{r}
+```{r in}
 10 %in% 1:100
 ```
 
@@ -420,7 +422,7 @@ print(students[1, ])  # First row
 
 If you try to create a `data.frame` using vectors of different length, R will not complain, and also not fill in missing values of the shorter vector with `NA`. Instead, it will recycle the shorter vector to fill in missing values, which could lead to unexpected results later. If however the longer vector's length is not a multiple of shorter vector's length, R will return an error:
 
-```{r}
+```{r recycling, error=TRUE}
 # no warning, x is recycled
 print(data.frame(x = 1:2, y = 1:6))
 # error
@@ -435,7 +437,7 @@ You will learn `tidyverse` and `ggplot2` packages for tabular data manipulation 
 
 Some R built-in functions for basic statistics:
 
-```{r}
+```{r base stats}
 data <- c(15, 23, 42, 31, 58)
 
 mean(data)    # Average
