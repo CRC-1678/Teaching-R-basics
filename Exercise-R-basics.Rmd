@@ -8,32 +8,34 @@ output:
 css: copilot.css
 ---
 
-Welcome to R! This exercise will help you understand basic R concepts before our class. Run each code chunk and try to understand the output. Feel free to experiment by adding more chunks.
+Congratulations on successful installing and welcome to R!
+
+This exercise will help you understand some basic R concepts.
 
 ### About R markdown
 
-This is a R markdown notebook which combines a markdown formatted text and executable R code placed in code chunks. This file has extension `.Rmd` and a new notebook can be created in RStudio by going to File -\> New File -\> R markdown... / R notebook... Try it and you will get a sample notebook which explains how to use markdown and provide you with example code chunks. You can switch between "source" and "visual" modes with buttons on top left - use visual mode to have markdown (especially tables) shown nicely. To run a code chunk, click a small green "play" button on the right of the chunk or use a keyboard shortcut `Ctrl + Shift + Enter` / `Cmd + Shift + Enter`. Practice inserting new chunks and running them.
+This is a R markdown notebook which combines a markdown formatted text and executable R code placed in code chunks. This file has extension `.Rmd`. You can create such a notebook in RStudio by going to File -\> New File -\> R markdown... / R notebook...
+
+You can switch between "source" and "visual" modes with buttons on top left - use visual mode to have markdown (especially tables) shown in a nicer way. To run a code chunk, click a small green "play" button in the top right corner of the chunk (or use a keyboard shortcut, see below). As you work along, feel free to modify the code in the chunks, write your comments in markdown and save a copy of this notebook with your personal notes.
 
 Full R markdown cheatsheet can be found [here](https://github.com/rstudio/cheatsheets/raw/main/rmarkdown-2.0.pdf).
 
-------------------------------------------------------------------------
-
 ### Some useful RStudio Keyboard Shortcuts
-
-Large RStudio cheatsheet can be found at [Posit](https://posit.co/wp-content/uploads/2022/10/rstudio-ide-1.pdf).
 
 You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 
 #### General
 
 | Action                               | Windows/Linux      | Mac               |
-|--------------------------------------|--------------------|-------------------|
+|-----------------------------------|-------------------|------------------|
 | Insert assign operator `<-`          | `Alt + -`          | `Option + -`      |
 | Insert tidyverse pipe operator `%>%` | `Ctrl + Shift + M` | `Cmd + Shift + M` |
 | Clear line from cursor to beginning  | `Ctrl + U`         | `Cmd + U`         |
 | Clear line from cursor to end        | `Ctrl + K`         | `Cmd + K`         |
 
-#### Console (lower left window by default)
+#### Console
+
+(lower left window by default)
 
 | Action                    | Windows/Linux     | Mac              |
 |---------------------------|-------------------|------------------|
@@ -43,10 +45,12 @@ You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 | Search command history    | `Ctrl + arrow-up` | `Cmd + arrow-up` |
 | Interrupt current command | `Esc`             | `Esc`            |
 
-#### Source (upper left window by default)
+#### Source
+
+(upper left window by default)
 
 | Action | Windows/Linux | Mac |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Move cursor to source | `Ctrl + 1` | `Cmd + 1` |
 | Duplicate current line up or down | `Alt + Shift + Up/Down` | `Option + Shift + Up/Down` |
 | Delete the current line | `Ctrl + D` | `Cmd + D` |
@@ -58,86 +62,97 @@ You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 | Save file | `Ctrl + S` | `Cmd + S` |
 | Knit document | `Ctrl + Shift + K` | `Cmd + Shift + K` |
 
-------------------------------------------------------------------------
+Large RStudio cheatsheet can be found at [Posit](https://posit.co/wp-content/uploads/2022/10/rstudio-ide-1.pdf).
 
-**Notes on typing syntax**
+**Notes on R syntax**
 
 -   When you type R code, remember that R is case sensitive, so `data` is not the same as `Data`.
--   For most cases, it does not matter if you have a space between variable, operator and value, so `2+2` is the same as `2 + 2`. In general it is recommended to use spaces for better code readability.
--   Single ' and double " quotes are equivalent in R, but has to be paired accordingly.
+
+-   For most cases, it does not matter if you have a space between variable, operator and value, so `2+2` is the same as `2 + 2`. It is recommended to use spaces for better code readability.
+
+-   Single ('') and double ("") quotes are equivalent in R, but has to be paired accordingly.
 
 ### Variables assignment
 
-In R (and other languages), variables are used to store values. Basically, they are pointers to an object/location in memory ([Wikipedia](https://en.wikipedia.org/wiki/Variable_(computer_science)). In R, they don't need to be declared and are created at the moment when they are assigned a value.
+In R (and other languages), variables are used to store values. They can be seen as pointers to a location in memory ([Wikipedia](https://en.wikipedia.org/wiki/Variable_(computer_science))). In R, they don't need to be declared in advance and are created at the moment when they are assigned a value.
 
-Things to remember:
+Some things to remember:
 
 -   `<-` is preferred operator for assignment
     -   Use `Alt + -` / `Option + -` shortcut to save typing `<-`.
-    -   `=` operator can also be used, but it is discouraged (see this [Extensive R bloggers post](https://www.r-bloggers.com/2018/07/assignment-in-r-slings-and-arrows/) with examples where `=` use for assignment can lead to problems).
+    -   `=` operator can also be used, but it is discouraged (see this [Extensive R bloggers post](https://www.r-bloggers.com/2018/07/assignment-in-r-slings-and-arrows/) with examples).
     -   Fun fact: `->` assignment also works!
--   variable names:
+-   Variable names:
     -   cannot start with a number
     -   cannot contain `-` (will be evaluated as minus sign)
-    -   prefer not to contain spaces, use backticks if you must `` `variable with space` <- 6 ``
+    -   prefer not to contain spaces, use backticks if you must like `` `variable with space` ``
     -   should not overwrite built-in functions and variables names
 
 Experiment with assigning variables in the following chunk.
 
-In this chunk we also introduce:
+In this chunk we also see:
 
--   `#` character which denotes a comment and can be use to "switch off" lines in your code.
--   `print()` function to output the value of the variable (more on functions below).
+-   `#` character denotes a comment (this line will not be executed as code)
+-   `print()` is a function to output it's argument to console (more on functions below)
 
 ```{r assignment}
-# Try it
+# Three ways to assign
 a <- 5 
 3 -> b
+c = 4 #better not use
 
-# Print function prints the values of its variable
+# Print function prints the value of its argument
 print(a)
 print(b)
 
-# Reassigning a variable overwrites it
+# Reassigning a variable to the same name overwrites old value
 a <- 8
 print(a)
 
-# Typing a variable will return its value
+# Typing a variable will also print its value
 b
 ```
 
 ### Functions
 
-Functions in R have a form of `function(argument=value)` and are called as name of the function with parentheses, with respective arguments inside parentheses (here is where `=` operator comes in). There are a number of built-in functions which come with base R (you already saw `print()`).
+Functions in R are called like `function(argument=value)` (here is where `=` operator should be used). There are a number of built-in functions which are available on start-up R (you already saw `print()`). Many more functions are imported from packages (you already installed `tidyverse` package, for example), and are available either after loading the package with `library("package")` or referencing the function like `package::function()`.
 
-To obtain help on how to call a function and all possible arguments, type `?function` or `help("function")`. Tip: if you don't remember the exact name, try `apropos("approximate_name")`.
+To obtain help on how to call a function and all possible arguments, type `?function` or `help("function")`. Tip: if you don't remember the exact name, you can try `apropos("approximate_name")`.
 
-You can use `ls()` function to list your variables and functions - or in RStudio, look at the "Environment" tab (in the top right quadrant by default):
+You can use `ls()` function to list variables and functions in your environment. In RStudio, you can always find them in the "Environment" tab (in the top right quadrant by default):
 
 ```{r ls}
 ls()
 ```
 
-To delete an unwanted variable or function, you can use `rm()`
+To delete an unwanted variable or function, you can use function `rm()`
 
 ```{r rm}
 rm(a)
 ls()
 ```
 
-You can create your own function in R using the curly brackets syntax:
+You can create your own function in R using the following syntax:
 
 ```{r function}
 # By including  comment inside our function, we will help user to understand what it does
 my_function <- function(a){
+  print("Welcome to our first function!")
   # This function will print the value of the variable given
   print(a)
 }
 ```
 
-And call it:
+**Note:** if a function consists of one single statement, you can omit the curly brackets (even though it is recommended to use them for consistency):
+
+```{r short function}
+my_short_function <- function(a) print(a)
+```
+
+Call our function:
 
 ```{r function2}
+b <- 123
 my_function(b)
 ```
 
@@ -159,9 +174,10 @@ my_function()
 You may have noticed that:
 
 -   we have assigned variable `a` and deleted it
--   we have used `a` as an argument inside `my_function` definition and R did not complain that `a` was not found - we have called it on the variable `b` and R did not complain that it wants `a` as input
+-   then we have used `a` as an argument inside `my_function` definition and R did not complain that `a` was not found
+-   then we have called our function on the variable `b` and R did not complain that it needs `a` as input
 
-There are 2 types of variables in R (and other languages): global and local. Global variables can be accessed from anywhere in the code. In our case, `b` is global. Local variables are valid for a part of the code - such as the `a` inside our function. In this case, when the function is called, its argument is assigned to local variable `a`, and this local variable `a` disappears after the function call is finished.
+Like in many languages, R has global and local variables. Global variables can be accessed from anywhere in the code. (in our case, `b` ). Local variables are only valid for a specific part of the code (in our case, `a` inside our function). When the function is called, its argument is assigned to local variable `a`, and this local variable `a` disappears after the function call is finished.
 
 More examples on scope [here](https://www.geeksforgeeks.org/r-language/scope-of-variable-in-r/).
 
@@ -176,7 +192,12 @@ Main data types in R are:
 -   Character: `"1"`
 -   Logical: `TRUE` and `FALSE` (alias `T` and `F`)
 
-You can check a type of variable with `class()` or `str()` (shows a compact representation of object structure).
+You can check a type of variable with functions `class()` or `str()`.
+
+```{r}
+class(123)
+str(TRUE)
+```
 
 Note: Special value `NA` (stands for "Not available") represents missing data. By default, `NA` is logical, but it can be converted to other types.
 
@@ -203,8 +224,10 @@ You can use operators to perform various operations with these types (tables tak
 ```{r calculus}
 # Try out arithmetic operators here
 9 %/% 5
-# Using arithmetic on logical types considers TRUE as 1 and FALSE as 0
+# You can use arithmetic on logical type (TRUE is 1, FALSE is 0)
 TRUE + TRUE
+# You cannot use it with character type - results in an error
+"a" + "b"
 ```
 
 #### Comparison
@@ -220,6 +243,14 @@ These operators return a logical value.
 | `>=`     | Greater than or equal to | `1 >= 0`   | `TRUE`  |
 | `<=`     | Less than or equal to    | `1 <= 0`   | `FALSE` |
 
+```{r compare}
+# Try out comparison operators here
+2 < 3
+# Works for alphabetic sorting:
+"a" < "b"
+
+```
+
 #### Logical
 
 These operators are for logical calculation.
@@ -232,13 +263,14 @@ These operators are for logical calculation.
 
 *Note:* yes, single and double logical operators are confusing. The rule of thumb:
 
--   single forms are "element-wise" and thus are used for vectors (see below).
+-   single forms are "element-wise" and thus are used for vectors and return a vector (see below)
 
--   double forms are for `if` statements (see below).
+-   double forms are for single statements and used with `if` (see below) and return a single value
 
 ```{r logical}
-# Try out comparison and logical operators here
+# Try out logical operators here
 2 == 3
+TRUE & FALSE
 ```
 
 You can use a number of built-in functions to test for specific data type and to convert between data types:
@@ -246,6 +278,8 @@ You can use a number of built-in functions to test for specific data type and to
 ```{r is.type}
 # Try out checking if a variable is of specific type - returns logical
 is.double(1L)
+is.numeric(2L)
+is.logical(T)
 ```
 
 ```{r as.type}
@@ -255,21 +289,23 @@ as.integer("345")
 
 ### Data structures in R
 
-Single elements can be combined together in a data structure. This table is modified from [Advanced R](http://adv-r.had.co.nz/Data-structures.html) and summarizes them:
+Single elements can be combined together in a data structure. This summary table is modified from [Advanced R](http://adv-r.had.co.nz/Data-structures.html):
 
 | Name | Dimensions | Type | Example command |
-|----|----|----|----|
+|------------------|------------------|------------------|------------------|
 | (atomic) vector | 1D | homogeneous | `num_vector <- c(1,2,3)` |
 | list | 1D | heterogeneous | `my_list <- list(1, "foo", TRUE)` |
 | matrix | 2D | homogeneous | `m <- matrix(1:4, nrow=2, ncol=2)` |
 | array | ND | homogeneous | `a <- array(1:8, dim = c(2,2,2))` |
 | data.frame | 2D | heterogeneous | `df <- data.frame(id=1:10, letter=letters[1:10])` |
 
-"Homogeneous" means all elements must be of the same type; heterogeneous allows combining different data types together.
+-   Homogeneous: all elements are of the same type
+
+-   Heterogeneous: can combining different data types together
 
 #### Vectors and lists
 
-Vectors and lists are 1-dimensional (they only have length).
+Vectors and lists are 1-dimensional data structures.
 
 ```{r vectors}
 # Practice vectors
@@ -300,28 +336,30 @@ print(numbers)
 
 **Type coercion**
 
-We said that atomic vectors should contain the same data type. However, if you try to mix data types in a vector, R will not give you an error:
+Vectors always contain the same data type. However, if you try to mix data types in a vector, R will not give you an error:
 
 ```{r coercion}
 my_vector <- c(1,2,"3")
 my_vector
 ```
 
-You see that instead R silently converted integers to characters! This is called type coercion and could lead to some unexpected behavior - see some more examples [here](#0). And a [meme](%5Bhttps://x.com/data_question/status/1379690005136695296%5D(#0)%7B.uri%7D).
+You can see that instead R silently converted integers to characters! This is called type coercion and could lead to some unexpected behavior - see some more examples [here](https://r02pro.github.io/coercion-rule.html).
 
 #### Factors
 
 `factor` in R represents specialized vector to encode categories. Implicitly, it takes a character vector, enumerates all types of words that occur in it, making categories (`levels`) and encodes the vector (internally) as integer with the numbers corresponding to categories.
 
 ```{r factor}
-# Practice factors
-codons <- as.factor(c("ATG", "ATG", "AAG", "ATG", "AGG", "ATG"))
+# Create a factor
+# Levels are sorted alphabetically be default
+codons <- factor(c("ATG", "ATG", "AAG", "ATG", "AGG", "ATG"))
 codons
 ```
 
 Factors look very similar to character vectors but be aware that they behave differently. Later you will learn `ggplot2` package - it coerces characters to factors for plotting. For modeling, factors are used to encode categorical variables. One useful function that uses factors is `table()` - it counts occurrences for each combination of categories.
 
 ```{r table}
+codons <- factor(c("ATG", "ATG", "AAG", "ATG", "AGG", "ATG"))
 table(codons)
 ```
 
@@ -329,14 +367,18 @@ table(codons)
 # Practice lists here
 
 # Create a list by converting our numeric vector
+# Note that list(1:5) will create a list of length 1
 my_list <- as.list(1:5)
 print(my_list)
+
+# Length of the list
+length(my_list)
+
 # Lists can be nested (can contain other lists as elements)
 nested_list <- list(my_list, 10)
 # Name list elements
 names(nested_list) <- c("fisrt_list", "second list")
-# Length of the list
-length(nested_list)
+print("Nested list:")
 print(nested_list)
 
 # Convert list to vector
@@ -348,6 +390,7 @@ unlist(nested_list)
 R uses 1-based indexing meaning the first element index is 1. Use square brackets to access elements of a vector:
 
 ```{r index}
+numbers <- 1:5
 # Access elements
 print(numbers[1])  # First element
 # Putting - in front of the index removes the element:
@@ -359,6 +402,8 @@ print(numbers[2:4])
 For lists, there is an important distinction: single brackets return a `list` (even if it is one element, it is a list of length 1); use double brackets to return the element itself:
 
 ```{r double bracket}
+my_list <- list(1,"a",TRUE)
+
 # Return a list which is a subset of parent list
 print(my_list[1])
 print(typeof(my_list[1]))
@@ -369,16 +414,16 @@ print(typeof(my_list[[1]]))
 
 # Set names of the list
 # letters is built-in vector or English letters
-names(my_list) <- letters[1:5]
-# You can use `$` to access an element by name
-print(my_list$b)
+# use length() to get the last index
+names(my_list) <- letters[1:length(my_list)]
+my_list[["b"]]
 ```
 
 #### Matrices, arrays and data.frames
 
 A lot of data is represented in 2 dimensions (rows and columns), and for this we use matrices and (mostly, in biology) data.frames. For data with more dimensions, we use arrays.
 
-Matrices and arrays only contain 1 data type:
+Matrices and arrays only contain a single data type:
 
 ```{r matrix}
 m <- matrix(1:12, nrow = 3, ncol = 4)
@@ -417,6 +462,12 @@ print(students[1, ])  # First row
 
 *Note:* with lists and data.frames (but not with vectors, matrices and arrays), you can use `$` notation to access elements by name. In case of data.frames, you can you it to access a column like `data.frame$column_name`. If you get an error `$ operator is invalid for atomic vectors`, that means that you tried to use it on a data structure which is not a list (or a data.frame).
 
+```{r}
+my_list <- list(a=1, b="a")
+# You can use `$` to access an element by name
+print(my_list$b)
+```
+
 *Note:* a useful vector operator `%in%` allows you to test if some element is present inside a given data structure:
 
 ```{r in}
@@ -430,7 +481,7 @@ If you try to create a `data.frame` using vectors of different length, R will no
 ```{r recycling, error=TRUE}
 # no warning, x is recycled
 print(data.frame(x = 1:2, y = 1:6))
-# error
+# however, error if it cannot fit exact number of times
 print(data.frame(x = 1:2, y = 1:5))
 ```
 
@@ -438,8 +489,8 @@ print(data.frame(x = 1:2, y = 1:5))
 
 There are dedicated functions for working with text strings (type "character").
 
-| Operator | Action | Example | Result |
-|----|----|----|----|
+| Function | Action | Example | Result |
+|------------------|------------------|------------------|------------------|
 | `toupper()`/`tolower()` | Convert to upper or lower case | `toupper("I love R")` | `"I LOVE R"` |
 | `paste()` | converts its arguments to character and collapses them with optional separator | `paste(letters[1:4],collapse="-")` | `"a-b-c-d"` |
 | `paste0()` | shortcut for `paste(..., sep="")` | `paste0(1,2)` | `"12"` |
@@ -447,9 +498,45 @@ There are dedicated functions for working with text strings (type "character").
 | `sprintf()` | print formatted string | `sprintf("Ratio of positive in sample %s is %.2f", "mock", 1/3)` | `"Ratio of positive in sample mock is 0.33"` |
 | `substr()` | extract or replace substring | `substr("ATGCGTGATCG", start = 1, stop = 3)` | `"ATG"` |
 
-Package `stringr` greatly expands the number of methods - check the [cheatsheet](https://rstudio.github.io/cheatsheets/strings.pdf).
+Package `stringr` offers more string methods - check the [cheatsheet](https://rstudio.github.io/cheatsheets/strings.pdf).
+
+```{r}
+# practice string methods
+paste("atg occurs", 123, "times")
+```
 
 #### Regular expressions
+
+Regular expressions (or regex for short, check [Wikipedia](https://en.wikipedia.org/wiki/Regular_expression) if you are not familiar with them) allow you to work with strings using patterns more complex than a simple exact match.
+
+Here are main rules for regular expressions in R:
+
+| Pattern | Meaning | Example | String | Matches |
+|---------------|---------------|---------------|---------------|---------------|
+| `.` | any character | `.` | `"ATCG"` | "A", "T", "C" and "G" |
+| `[]` | any of the characters inside | `[AT]` | `"ATCG"` | "A" and "T" |
+| `^` | start of the string | `[^A]` | `"AATAAA"` | only the first "A" |
+| `$` | end of the string | `[T$]` | `"AATAAA"` | no match |
+| `|` | matches one or the other expression | `[A|C]` | `"AATAAA"` | matches all "A" |
+| `*` | zero or more of the expression | `A*` | `c("GC", "TT", "AG")` | matches all three |
+| `+` | one or more of the expression | `A+` | `c("GC", "TT", "AG")` | matches only "AG" |
+| `\\` | "escapes" special character for literal match | `\\+` | `"23 + 45"` | matches "+" |
+
+Main functions in R to work with them are:
+
+| Function | Action | Example | Result |
+|------------------|------------------|------------------|------------------|
+| `grep()` | Find pattern in a character vector (returns index of the matched element) | `grep("[AT]", c("GCGTT", "CGCGCG", "AGG"))` | `1 3` |
+| `grepl()` | Is there pattern in a character vector ? (returns logical) | `grepl("[AT]", c("GCGTT", "CGCGCG", "AGG"))` | `TRUE FALSE  TRUE` |
+| `sub()` | Replace first occurrence of pattern | `sub("[AT]", "G",  c("TTT", "ATA", "GGGTT"))` | `"GTT"   "GTA"   "GGGGT"` |
+| `gsub()` | Replace all occurrences of pattern | `gsub("[AT]", "G",  c("TTT", "ATA", "GGGTT"))` | `"GGG"   "GGG"   "GGGGG"` |
+
+For more rules and functions, check the [cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/regex.pdf).
+
+```{r}
+# practice regular expressions
+gsub("[AT]", "G",  c("TTT", "ATA", "GGGTT"))
+```
 
 ### Statistics and plotting in base R
 
@@ -462,11 +549,13 @@ Some R built-in functions for basic statistics:
 ```{r base stats}
 data <- c(15, 23, 42, 31, 58)
 
-mean(data)    # Average
-median(data)  # Middle value
-sd(data)      # Standard deviation
-max(data)     # Maximum value
-min(data)     # Minimum value
+mean(data) # Mean
+median(data) # Median
+var(data) # Variance
+sd(data) # Standard deviation
+max(data) # Maximum value
+min(data) # Minimum value
+cor(data, 1:5) # Correlation
 ```
 
 **Note on missing values**
@@ -545,12 +634,18 @@ for (element in vector) {
 }
 ```
 
-Usually, `for` loops in base R are replaced by a family of `apply` functions. The generic `apply` function has a form of `apply(X, MARGIN, FUNCTION)` where X is the data structure (can also be a matrix or array), MARGIN specifies dimensions to which we want to apply the FUNCTION (for example, 1 means rows, 2 means columns if X is a matrix). The syntax of `apply` is not very intuitive, but we can practice one often used `lapply(X, FUN)` function which performs operation on all elements of a vector or a list:
+```{r}
+# for example, we take a squre root (built-in sqrt() function)
+# from the grade from our students dataframe
+for(grade in students$grade){
+  print(sqrt(grade))
+}
+```
+
+Often, `for` loops in base R are replaced by a family of `apply` functions. The generic `apply` function has a form of `apply(X, MARGIN, FUNCTION)` where X is the data structure (can also be a matrix or array), MARGIN specifies dimensions to which we want to apply the FUNCTION (for example, 1 means rows, 2 means columns if X is a matrix). The syntax of `apply` is not very intuitive, but we can practice one often used `lapply(X, FUN)` function which performs operation on all elements of a vector or a list:
 
 ```{r}
 # lapply applies function to a vector/list
-# for example, we take a squre root (built-in sqrt() function)
-# from the grade from our students dataframe
 # lapply always returns a list
 lapply(students$grade, sqrt)
 ```
@@ -562,6 +657,7 @@ Some more information on the `apply` family and many examples can be found [here
 Vectorized functions in R can perform operations on all elements of a vector at the same time, avoiding use of `for` loop and `apply`. Those are very effective, and if possible, it is better to use them instead of loops. Many built-in R functions such as arithmetic operators, `log()` and similar perform vectorized operations automatically. For example, our example with `lapply` is better run like this, returning a simple vector:
 
 ```{r}
+# returns a vector
 sqrt(students$grade)
 ```
 
