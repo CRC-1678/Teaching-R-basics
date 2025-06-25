@@ -22,16 +22,16 @@ Let's try to understand the errors and fix that faulty code! Feel free to work i
 ### 1. Variables naming
 
 ```{r}
-4u <- "There is a dataset for you"
+2bit <- "hg38.2bit"
 ```
 
 ```{r}
-lucky-number <- 42
+two-bit-file <- "hg38.2bit"
 ```
 
 ```{r}
-data <- 1000
-print(Data)
+twoBit <- "hg38.2bit"
+print(TwoBit)
 ```
 
 ```{r}
@@ -49,6 +49,11 @@ pi
 ```{r}
 n <- 10
 print("Reporting " + n + " top results")
+```
+
+```{r}
+my_list_1_to_5 <- list(1:5)
+my_list_1_to_5[4]
 ```
 
 ```{r}

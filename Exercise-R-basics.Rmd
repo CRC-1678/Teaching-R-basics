@@ -24,16 +24,16 @@ Large RStudio cheatsheet can be found at [Posit](https://posit.co/wp-content/upl
 
 You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 
-**General**
+#### General
 
 | Action                               | Windows/Linux      | Mac               |
-|-----------------------------------|-------------------|------------------|
+|--------------------------------------|--------------------|-------------------|
 | Insert assign operator `<-`          | `Alt + -`          | `Option + -`      |
 | Insert tidyverse pipe operator `%>%` | `Ctrl + Shift + M` | `Cmd + Shift + M` |
 | Clear line from cursor to beginning  | `Ctrl + U`         | `Cmd + U`         |
 | Clear line from cursor to end        | `Ctrl + K`         | `Cmd + K`         |
 
-**Console (lower left window by default)**
+#### Console (lower left window by default)
 
 | Action                    | Windows/Linux     | Mac              |
 |---------------------------|-------------------|------------------|
@@ -43,10 +43,10 @@ You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 | Search command history    | `Ctrl + arrow-up` | `Cmd + arrow-up` |
 | Interrupt current command | `Esc`             | `Esc`            |
 
-**Source (upper left window by default)**
+#### Source (upper left window by default)
 
 | Action | Windows/Linux | Mac |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Move cursor to source | `Ctrl + 1` | `Cmd + 1` |
 | Duplicate current line up or down | `Alt + Shift + Up/Down` | `Option + Shift + Up/Down` |
 | Delete the current line | `Ctrl + D` | `Cmd + D` |
@@ -64,6 +64,7 @@ You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 
 -   When you type R code, remember that R is case sensitive, so `data` is not the same as `Data`.
 -   For most cases, it does not matter if you have a space between variable, operator and value, so `2+2` is the same as `2 + 2`. In general it is recommended to use spaces for better code readability.
+-   Single ' and double " quotes are equivalent in R, but has to be paired accordingly.
 
 ### Variables assignment
 
@@ -187,7 +188,7 @@ Additionally, special value `NaN` which stands for "Not a Number". This value is
 
 You can use operators to perform various operations with these types (tables taken from [w3schools](https://www.w3schools.com/r/r_operators.asp)). To get help on any of the operators, enclose them in backticks (`` ?`%/%` ``)
 
-**Arithmetic**
+#### Arithmetic
 
 | Operator | Action                            | Example  | Result |
 |----------|-----------------------------------|----------|--------|
@@ -206,7 +207,7 @@ You can use operators to perform various operations with these types (tables tak
 TRUE + TRUE
 ```
 
-**Comparison**
+#### Comparison
 
 These operators return a logical value.
 
@@ -219,7 +220,7 @@ These operators return a logical value.
 | `>=`     | Greater than or equal to | `1 >= 0`   | `TRUE`  |
 | `<=`     | Less than or equal to    | `1 <= 0`   | `FALSE` |
 
-**Logical**
+#### Logical
 
 These operators are for logical calculation.
 
@@ -257,7 +258,7 @@ as.integer("345")
 Single elements can be combined together in a data structure. This table is modified from [Advanced R](http://adv-r.had.co.nz/Data-structures.html) and summarizes them:
 
 | Name | Dimensions | Type | Example command |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | (atomic) vector | 1D | homogeneous | `num_vector <- c(1,2,3)` |
 | list | 1D | heterogeneous | `my_list <- list(1, "foo", TRUE)` |
 | matrix | 2D | homogeneous | `m <- matrix(1:4, nrow=2, ncol=2)` |
@@ -266,7 +267,7 @@ Single elements can be combined together in a data structure. This table is modi
 
 "Homogeneous" means all elements must be of the same type; heterogeneous allows combining different data types together.
 
-**Vectors and lists**
+#### Vectors and lists
 
 Vectors and lists are 1-dimensional (they only have length).
 
@@ -306,9 +307,9 @@ my_vector <- c(1,2,"3")
 my_vector
 ```
 
-You see that instead R silently converted integers to characters! This is called type coercion and could lead to some unexpected behavior - see some more examples [here](#0). And a [meme]([https://x.com/data_question/status/1379690005136695296](#0){.uri}).
+You see that instead R silently converted integers to characters! This is called type coercion and could lead to some unexpected behavior - see some more examples [here](#0). And a [meme](%5Bhttps://x.com/data_question/status/1379690005136695296%5D(#0)%7B.uri%7D).
 
-**Factors**
+#### Factors
 
 `factor` in R represents specialized vector to encode categories. Implicitly, it takes a character vector, enumerates all types of words that occur in it, making categories (`levels`) and encodes the vector (internally) as integer with the numbers corresponding to categories.
 
@@ -328,17 +329,21 @@ table(codons)
 # Practice lists here
 
 # Create a list by converting our numeric vector
-my_list <- as.list(numbers)
+my_list <- as.list(1:5)
+print(my_list)
 # Lists can be nested (can contain other lists as elements)
 nested_list <- list(my_list, 10)
 # Name list elements
-names(nested_list) <- c("fisrt_list", "addition")
+names(nested_list) <- c("fisrt_list", "second list")
 # Length of the list
 length(nested_list)
-nested_list
+print(nested_list)
+
+# Convert list to vector
+unlist(nested_list)
 ```
 
-**Indexing**
+#### Indexing
 
 R uses 1-based indexing meaning the first element index is 1. Use square brackets to access elements of a vector:
 
@@ -369,7 +374,7 @@ names(my_list) <- letters[1:5]
 print(my_list$b)
 ```
 
-**Matrices, arrays and data.frames**
+#### Matrices, arrays and data.frames
 
 A lot of data is represented in 2 dimensions (rows and columns), and for this we use matrices and (mostly, in biology) data.frames. For data with more dimensions, we use arrays.
 
@@ -429,6 +434,23 @@ print(data.frame(x = 1:2, y = 1:6))
 print(data.frame(x = 1:2, y = 1:5))
 ```
 
+#### String methods
+
+There are dedicated functions for working with text strings (type "character").
+
+| Operator | Action | Example | Result |
+|----|----|----|----|
+| `toupper()`/`tolower()` | Convert to upper or lower case | `toupper("I love R")` | `"I LOVE R"` |
+| `paste()` | converts its arguments to character and collapses them with optional separator | `paste(letters[1:4],collapse="-")` | `"a-b-c-d"` |
+| `paste0()` | shortcut for `paste(..., sep="")` | `paste0(1,2)` | `"12"` |
+| `strsplit()` | split the string (reverse of paste) (returns a list) | `strsplit("ATGCTGTCTATGCTGATCGTGATG", split = "ATG")` | `[[1]] [1] ""          "CTGTCT"    "CTGATCGTG"` |
+| `sprintf()` | print formatted string | `sprintf("Ratio of positive in sample %s is %.2f", "mock", 1/3)` | `"Ratio of positive in sample mock is 0.33"` |
+| `substr()` | extract or replace substring | `substr("ATGCGTGATCG", start = 1, stop = 3)` | `"ATG"` |
+
+Package `stringr` greatly expands the number of methods - check the [cheatsheet](https://rstudio.github.io/cheatsheets/strings.pdf).
+
+#### Regular expressions
+
 ### Statistics and plotting in base R
 
 You will learn `tidyverse` and `ggplot2` packages for tabular data manipulation and plotting, but it is possible to do this with base R functions, too.
@@ -449,7 +471,7 @@ min(data)     # Minimum value
 
 **Note on missing values**
 
-As you remember, `NA` stands for missing value and can be of any type, so vectors (and also, lists, arrays and data.frame columns) can contain `NA`. One needs to be aware that `NA` could propagate silenty, because any operation involving `NA` will return `NA`. Use `na.rm=TRUE` argument to ignore missing values:
+As you remember, `NA` stands for missing value and can be of any type, so vectors (and also, lists, arrays and data.frame columns) can contain `NA`. One needs to be aware that `NA` could propagate silently, because any operation involving `NA` will return `NA`. Use `na.rm=TRUE` argument to ignore missing values:
 
 ```{r}
 # Example vector with missing values
@@ -473,11 +495,17 @@ x <- 1:10
 y <- x^2
 
 # Make a basic xy point plot
-plot(x, y, 
-     main = "Simple Plot",
-     type = "b",
-     xlab = "X axis",
-     ylab = "Y axis")
+plot(x, y 
+     ,main = "R Base Plot"
+     ,type = "b" #for "both" points and lines
+     ,xlab = "X axis label"
+     ,ylab = "Y axis label"
+     ,col = "darkgreen"
+     ,pch = 16 #filled circle
+     )
+
+# add legend
+legend("topleft", c("some data"), col = "darkgreen", pch=16)
 ```
 
 ### Control flow
