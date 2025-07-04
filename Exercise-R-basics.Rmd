@@ -27,7 +27,7 @@ You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 #### General
 
 | Action                               | Windows/Linux      | Mac               |
-|-----------------------------------|-------------------|------------------|
+|-----------------------------------|-------------------|-------------------|
 | Insert assign operator `<-`          | `Alt + -`          | `Option + -`      |
 | Insert tidyverse pipe operator `%>%` | `Ctrl + Shift + M` | `Cmd + Shift + M` |
 | Clear line from cursor to beginning  | `Ctrl + U`         | `Cmd + U`         |
@@ -70,36 +70,45 @@ Large RStudio cheatsheet can be found at [Posit](https://posit.co/wp-content/upl
 
 -   For most cases, it does not matter if you have a space between variable, operator and value, so `2+2` is the same as `2 + 2`. It is recommended to use spaces for better code readability.
 
--   Single ('') and double ("") quotes are equivalent in R, but has to be paired accordingly.
+-   Single ('') and double ("") quotes are equivalent in R, but pair them accordingly.
 
 ### Variables assignment
 
-In R (and other languages), variables are used to store values. They can be seen as pointers to a location in memory ([Wikipedia](https://en.wikipedia.org/wiki/Variable_(computer_science))). In R, they don't need to be declared in advance and are created at the moment when they are assigned a value.
+In R (and other languages), variables are used to store values. In R, they don't need to be declared in advance and are created at the moment when they are assigned a value. For example, we can assign number 3 to variable called `x` like that:
+
+```{r first chunk}
+x <- 3
+```
 
 Some things to remember:
 
 -   `<-` is preferred operator for assignment
-    -   Use `Alt + -` / `Option + -` shortcut to save typing `<-`.
-    -   `=` operator can also be used, but it is discouraged (see this [Extensive R bloggers post](https://www.r-bloggers.com/2018/07/assignment-in-r-slings-and-arrows/) with examples).
-    -   Fun fact: `->` assignment also works!
--   Variable names:
-    -   cannot start with a number
-    -   cannot contain `-` (will be evaluated as minus sign)
-    -   prefer not to contain spaces, use backticks if you must like `` `variable with space` ``
-    -   should not overwrite built-in functions and variables names
+
+    -   Use `Alt + -` / `Option + -` shortcut for typing `<-`.
+
+-   `=` operator can be used, but it is discouraged (some examples [here](https://www.r-bloggers.com/2018/07/assignment-in-r-slings-and-arrows/)).
+
+-   Fun fact: `->` assignment also works!
+
+Variable names:
+
+-   cannot start with a number
+-   cannot contain `-` (will be evaluated as minus sign)
+-   prefer not to contain spaces, use backticks if you must (`` `variable with space` ``)
+-   should not overwrite built-in functions and variables names
 
 Experiment with assigning variables in the following chunk.
 
 In this chunk we also see:
 
--   `#` character denotes a comment (this line will not be executed as code)
+-   `#` denotes a comment (the line after it will not be executed as code)
 -   `print()` is a function to output it's argument to console (more on functions below)
 
 ```{r assignment}
 # Three ways to assign
 a <- 5 
 3 -> b
-c = 4 #better not use
+c = 4 #better not use this
 
 # Print function prints the value of its argument
 print(a)
@@ -115,11 +124,11 @@ b
 
 ### Functions
 
-Functions in R are called like `function(argument=value)` (here is where `=` operator should be used). There are a number of built-in functions which are available on start-up R (you already saw `print()`). Many more functions are imported from packages (you already installed `tidyverse` package, for example), and are available either after loading the package with `library("package")` or referencing the function like `package::function()`.
+Functions in R have a form of `function(argument=value)` (this is where `=` operator should be used). Functions perform some operations with their arguments and may or may not return a value. There are a number of built-in functions which are available in base R on startup (for example, you already saw `print()`). Many more functions are imported from packages (you already installed `tidyverse` package), and are available either after loading the package with `library("package")` or referencing the function like `package::function()`.
 
 To obtain help on how to call a function and all possible arguments, type `?function` or `help("function")`. Tip: if you don't remember the exact name, you can try `apropos("approximate_name")`.
 
-You can use `ls()` function to list variables and functions in your environment. In RStudio, you can always find them in the "Environment" tab (in the top right quadrant by default):
+You can use `ls()` function to list variables and functions in your current environment. In RStudio, you can always find them in the "Environment" tab (in the top right quadrant by default):
 
 ```{r ls}
 ls()
@@ -132,14 +141,14 @@ rm(a)
 ls()
 ```
 
-You can create your own function in R using the following syntax:
+You can create your own function in R using the following syntax: `function <- function(argument=default_value){...}`.
 
 ```{r function}
 # By including  comment inside our function, we will help user to understand what it does
-my_function <- function(a){
-  print("Welcome to our first function!")
-  # This function will print the value of the variable given
-  print(a)
+my_function <- function(x, y){
+  print("Adding x and y")
+  # This function will return the value of the sum of variables given
+  return(x + y)
 }
 ```
 
@@ -152,8 +161,9 @@ my_short_function <- function(a) print(a)
 Call our function:
 
 ```{r function2}
+a <- 42
 b <- 123
-my_function(b)
+my_function(a, b)
 ```
 
 You can see the code of the function by calling its name without brackets:
@@ -173,11 +183,10 @@ my_function()
 
 You may have noticed that:
 
--   we have assigned variable `a` and deleted it
--   then we have used `a` as an argument inside `my_function` definition and R did not complain that `a` was not found
--   then we have called our function on the variable `b` and R did not complain that it needs `a` as input
+-   we have never introduced `x` and `y` before using them as arguments inside `my_function` definition and R did not complain that those variables were not found
+-   then we have called our function on the variables `a` and `b` and R did not complain that it needs `x` and `y` as input
 
-Like in many languages, R has global and local variables. Global variables can be accessed from anywhere in the code. (in our case, `b` ). Local variables are only valid for a specific part of the code (in our case, `a` inside our function). When the function is called, its argument is assigned to local variable `a`, and this local variable `a` disappears after the function call is finished.
+Like in many languages, R has global and local variables. Global variables can be accessed from anywhere in the code. Local variables are only valid for a specific part of the code (in our case, inside our function). When the function is called, its arguments are assigned to local variables `x`, `y`, and these local variables disappear after the function call is finished.
 
 More examples on scope [here](https://www.geeksforgeeks.org/r-language/scope-of-variable-in-r/).
 
@@ -196,6 +205,9 @@ You can check a type of variable with functions `class()` or `str()`.
 
 ```{r}
 class(123)
+```
+
+```{r}
 str(TRUE)
 ```
 
@@ -207,25 +219,31 @@ class(NA)
 
 Additionally, special value `NaN` which stands for "Not a Number". This value is numeric (double) and identifies an undefined number (for example, `0/0`).
 
-You can use operators to perform various operations with these types (tables taken from [w3schools](https://www.w3schools.com/r/r_operators.asp)). To get help on any of the operators, enclose them in backticks (`` ?`%/%` ``)
+You can use operators to perform various operations with these types. To get help on any of the operators, enclose them in backticks (`` ?`%/%` ``).
 
 #### Arithmetic
 
-| Operator | Action                            | Example  | Result |
-|----------|-----------------------------------|----------|--------|
-| `+`      | Addition                          | `1 + 1`  | `2`    |
-| `-`      | Subtraction                       | `3 - 2`  | `1`    |
-| `*`      | Multiplication                    | `2 * 3`  | `6`    |
-| `/`      | Division                          | `6 / 2`  | `3`    |
-| `^`      | Exponent                          | `2 ^ 3`  | `8`    |
-| `%%`     | Modulus (Remainder from division) | `7 %% 3` | `1`    |
-| `%/%`    | Integer Division                  | `7%/%3`  | `2`    |
+| Operator | Action                            | Example   | Result |
+|----------|-----------------------------------|-----------|--------|
+| `+`      | Addition                          | `1 + 1`   | `2`    |
+| `-`      | Subtraction                       | `3 - 2`   | `1`    |
+| `*`      | Multiplication                    | `2 * 3`   | `6`    |
+| `/`      | Division                          | `6 / 2`   | `3`    |
+| `^`      | Exponent                          | `2 ^ 3`   | `8`    |
+| `%%`     | Modulus (Remainder from division) | `7 %% 3`  | `1`    |
+| `%/%`    | Integer Division                  | `7 %/% 3` | `2`    |
 
 ```{r calculus}
 # Try out arithmetic operators here
 9 %/% 5
+```
+
+```{r logical calculus}
 # You can use arithmetic on logical type (TRUE is 1, FALSE is 0)
 TRUE + TRUE
+```
+
+```{r string error, error=TRUE}
 # You cannot use it with character type - results in an error
 "a" + "b"
 ```
@@ -246,9 +264,11 @@ These operators return a logical value.
 ```{r compare}
 # Try out comparison operators here
 2 < 3
-# Works for alphabetic sorting:
-"a" < "b"
+```
 
+```{r compare strings}
+# Comparison works for alphabetic sorting:
+"a" < "b"
 ```
 
 #### Logical
@@ -261,16 +281,15 @@ These operators are for logical calculation.
 | `|`,`||` | Logical OR  | `FALSE | TRUE` | `TRUE`  |
 | `!`      | Logical NOT | `! TRUE`       | `FALSE` |
 
-*Note:* yes, single and double logical operators are confusing. The rule of thumb:
+*Note:* single and double logical operators are a bit confusing. The rule of thumb is:
 
 -   single forms are "element-wise" and thus are used for vectors and return a vector (see below)
 
--   double forms are for single statements and used with `if` (see below) and return a single value
+-   double forms are for single statements, are used with `if` (see below) and return a single value
 
 ```{r logical}
 # Try out logical operators here
 2 == 3
-TRUE & FALSE
 ```
 
 You can use a number of built-in functions to test for specific data type and to convert between data types:
@@ -303,9 +322,9 @@ Single elements can be combined together in a data structure. This summary table
 
 -   Heterogeneous: can combining different data types together
 
-#### Vectors and lists
+#### Vectors
 
-Vectors and lists are 1-dimensional data structures.
+Vectors are 1-dimensional data structures which contain data of the same type.
 
 ```{r vectors}
 # Practice vectors
@@ -363,6 +382,10 @@ codons <- factor(c("ATG", "ATG", "AAG", "ATG", "AGG", "ATG"))
 table(codons)
 ```
 
+#### Lists
+
+Lists are 1-dimensional data structures which can combine different data types.
+
 ```{r list}
 # Practice lists here
 
@@ -387,7 +410,9 @@ unlist(nested_list)
 
 #### Indexing
 
-R uses 1-based indexing meaning the first element index is 1. Use square brackets to access elements of a vector:
+R uses 1-based indexing (the first element is 1, not 0).
+
+Use square brackets to access elements of a vector:
 
 ```{r index}
 numbers <- 1:5
@@ -399,7 +424,7 @@ print(numbers[-2])
 print(numbers[2:4])
 ```
 
-For lists, there is an important distinction: single brackets return a `list` (even if it is one element, it is a list of length 1); use double brackets to return the element itself:
+For lists, single brackets will return a `list` (even if it is one element, it is a list of length 1); double brackets will return the element itself:
 
 ```{r double bracket}
 my_list <- list(1,"a",TRUE)
@@ -419,11 +444,11 @@ names(my_list) <- letters[1:length(my_list)]
 my_list[["b"]]
 ```
 
-#### Matrices, arrays and data.frames
+#### Matrices and arrays
 
-A lot of data is represented in 2 dimensions (rows and columns), and for this we use matrices and (mostly, in biology) data.frames. For data with more dimensions, we use arrays.
+A lot of data in biology is represented in 2 dimensions (rows and columns), and for this we use matrices (and data.frames). If we have data with more dimensions, we use arrays.
 
-Matrices and arrays only contain a single data type:
+Matrices and arrays only can contain a single data type.
 
 ```{r matrix}
 m <- matrix(1:12, nrow = 3, ncol = 4)
@@ -441,37 +466,61 @@ print(a)
 print(is.array(m))
 ```
 
-Data.frames can combine multiple types over a row, but column must be of the same type. Essentially, a data.frame can be seen as a list of columns, each of which is a vector of a specific type.
+#### Data frames
 
-```{r df}
+Data.frames are 2-dimensional (rows and columns) and can combine multiple types across a row, but each column must be of the same type. Essentially, a data.frame can be seen as a list of columns, each column being a vector of a single type.
+
+Let us create a data frame which simulates biological data, for example, log fold changes of gene expression.
+
+```{r logfc df}
+
+# Set seed for pseudorandom generator to get reproducible numbers
+set.seed(42)
+
+# How many genes
+n <- 1000
+
+# Simulate log fold changes from a normal distribution
+logFC <- rnorm(n, mean=0, sd=1)
+
+# Simulate p-values (uniform distribution by default between 0 and 1)
+p_value <- runif(n)
+
+# Create a vector of gene names (see below for operators on character vectors)
+gene_names <- paste0("Gene_", 1:1000)
+
 # Create a data frame by listing the columns
-students <- data.frame(
-  name = c("Alice", "Bob", "Charlie"),
-  age = c(20, 22, 21),
-  grade = c(85, 92, 78)
+df <- data.frame(
+  gene_name = gene_names
+  , logFC = logFC
+  , p_value = p_value
 )
-print(students)
 
-# Access columns (2 ways):
-print(students$name)
-print(students[, "age"])
+# Functions to peek into first/last few rows
+head(df)
+tail(df)
+```
 
-# Access rows
-print(students[1, ])  # First row
+```{r df indexing}
+
+# Access column 
+df[,"gene_name"]# use indexing [1:5] or head() to avoid printing the whole column
+
+# Access row
+df[1, ]  # first row
 ```
 
 *Note:* with lists and data.frames (but not with vectors, matrices and arrays), you can use `$` notation to access elements by name. In case of data.frames, you can you it to access a column like `data.frame$column_name`. If you get an error `$ operator is invalid for atomic vectors`, that means that you tried to use it on a data structure which is not a list (or a data.frame).
 
 ```{r}
-my_list <- list(a=1, b="a")
-# You can use `$` to access an element by name
-print(my_list$b)
+df$gene_name[1:5]
 ```
 
 *Note:* a useful vector operator `%in%` allows you to test if some element is present inside a given data structure:
 
 ```{r in}
-10 %in% 1:100
+# Is expected gene in our table?
+"Gene_10" %in% df$gene_name
 ```
 
 **Note on vector recycling**
@@ -547,15 +596,14 @@ You will learn `tidyverse` and `ggplot2` packages for tabular data manipulation 
 Some R built-in functions for basic statistics:
 
 ```{r base stats}
-data <- c(15, 23, 42, 31, 58)
 
-mean(data) # Mean
-median(data) # Median
-var(data) # Variance
-sd(data) # Standard deviation
-max(data) # Maximum value
-min(data) # Minimum value
-cor(data, 1:5) # Correlation
+mean(df$logFC) # Mean
+median(df$logFC) # Median
+var(df$logFC) # Variance
+sd(df$logFC) # Standard deviation
+max(df$logFC) # Maximum value
+min(df$logFC) # Minimum value
+cor(df$logFC, -df$logFC) # Correlation
 ```
 
 **Note on missing values**
@@ -563,38 +611,55 @@ cor(data, 1:5) # Correlation
 As you remember, `NA` stands for missing value and can be of any type, so vectors (and also, lists, arrays and data.frame columns) can contain `NA`. One needs to be aware that `NA` could propagate silently, because any operation involving `NA` will return `NA`. Use `na.rm=TRUE` argument to ignore missing values:
 
 ```{r}
-# Example vector with missing values
-scores <- c(85, NA, 92, 78, NA)
+# Introduce missing values into our data
+set.seed(42)
+# randomly select 10 rows where NA will be introduced
+na_index <- sample(n, 10)
+# set logFC and p value to NA for these rows
+df[na_index, c("logFC", "p_value")] <- NA
 
-# Function to for missing values (returns a logical vector)
-is.na(scores)
+# How many NA values are in the data?
+sum(is.na(df$gene_name))
 
 # Calculate mean with missing values
-mean(scores)  # Returns NA
-mean(scores, na.rm = TRUE)  # Returns a number
+mean(df$logFC)  # Returns NA
+mean(df$logFC, na.rm = TRUE)  # Returns a number
 ```
 
 ### Basic Plotting Function
 
 Use `plot()` function to create simple R plots. Most important arguments are `x` , `y` (the data to plot) and `type` (such as dots, lines, histogram) - `?base::plot` is helpful for a quick reference for these and many other parameters.
 
-```{r}
-# Create some data
-x <- 1:10
-y <- x^2
+### Histogram function
 
-# Make a basic xy point plot
-plot(x, y 
-     ,main = "R Base Plot"
-     ,type = "b" #for "both" points and lines
-     ,xlab = "X axis label"
-     ,ylab = "Y axis label"
+This function is useful to plot histograms.
+
+```{r hist}
+
+# Plot histogram of fold changes
+hist(df$logFC, 
+     ,breaks = 10
+     ,main = "Histogram of Fold Changes"
+     ,xlab = "log fold change"
+     ,col = "skyblue" #color
+     )
+
+
+```
+
+```{r scatter plot}
+
+plot(df$logFC, df$p_value
+     ,main = "Scatterplot of Fold Changes"
+     ,type = "p" #for points
+     ,xlab = "log fold change"
+     ,ylab = "p value"
      ,col = "darkgreen"
      ,pch = 16 #filled circle
      )
 
 # add legend
-legend("topleft", c("some data"), col = "darkgreen", pch=16)
+legend("topleft", c("data"), col = "darkgreen", pch=16)
 ```
 
 ### Control flow
@@ -680,3 +745,7 @@ numbers |>
   sum() |>
   log()
 ```
+
+*Sources*
+
+-   Operators tables: [w3schools](https://www.w3schools.com/r/r_operators.asp)
