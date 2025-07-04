@@ -27,7 +27,7 @@ You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 #### General
 
 | Action                               | Windows/Linux      | Mac               |
-|-----------------------------------|-------------------|-------------------|
+|--------------------------------------|--------------------|-------------------|
 | Insert assign operator `<-`          | `Alt + -`          | `Option + -`      |
 | Insert tidyverse pipe operator `%>%` | `Ctrl + Shift + M` | `Cmd + Shift + M` |
 | Clear line from cursor to beginning  | `Ctrl + U`         | `Cmd + U`         |
@@ -50,7 +50,7 @@ You can see all shortcuts by pressing `Alt + Shift + K` /`Option + Shift + K`
 (upper left window by default)
 
 | Action | Windows/Linux | Mac |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Move cursor to source | `Ctrl + 1` | `Cmd + 1` |
 | Duplicate current line up or down | `Alt + Shift + Up/Down` | `Option + Shift + Up/Down` |
 | Delete the current line | `Ctrl + D` | `Cmd + D` |
@@ -311,7 +311,7 @@ as.integer("345")
 Single elements can be combined together in a data structure. This summary table is modified from [Advanced R](http://adv-r.had.co.nz/Data-structures.html):
 
 | Name | Dimensions | Type | Example command |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | (atomic) vector | 1D | homogeneous | `num_vector <- c(1,2,3)` |
 | list | 1D | heterogeneous | `my_list <- list(1, "foo", TRUE)` |
 | matrix | 2D | homogeneous | `m <- matrix(1:4, nrow=2, ncol=2)` |
@@ -353,7 +353,32 @@ print(numbers)
 
 *Note:* `NULL` is a specific data type representing "null object". If you create an empty vector with `c()`, it will return `NULL`. See the chapter in [Advanced R](https://adv-r.hadley.nz/vectors-chap.html?q=NULL#null).
 
-**Type coercion**
+##### Indexing
+
+R uses 1-based indexing (the first element is 1, not 0).
+
+Use square brackets to access elements of a vector:
+
+```{r index}
+numbers <- 1:5
+# Access elements
+print(numbers[1])  # First element
+# Putting - in front of the index removes the element:
+print(numbers[-2])
+# Using : operator returns the range of elements:
+print(numbers[2:4])
+```
+
+##### Subsetting
+
+You can use conditional statements to select elements in a vector based on this condition:
+
+```{r}
+numbers <- 1:10
+numbers[numbers > 7]
+```
+
+##### Type coercion
 
 Vectors always contain the same data type. However, if you try to mix data types in a vector, R will not give you an error:
 
@@ -364,7 +389,7 @@ my_vector
 
 You can see that instead R silently converted integers to characters! This is called type coercion and could lead to some unexpected behavior - see some more examples [here](https://r02pro.github.io/coercion-rule.html).
 
-#### Factors
+##### Factors
 
 `factor` in R represents specialized vector to encode categories. Implicitly, it takes a character vector, enumerates all types of words that occur in it, making categories (`levels`) and encodes the vector (internally) as integer with the numbers corresponding to categories.
 
@@ -406,22 +431,6 @@ print(nested_list)
 
 # Convert list to vector
 unlist(nested_list)
-```
-
-#### Indexing
-
-R uses 1-based indexing (the first element is 1, not 0).
-
-Use square brackets to access elements of a vector:
-
-```{r index}
-numbers <- 1:5
-# Access elements
-print(numbers[1])  # First element
-# Putting - in front of the index removes the element:
-print(numbers[-2])
-# Using : operator returns the range of elements:
-print(numbers[2:4])
 ```
 
 For lists, single brackets will return a `list` (even if it is one element, it is a list of length 1); double brackets will return the element itself:
@@ -539,7 +548,7 @@ print(data.frame(x = 1:2, y = 1:5))
 There are dedicated functions for working with text strings (type "character").
 
 | Function | Action | Example | Result |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | `toupper()`/`tolower()` | Convert to upper or lower case | `toupper("I love R")` | `"I LOVE R"` |
 | `paste()` | converts its arguments to character and collapses them with optional separator | `paste(letters[1:4],collapse="-")` | `"a-b-c-d"` |
 | `paste0()` | shortcut for `paste(..., sep="")` | `paste0(1,2)` | `"12"` |
@@ -561,7 +570,7 @@ Regular expressions (or regex for short, check [Wikipedia](https://en.wikipedia.
 Here are main rules for regular expressions in R:
 
 | Pattern | Meaning | Example | String | Matches |
-|---------------|---------------|---------------|---------------|---------------|
+|----|----|----|----|----|
 | `.` | any character | `.` | `"ATCG"` | "A", "T", "C" and "G" |
 | `[]` | any of the characters inside | `[AT]` | `"ATCG"` | "A" and "T" |
 | `^` | start of the string | `[^A]` | `"AATAAA"` | only the first "A" |
@@ -574,7 +583,7 @@ Here are main rules for regular expressions in R:
 Main functions in R to work with them are:
 
 | Function | Action | Example | Result |
-|------------------|------------------|------------------|------------------|
+|----|----|----|----|
 | `grep()` | Find pattern in a character vector (returns index of the matched element) | `grep("[AT]", c("GCGTT", "CGCGCG", "AGG"))` | `1 3` |
 | `grepl()` | Is there pattern in a character vector ? (returns logical) | `grepl("[AT]", c("GCGTT", "CGCGCG", "AGG"))` | `TRUE FALSE  TRUE` |
 | `sub()` | Replace first occurrence of pattern | `sub("[AT]", "G",  c("TTT", "ATA", "GGGTT"))` | `"GTT"   "GTA"   "GGGGT"` |
@@ -666,7 +675,7 @@ legend("topleft", c("data"), col = "darkgreen", pch=16)
 
 Control flow in programming allows you to execute commands based on a condition (`if` and `while` loops) and also to execute the same command on each element of many (`for` loops and `apply` functions).
 
-**Conditions**
+#### Conditions
 
 Conditions have a form of:
 
@@ -689,7 +698,7 @@ if (x == 5) {
 }
 ```
 
-**Loops**
+#### Loops
 
 Loops allow you to write a command once instead of repeating it for each element you want to execute it on. A simple loop in R has a form of:
 
@@ -699,51 +708,68 @@ for (element in vector) {
 }
 ```
 
-```{r}
-# for example, we take a squre root (built-in sqrt() function)
+```{r for loop}
+#  for example, we take a squre root (built-in sqrt() function)
 # from the grade from our students dataframe
-for(grade in students$grade){
-  print(sqrt(grade))
+for(gene in c("Gene_10", "Gene_100")){
+  print(df[df$gene_name==gene, ])
 }
 ```
 
 Often, `for` loops in base R are replaced by a family of `apply` functions. The generic `apply` function has a form of `apply(X, MARGIN, FUNCTION)` where X is the data structure (can also be a matrix or array), MARGIN specifies dimensions to which we want to apply the FUNCTION (for example, 1 means rows, 2 means columns if X is a matrix). The syntax of `apply` is not very intuitive, but we can practice one often used `lapply(X, FUN)` function which performs operation on all elements of a vector or a list:
 
-```{r}
+```{r apply}
 # lapply applies function to a vector/list
 # lapply always returns a list
-lapply(students$grade, sqrt)
+lapply(c("Gene_10", "Gene_100"), toupper)
 ```
 
 Some more information on the `apply` family and many examples can be found [here](https://rpubs.com/Richard_h/888425).
 
-**Vectorized operations**
+#### Anonymous functions
 
-Vectorized functions in R can perform operations on all elements of a vector at the same time, avoiding use of `for` loop and `apply`. Those are very effective, and if possible, it is better to use them instead of loops. Many built-in R functions such as arithmetic operators, `log()` and similar perform vectorized operations automatically. For example, our example with `lapply` is better run like this, returning a simple vector:
+If there is no existing function to use in apply, you can create a function directly on the spot (this is sometimes called anonymous function). This function is not assigned to any name and only exists during the call. The syntax for anonymous function can be written fully `function(x) { do_something with x}` or shortened to `\(x) do_something with x`, for example `\(x) x+1` will add 1 to its argument. Instead of `x` you can use any name for the argument of the anonymous function (often a dot `.` is used).
 
-```{r}
-# returns a vector
-sqrt(students$grade)
+```{r anonymous fun}
+logplus <- lapply(df$logFC, function(x) x+1)
+logplus[1:5]
 ```
 
-**Vectorized conditions**
+#### Vectorized operations
 
-`ifelse()` is a vectorized form of `if` if you provide a a vector of mixed `TRUE` and `FALSE` as a condition. It has a form of `ifelse(condition_vector, action1, action2)`, where action1 is performed if the condition in `TRUE` and action2 if the condition is `FALSE`. For example, we can create a vector based on student's grade:
+Vectorized functions in R can perform operations on all elements of a vector at the same time, avoiding use of `for` loop and `apply`. Those are very effective, and if possible, it is better to use them instead of loops. Many built-in R functions such as arithmetic operators, `log()` and similar perform vectorized operations if given vectors as arguments.
 
-```{r}
-ifelse(students$grade>80, "excellent", "poor")
+```{r vectorized fun}
+# Vectorized function returns a vector
+exp(df$logFC[1:5])
 ```
 
-**Pipe**
+#### Vectorized conditions
+
+`ifelse()` is a vectorized form of `if` if you provide a a vector of mixed `TRUE` and `FALSE` as a condition. It has a form of `ifelse(condition_vector, action1, action2)`, where action1 is performed if the condition in `TRUE` and action2 if the condition is `FALSE`.
+
+```{r ifelse}
+ifelse(df$p_value < 0.02, "significant", "not significant")
+```
+
+#### Pipe
 
 Pipe is an operator to direct a variable or a result of a statement into a next statement, allowing to chain several statements after each other. The pipe of the form `%>%` comes with the `tidyverse` package, however, base R has a built-in pipe of the form `|>` (since R 4.0). Mainly the pipe serves to make your code more readable and allows to better break it over several lines:
 
-```{r}
-# instead of nesting functions like log(sum(sqrt(numbers))), you can write:
-numbers |>
+```{r pipe}
+# instead of nesting functions like log(sum(sqrt(df$logFC))), you can write:
+df$logFC |>
   sqrt() |>
   sum() |>
   log()
+```
+
+Base pipe always has to redirect to a function, and the name of the function has to be followed by brackets. If an anonymous function is used, the whole expression has to be put into brackets again, which makes the syntax less readable. You will learn tidyverse pipe in the next class which handles it better.
+
+```{r anonymous function}
+# Anonymous function has to be put into brackets, followed by another brackets to signify it is a function
+logplus1 <- df$logFC |> (\(.) . + 1)()
+logplus1[1:5]
 ```
 
 *Sources*
