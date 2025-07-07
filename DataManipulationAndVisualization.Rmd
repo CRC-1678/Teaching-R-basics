@@ -1,0 +1,292 @@
+---
+title: "Data wrangling Tutorial"
+author: "CRC-1678 retreat"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+```
+
+##1) R has libraries for the different functions it provides, and for this task we will use the libraries below:
+
+First, let's load the required packages 
+
+```{r load packages, include=TRUE}
+library(tidyverse)
+library(ggplot2)
+library(cowplot) # For arranging plots
+
+```
+
+##2) Any data from an NGS experiment or MS will often include mRNA counts or protein abundance + metadata (sample information)
+
+Read in the meta-data and counts data. In this case the data is already processed and we want to use it for downstream analysis.
+
+```{r load data, include=TRUE}
+
+metadata <- read.table(
+  "/cellfile/datapublic/ypaul1/Teaching/mRNA_PhenoT.txt",
+  sep = "\t",
+  header = TRUE,
+  row.names = 1,
+  stringsAsFactors = FALSE
+)
+
+
+counts <- read.table(
+  "/cellfile/datapublic/ypaul1/Teaching/counts.txt",
+  sep = "\t",
+  header = TRUE,
+  row.names = 1,
+  stringsAsFactors = FALSE)
+
+
+```
+
+##3) View the data
+
+#Data that we receive often needs to be restructured/formatted for any specific use, and therefore it is a good idea to get a feel of the data and see how it looks like
+#Display first few rows and check the dimentions and class of each data
+
+```{r check data structure, include=TRUE}
+
+head(metadata)
+
+head(counts) ## this example has processed data
+
+dim(metadata)
+
+dim(counts)
+
+```
+
+##4) We don't always use the data as it is, we often need to select part of the data and visualize it. e.g. gene expression in Female vs Male samples; or gene expression in Old vs Young samples.
+
+#for this purpose we often use dplyr and ggplot2 from tidyverse 
+
+a) Let us select age, diet and sex from the metadata 
+
+```{r select, include=TRUE}
+
+New_metadata <- metadata %>% select(Age, Diet, Sex)
+
+##note the %>% symbol. It helps to combine multiple functions, and avoids mentioning the input and outputs multiple times. 
+## output of the function/dataframe before a %>% is the input to the function/dataframe after %>%.
+
+```
+
+b) Filter rows based upon single or multiple conditions.
+
+```{r filter, include=TRUE}
+
+##How many samples have the 'HF' diet
+
+HF_diet_samples <- metadata %>% filter(Diet == "HF")
+length(rownames(HF_diet_samples))
+
+
+##How many samples have age > 400 days
+
+AgeOver400 <- metadata %>% filter(Age > 400)
+length(rownames(AgeOver400))
+
+
+##How many samples have 'HF' diet and age > 400 days
+
+AgeOver400_HF <- metadata %>% filter(Age > 400)
+length(rownames(AgeOver400_HF))
+
+MultipleConditions <- metadata %>% filter(Diet == 'HF' & Age > 400)
+length(rownames(MultipleConditions))
+
+
+##if you find these tasks easy, for an extra challenge, you may want to try to filter the counts matrix to include only the samples that meet criteria for each of the above metadata conditions.
+##so 3 counts matrix in the end :)
+##feel free to search online
+```
+
+c) Sometimes we might want to create a new metadata column. e.g., we might want to know age in years for the samples
+
+
+```{r mutate, include=TRUE}
+
+metadata <- metadata %>% mutate(Age_in_Years = Age/365) %>% head()
+
+head(metadata) ##it should have 5 columns now
+
+```
+
+
+d) Sometimes we might want to get a summary of the stats of the data depending upon certain variables of interest. e.g. here diet and age
+
+
+```{r summarize, include=TRUE}
+##We can know the number of samples for each kind of diet and also the mean age of the samples belonging to each diet.
+
+metadata %>% 
+  group_by(Diet) %>% 
+  summarize(Mean_Age = mean(Age),
+            Sample_Count = n())
+
+```
+
+##5) Data Visualization, we will practice some simple plots using ggplot2, which is a very handy function from tidyverse for basic visualizations of the data. It gives you publication ready plots that are super cutomizable. May be you use excel/powerpoint for such a plotting currently. The aim is to use R, for plots with better colors, visualizations and that need minimal use of a photo editor while creating figures for publication. ggplot2 can allow creation of complex plots too.
+
+a) Here we want to plot the number of samples per diet.
+
+```{r visualization1, include=TRUE}
+
+##using metadata
+
+ggplot(metadata, aes(x = Diet, fill = Diet)) +   ##if nothing is mentioned to display on the y-axis, geom_bar assumes it is 'counts'
+  geom_bar() + ## this layer tells ggplot2 which kind of plot you want - barplot/ scatter plot / - you can explore the different geoms
+  labs(title = "Number of Samples by Diet",
+       y = "Count") +  ##try to change the axis titles of your interest
+  theme_minimal()  ##you can explore different types of themes
+
+
+##TODO: you can try to plot the number of samples with ages below and above 400
+
+
+```
+
+b) Next, we want to check expression of a specific gene in both diets across all samples
+
+```{r visualization2, include=TRUE}
+
+##You can usually achieve this using the processed counts matrix you will receive from INF, or process yourself using an INF approved pipeline.
+
+##Let us first select the counts matrix for a gene of interest (Ctsd):
+
+ctsd_tidy <- counts %>%
+  as.data.frame() %>%
+  rownames_to_column("Gene") %>%
+  filter(Gene == c("Ctsd")) %>%
+  select(-Gene) %>%
+  t() %>%  # Transpose to make samples as rows
+  as.data.frame() %>%
+  rename(Ctsd = V1) %>%
+  tibble::rownames_to_column("Sample")
+
+##in case you want to select expression of multiple genes:
+# Genes of interest
+#genes_of_interest <- c("Ctsd", "Tmem119", "Apoe", "P2ry12")
+
+# Filter and keep in wide format (samples × genes)
+#selected_genes_wide <- expression_data %>%
+  #as.data.frame() %>%
+ # rownames_to_column("Gene") %>%
+ # filter(Gene %in% genes_of_interest) %>%
+ # tibble::column_to_rownames("Gene") %>%  # Optional: keep genes as rownames
+ # t() %>%                                 # Transpose to have samples as rows
+ # as.data.frame()        
+
+
+
+##when we want combine two dataframes we have to take care that they include a common column which can be used for merging.
+##This is needed because we want data for plotting from both the metadata and counts data
+
+##for this let us filter our counts matrix for the gene we a
+##Let us add the column 'Sample' to the metadata like we have in the counts data using what we learned about adding metadata in the previous steps
+
+metadata <- metadata %>% mutate(Sample = rownames(metadata))
+head(metadata)
+##NOTE: There are also ways to implement this without merging the counts data with metadata, but here we implement the technique with merging
+
+
+# Merge with metadata
+ctsd_counts_with_meta <- left_join(ctsd_tidy, metadata, by = "Sample")
+head(ctsd_counts_with_meta)
+
+
+# Boxplot of Gene_CDH1 by Diet
+ggplot(ctsd_counts_with_meta , aes(x = Diet, y = Ctsd, fill = Diet)) +
+  geom_boxplot() +
+  labs(title = "Ctsd Expression by Diet",
+       y = "Expression Level") +
+  theme_minimal()
+
+###TODO:check other genes like Rdh11, Cd81, Fabp2 if they have a different expression with diet in these mice, or any other gene of your choice.
+###TODO: you can also do a t-test to check if the median expression of the gene in the two diets is significantly different, the result of t-test can be displayed on the plot, check how to do this and try for yourself.
+```
+
+The above method of displaying if gene expression changes with diet is relevant because diet is a categorical variable. In case we want to check if expression of gene changes with a continuous variable like 'Age', we do a correlation analysis like below and display it with ggplot2. Correlation values are given by 'r' and range between 0 and 1.
+
+c) Let us check if the expression of above genes (or any gene of your interest changes with age):
+```{r correlation1, include=TRUE}
+
+##Let us first select the counts matrix for a gene of interest (Insr):
+
+insr_tidy <- counts %>%
+  as.data.frame() %>%
+  rownames_to_column("Gene") %>%
+  filter(Gene == c("Insr")) %>%
+  select(-Gene) %>%
+  t() %>%  # Transpose to make samples as rows
+  as.data.frame() %>%
+  rename(Insr = V1) %>%
+  tibble::rownames_to_column("Sample")
+
+Insr_counts_with_meta <- left_join(insr_tidy, metadata, by = "Sample")
+head(ctsd_counts_with_meta)
+
+ggplot(Insr_counts_with_meta, aes(x = Age, y = Insr)) +
+  geom_point(size = 3) +   ##can you try to change the color and size of the point
+  geom_smooth(method = "lm", color = "blue") +  ## can you check what is the meaning of ?lm in this
+  labs(title = "Insr Expression vs Age",
+       x = "Age (days)",
+       y = "Expression Level") +
+  theme_minimal()
+
+# Pearson correlation test
+cor.test(Insr_counts_with_meta$Age, Insr_counts_with_meta$Insr, method = "pearson")
+
+##what did you find?, is Insr positively or negatively correlated with age?
+##Can you explain what the shaded region shows?
+
+```
+
+
+d) Finally, we might want to check if expression of 2 genes is correlated
+
+```{r correlation2, include=TRUE}
+
+##Let's create a counts matrix with expression of Cdh1 and Tp53
+genes_of_interest <- c("Cdh1", "Rdh11")
+
+# Filter and keep in wide format (samples × genes)
+counts_two_genes <- counts %>%
+  as.data.frame() %>%
+  rownames_to_column("Gene") %>%
+  filter(Gene %in% genes_of_interest) %>%
+  tibble::column_to_rownames("Gene") %>%  # Optional: keep genes as rownames
+  t() %>%                                 # Transpose to have samples as rows
+  as.data.frame() %>%
+  tibble::rownames_to_column("Sample")       
+
+counts_two_genes_with_meta <- left_join(counts_two_genes, metadata, by = "Sample")
+head(counts_two_genes_with_meta)
+
+ggplot(counts_two_genes_with_meta, aes(x = Cdh1, y = Rdh11)) +
+  geom_point(size = 3) +
+  geom_smooth(method = "lm", color = "red") +
+  labs(title = "Cdh1 vs Rdh11 Expression",
+       x = "Cdh1 Expression",
+       y = "Rdh11 Expression") +
+  theme_minimal()
+
+# Spearman correlation (no linearity assumption)
+cor.test(counts_two_genes_with_meta$Cdh1, counts_two_genes_with_meta$Rdh11, method = "spearman") ## when we cannot assume that the relationship between two the variables we want to correlate, is linear, then we use 'Spearman' correlation. Read when do we use pearson correlation.
+
+##TODO: How can you display the correlation value on the ggplot2?
+
+```
+
+
+```{r end of file, include=FALSE}
+
+sessionInfo()
+
+```
