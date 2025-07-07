@@ -4,7 +4,7 @@
 
 If you encounter problems and googling / chatGPTing does not help you can:
 
-- write us on the [slack channel](https://crc1678-inf.slack.com/archives/C090Z8C91M2) or on our email crc1678-inf@uni-koeln.de
+- write us on the [slack channel](https://crc1678-inf.slack.com/archives/C090Z8C91M2) or on our email [crc1678-inf@uni-koeln.de](mailto:crc1678-inf@uni-koeln.de)
 - [open an issue](https://github.com/CRC-1678/Teaching-R-basics/issues/new/choose) in this repository
 - search on R-specific resources: [R-bloggers](https://www.r-bloggers.com/) and [Posit community](https://forum.posit.co/)
 

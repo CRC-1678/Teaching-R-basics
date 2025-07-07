@@ -27,6 +27,7 @@
 # knit html and files
 *.html
 *_files/
+Installation.pdf
 
 # produced vignettes
 vignettes/*.html
