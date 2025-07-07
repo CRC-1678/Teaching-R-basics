@@ -9,25 +9,24 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 ```
 
-##1) R has libraries for the different functions it provides, and for this task we will use the libraries below:
+1)  R has libraries for the different functions it provides, and for this task we will use the libraries below:
 
-First, let's load the required packages 
+First, let's load the required packages
 
 ```{r load packages, include=TRUE}
 library(tidyverse)
 library(ggplot2)
-library(cowplot) # For arranging plots
 
 ```
 
-##2) Any data from an NGS experiment or MS will often include mRNA counts or protein abundance + metadata (sample information)
+2)  Any data from an NGS experiment or MS will often include mRNA counts or protein abundance + metadata (sample information)
 
 Read in the meta-data and counts data. In this case the data is already processed and we want to use it for downstream analysis.
 
 ```{r load data, include=TRUE}
 
 metadata <- read.table(
-  "/cellfile/datapublic/ypaul1/Teaching/mRNA_PhenoT.txt",
+  "mRNA_PhenoT.txt",
   sep = "\t",
   header = TRUE,
   row.names = 1,
@@ -36,7 +35,7 @@ metadata <- read.table(
 
 
 counts <- read.table(
-  "/cellfile/datapublic/ypaul1/Teaching/counts.txt",
+  "counts.txt",
   sep = "\t",
   header = TRUE,
   row.names = 1,
@@ -45,10 +44,11 @@ counts <- read.table(
 
 ```
 
-##3) View the data
+3)  View the data
 
-#Data that we receive often needs to be restructured/formatted for any specific use, and therefore it is a good idea to get a feel of the data and see how it looks like
-#Display first few rows and check the dimentions and class of each data
+Data that we receive often needs to be restructured/formatted for any specific use, and therefore it is a good idea to get a feel of the data and see how it looks like.
+
+Display first few rows and check the dimentions and class of each data:
 
 ```{r check data structure, include=TRUE}
 
@@ -62,11 +62,13 @@ dim(counts)
 
 ```
 
-##4) We don't always use the data as it is, we often need to select part of the data and visualize it. e.g. gene expression in Female vs Male samples; or gene expression in Old vs Young samples.
+4)  We don't always use the data as it is, we often need to select part of the data and visualize it. e.g. gene expression in Female vs Male samples; or gene expression in Old vs Young samples.
 
-#for this purpose we often use dplyr and ggplot2 from tidyverse 
+For this purpose, we often use dplyr and ggplot2 from tidyverse.
 
-a) Let us select age, diet and sex from the metadata 
+An extensive cheat sheet for dplyr verbs for data manipulation can be found [here](https://nyu-cdsc.github.io/learningr/assets/data-transformation.pdf).
+
+a)  Let us select age, diet and sex from the metadata
 
 ```{r select, include=TRUE}
 
@@ -77,14 +79,14 @@ New_metadata <- metadata %>% select(Age, Diet, Sex)
 
 ```
 
-b) Filter rows based upon single or multiple conditions.
+b)  Filter rows based upon single or multiple conditions.
 
 ```{r filter, include=TRUE}
 
 ##How many samples have the 'HF' diet
 
 HF_diet_samples <- metadata %>% filter(Diet == "HF")
-length(rownames(HF_diet_samples))
+length(rownames(HF_diet_samples)) #nrow
 
 
 ##How many samples have age > 400 days
@@ -95,8 +97,6 @@ length(rownames(AgeOver400))
 
 ##How many samples have 'HF' diet and age > 400 days
 
-AgeOver400_HF <- metadata %>% filter(Age > 400)
-length(rownames(AgeOver400_HF))
 
 MultipleConditions <- metadata %>% filter(Diet == 'HF' & Age > 400)
 length(rownames(MultipleConditions))
@@ -107,8 +107,7 @@ length(rownames(MultipleConditions))
 ##feel free to search online
 ```
 
-c) Sometimes we might want to create a new metadata column. e.g., we might want to know age in years for the samples
-
+c)  Sometimes we might want to create a new metadata column. e.g., we might want to know age in years for the samples.
 
 ```{r mutate, include=TRUE}
 
@@ -118,9 +117,7 @@ head(metadata) ##it should have 5 columns now
 
 ```
 
-
-d) Sometimes we might want to get a summary of the stats of the data depending upon certain variables of interest. e.g. here diet and age
-
+d)  Sometimes we might want to get a summary of the stats of the data depending upon certain variables of interest. e.g. here diet and age.
 
 ```{r summarize, include=TRUE}
 ##We can know the number of samples for each kind of diet and also the mean age of the samples belonging to each diet.
@@ -132,9 +129,13 @@ metadata %>%
 
 ```
 
-##5) Data Visualization, we will practice some simple plots using ggplot2, which is a very handy function from tidyverse for basic visualizations of the data. It gives you publication ready plots that are super cutomizable. May be you use excel/powerpoint for such a plotting currently. The aim is to use R, for plots with better colors, visualizations and that need minimal use of a photo editor while creating figures for publication. ggplot2 can allow creation of complex plots too.
+5)  Data Visualization.
 
-a) Here we want to plot the number of samples per diet.
+We will practice some simple plots using ggplot2, which is a very handy function from tidyverse for basic visualizations of the data. It gives you publication ready plots that are super cutomizable. May be you use excel/powerpoint for such a plotting currently. The aim is to use R, for plots with better colors, visualizations and that need minimal use of a photo editor while creating figures for publication. ggplot2 can allow creation of complex plots too.
+
+Check this [ggplot2 gallery](https://r-graph-gallery.com/ggplot2-package.html) for inspiration!
+
+a)  Here we want to plot the number of samples per diet.
 
 ```{r visualization1, include=TRUE}
 
@@ -152,7 +153,7 @@ ggplot(metadata, aes(x = Diet, fill = Diet)) +   ##if nothing is mentioned to di
 
 ```
 
-b) Next, we want to check expression of a specific gene in both diets across all samples
+b)  Next, we want to check expression of a specific gene in both diets across all samples.
 
 ```{r visualization2, include=TRUE}
 
@@ -175,7 +176,7 @@ ctsd_tidy <- counts %>%
 #genes_of_interest <- c("Ctsd", "Tmem119", "Apoe", "P2ry12")
 
 # Filter and keep in wide format (samples × genes)
-#selected_genes_wide <- expression_data %>%
+#selected_genes_wide <- counts %>%
   #as.data.frame() %>%
  # rownames_to_column("Gene") %>%
  # filter(Gene %in% genes_of_interest) %>%
@@ -188,7 +189,7 @@ ctsd_tidy <- counts %>%
 ##when we want combine two dataframes we have to take care that they include a common column which can be used for merging.
 ##This is needed because we want data for plotting from both the metadata and counts data
 
-##for this let us filter our counts matrix for the gene we a
+##for this let us filter our counts matrix for the gene we are interested in
 ##Let us add the column 'Sample' to the metadata like we have in the counts data using what we learned about adding metadata in the previous steps
 
 metadata <- metadata %>% mutate(Sample = rownames(metadata))
@@ -210,11 +211,13 @@ ggplot(ctsd_counts_with_meta , aes(x = Diet, y = Ctsd, fill = Diet)) +
 
 ###TODO:check other genes like Rdh11, Cd81, Fabp2 if they have a different expression with diet in these mice, or any other gene of your choice.
 ###TODO: you can also do a t-test to check if the median expression of the gene in the two diets is significantly different, the result of t-test can be displayed on the plot, check how to do this and try for yourself.
+### Hint: look for help of the stats:: package
 ```
 
 The above method of displaying if gene expression changes with diet is relevant because diet is a categorical variable. In case we want to check if expression of gene changes with a continuous variable like 'Age', we do a correlation analysis like below and display it with ggplot2. Correlation values are given by 'r' and range between 0 and 1.
 
-c) Let us check if the expression of above genes (or any gene of your interest changes with age):
+c)  Let us check if the expression of above genes (or any gene of your interest changes with age):
+
 ```{r correlation1, include=TRUE}
 
 ##Let us first select the counts matrix for a gene of interest (Insr):
@@ -248,8 +251,7 @@ cor.test(Insr_counts_with_meta$Age, Insr_counts_with_meta$Insr, method = "pearso
 
 ```
 
-
-d) Finally, we might want to check if expression of 2 genes is correlated
+d)  Finally, we might want to check if expression of 2 genes is correlated.
 
 ```{r correlation2, include=TRUE}
 
@@ -283,7 +285,6 @@ cor.test(counts_two_genes_with_meta$Cdh1, counts_two_genes_with_meta$Rdh11, meth
 ##TODO: How can you display the correlation value on the ggplot2?
 
 ```
-
 
 ```{r end of file, include=FALSE}
 
