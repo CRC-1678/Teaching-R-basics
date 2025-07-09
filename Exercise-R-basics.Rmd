@@ -5,7 +5,6 @@ date: "2025-07-14"
 output:
   html_document:
     df_print: paged
-css: copilot.css
 ---
 
 Congratulations on successful installing and welcome to R!
