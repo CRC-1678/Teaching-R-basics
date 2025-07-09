@@ -3,7 +3,6 @@ title: "Correct errors in R code"
 author: "Copilot + Svetlana"
 date: "2025-07-14"
 output: html_document
-css: "copilot.css"
 ---
 
 ```{r setup, echo=FALSE}
@@ -94,7 +93,7 @@ print(value)
 
 ```{r}
 # we want to subset x based on mask and accidentally chose the wrong one - no error
-x <- c(5, 10, 15, 20, 25)
+x <- c("good", "bad", "good", "good", "bad")
 mask <- c(TRUE, FALSE)
 result <- x[mask]
 print(result)
@@ -131,7 +130,7 @@ mean(data)
 ```
 
 ```{r}
-# here we are trying to deterimne if data contains NA
+# here we are trying to determine if data contains NA
 data <- c(1, 2, NA, 4, 5)
 if(data == NA) {
   print("Found NA")

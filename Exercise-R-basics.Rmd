@@ -1,5 +1,5 @@
 ---
-title: "R Basics - Pre-course Homework"
+title: "R Basic Operations"
 author: "CRC1678 INF"
 date: "2025-07-14"
 output:
@@ -512,7 +512,7 @@ tail(df)
 ```{r df indexing}
 
 # Access column 
-df[,"gene_name"]# use indexing [1:5] or head() to avoid printing the whole column
+df[,"gene_name"][1:5]# use indexing [1:5] or head() to avoid printing the whole column
 
 # Access row
 df[1, ]  # first row
@@ -531,6 +531,44 @@ df$gene_name[1:5]
 "Gene_10" %in% df$gene_name
 ```
 
+You can change an element of a data.frame by directly assigning a new value:
+
+```{r}
+print(head(df))
+df[3, "p_value"] <- 1e-16 #replace
+print(head(df))
+```
+
+You can access row and column names with functions `rownames()` and `colnames()`. You can use these function to both get and set the values:
+
+```{r}
+#rownames(df) #default
+rownames(df) <- df$gene_name
+head(df)
+```
+
+```{r}
+# rename a single column
+colnames(df)[2] <- "log2FC"
+head(df)
+```
+
+You can delete rows by using `-` before row number:
+
+```{r}
+head(df[-3,]) #note that Gene_3 is missing
+# you will need to reassign df to itself for the effect to take place permanently
+# df <- df[-3,]
+```
+
+You can delete columns in the same way. Otherwise you can assigning them to `NULL`.
+
+```{r}
+head(df[,-1])
+df$gene_name <- NULL #will remove this column
+head(df)
+```
+
 **Note on vector recycling**
 
 If you try to create a `data.frame` using vectors of different length, R will not complain, and also not fill in missing values of the shorter vector with `NA`. Instead, it will recycle the shorter vector to fill in missing values, which could lead to unexpected results later. If however the longer vector's length is not a multiple of shorter vector's length, R will return an error:
@@ -540,6 +578,12 @@ If you try to create a `data.frame` using vectors of different length, R will no
 print(data.frame(x = 1:2, y = 1:6))
 # however, error if it cannot fit exact number of times
 print(data.frame(x = 1:2, y = 1:5))
+```
+
+We can also make use of vector recycling here to extend our data to simulate GO terms. We can simply add a new column like this:
+
+```{r}
+df$GO_term <- c("neuronal", "immune") #no need to specify 1000 values
 ```
 
 #### String methods
@@ -605,13 +649,13 @@ Some R built-in functions for basic statistics:
 
 ```{r base stats}
 
-mean(df$logFC) # Mean
-median(df$logFC) # Median
-var(df$logFC) # Variance
-sd(df$logFC) # Standard deviation
-max(df$logFC) # Maximum value
-min(df$logFC) # Minimum value
-cor(df$logFC, -df$logFC) # Correlation
+mean(df$log2FC) # Mean
+median(df$log2FC) # Median
+var(df$log2FC) # Variance
+sd(df$log2FC) # Standard deviation
+max(df$log2FC) # Maximum value
+min(df$log2FC) # Minimum value
+cor(df$log2FC, -df$log2FC) # Correlation
 ```
 
 **Note on missing values**
@@ -623,41 +667,24 @@ As you remember, `NA` stands for missing value and can be of any type, so vector
 set.seed(42)
 # randomly select 10 rows where NA will be introduced
 na_index <- sample(n, 10)
-# set logFC and p value to NA for these rows
-df[na_index, c("logFC", "p_value")] <- NA
+# set log2FC and p value to NA for these rows
+df[na_index, c("log2FC", "p_value")] <- NA
 
 # How many NA values are in the data?
 sum(is.na(df$gene_name))
 
 # Calculate mean with missing values
-mean(df$logFC)  # Returns NA
-mean(df$logFC, na.rm = TRUE)  # Returns a number
+mean(df$log2FC)  # Returns NA
+mean(df$log2FC, na.rm = TRUE)  # Returns a number
 ```
 
 ### Basic Plotting Function
 
 Use `plot()` function to create simple R plots. Most important arguments are `x` , `y` (the data to plot) and `type` (such as dots, lines, histogram) - `?base::plot` is helpful for a quick reference for these and many other parameters.
 
-### Histogram function
-
-This function is useful to plot histograms.
-
-```{r hist}
-
-# Plot histogram of fold changes
-hist(df$logFC, 
-     ,breaks = 10
-     ,main = "Histogram of Fold Changes"
-     ,xlab = "log fold change"
-     ,col = "skyblue" #color
-     )
-
-
-```
-
 ```{r scatter plot}
 
-plot(df$logFC, df$p_value
+plot(df$log2FC, df$p_value
      ,main = "Scatterplot of Fold Changes"
      ,type = "p" #for points
      ,xlab = "log fold change"
@@ -668,6 +695,63 @@ plot(df$logFC, df$p_value
 
 # add legend
 legend("topleft", c("data"), col = "darkgreen", pch=16)
+```
+
+### Histogram function
+
+This function is useful to plot histograms.
+
+```{r hist}
+
+# Plot histogram of fold changes
+hist(df$log2FC, 
+     ,breaks = 10
+     ,main = "Histogram of Fold Changes"
+     ,xlab = "log fold change"
+     ,col = "skyblue" #color
+     )
+
+
+```
+
+### Boxplot function
+
+Boxplots are often used to visualise the distribution of numeric values between categories.
+
+In base R, boxplot uses the so-called formula notation expressed by the tilde `~` operator. You will also encounter this notation in linear models, for example. In our case, it will have the form of `value ~ category` such as:
+
+```{r box}
+
+# plot a boxplot - group by categorical variable (for example, GO term)
+
+boxplot(log2FC ~ GO_term
+        , data = df
+        , ylab = "Fold change"
+        , col = c("blue","skyblue")
+        )
+        
+
+
+```
+
+### Saving plots
+
+In R there are graphic devices which handle the graphics and provide base functions to save plots: `pdf()` and `png()`.
+
+```{r}
+# here example with pdf, same with png
+# use ?pdf() to see options on image size, etc.
+
+# open the file to write to
+pdf("figure1.pdf")
+# produce the plot
+boxplot(log2FC ~ GO_term
+        , data = df
+        , ylab = "Fold change"
+        , col = c("blue","skyblue")
+        )
+# close the file
+dev.off()
 ```
 
 ### Control flow
@@ -730,7 +814,7 @@ Some more information on the `apply` family and many examples can be found [here
 If there is no existing function to use in apply, you can create a function directly on the spot (this is sometimes called anonymous function). This function is not assigned to any name and only exists during the call. The syntax for anonymous function can be written fully `function(x) { do_something with x}` or shortened to `\(x) do_something with x`, for example `\(x) x+1` will add 1 to its argument. Instead of `x` you can use any name for the argument of the anonymous function (often a dot `.` is used).
 
 ```{r anonymous fun}
-logplus <- lapply(df$logFC, function(x) x+1)
+logplus <- lapply(df$log2FC, function(x) x+1)
 logplus[1:5]
 ```
 
@@ -740,7 +824,7 @@ Vectorized functions in R can perform operations on all elements of a vector at 
 
 ```{r vectorized fun}
 # Vectorized function returns a vector
-exp(df$logFC[1:5])
+exp(df$log2FC[1:5])
 ```
 
 #### Vectorized conditions
@@ -748,7 +832,7 @@ exp(df$logFC[1:5])
 `ifelse()` is a vectorized form of `if` if you provide a a vector of mixed `TRUE` and `FALSE` as a condition. It has a form of `ifelse(condition_vector, action1, action2)`, where action1 is performed if the condition in `TRUE` and action2 if the condition is `FALSE`.
 
 ```{r ifelse}
-ifelse(df$p_value < 0.02, "significant", "not significant")
+ifelse(df$p_value < 0.02, "significant", "not significant")[1:5]
 ```
 
 #### Pipe
@@ -756,18 +840,20 @@ ifelse(df$p_value < 0.02, "significant", "not significant")
 Pipe is an operator to direct a variable or a result of a statement into a next statement, allowing to chain several statements after each other. The pipe of the form `%>%` comes with the `tidyverse` package, however, base R has a built-in pipe of the form `|>` (since R 4.0). Mainly the pipe serves to make your code more readable and allows to better break it over several lines:
 
 ```{r pipe}
-# instead of nesting functions like log(sum(sqrt(df$logFC))), you can write:
-df$logFC |>
+# instead of nesting functions like log(sum(sqrt(df$log2FC))), you can write:
+df$log2FC |>
   sqrt() |>
   sum() |>
   log()
 ```
 
-Base pipe always has to redirect to a function, and the name of the function has to be followed by brackets. If an anonymous function is used, the whole expression has to be put into brackets again, which makes the syntax less readable. You will learn tidyverse pipe in the next class which handles it better.
+Base pipe always has to redirect to a function, and the name of the function has to be followed by brackets. If an anonymous function is used, the whole expression has to be put into brackets again, which makes the syntax (honestly) unreadable.
+
+Luckily, you will learn tidyverse pipe operator `%>%` in the next class which handles it much better.
 
 ```{r anonymous function}
 # Anonymous function has to be put into brackets, followed by another brackets to signify it is a function
-logplus1 <- df$logFC |> (\(.) . + 1)()
+logplus1 <- df$log2FC |> (\(.) . + 1)()
 logplus1[1:5]
 ```
 

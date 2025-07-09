@@ -150,3 +150,4 @@ A subjective selection of books and resources to keep learning:
 -   A list of books from [Bioconductor](https://www.bioconductor.org/help/bioconductor-books/) - includes orchestrated analysis of data (e.g. HiC, single cell, mass spectrometry)
 -   [Computational genomics with R](https://compgenomr.github.io/book/)(2020) - basics to classical machine learning, focus on genomics data
 -   [Efficient R programming](https://csgillespie.github.io/efficientR/) - increase computational and programming efficiency in R
+-   [Comics](https://allisonhorst.com/r-packages-functions) showing what useful R functions can do for your data
