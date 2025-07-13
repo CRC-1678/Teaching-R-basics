@@ -23,6 +23,8 @@ library(ggplot2)
 
 Read in the meta-data and counts data. In this case the data is already processed and we want to use it for downstream analysis.
 
+Refer to the tidyverse data import cheatsheet for more options: https://github.com/rstudio/cheatsheets/blob/main/data-import.pdf
+
 ```{r load data, include=TRUE}
 
 metadata <- read.table(
@@ -150,6 +152,20 @@ ggplot(metadata, aes(x = Diet, fill = Diet)) +   ##if nothing is mentioned to di
 
 ##TODO: you can try to plot the number of samples with ages below and above 400
 
+###To save this plot to a file, you can use the ggsave function. This function can save the plot in several different formats (e.g., pdf, jpeg, png, svg). Further, it allows you to specify the size you’d like for the height and width of the plot as well as the plot resolution.
+
+##Assing the plot to an object and then save that
+SamplesPerDiet <- ggplot(metadata, aes(x = Diet, fill = Diet)) +  
+    geom_bar() + 
+    labs(title = "Number of Samples by Diet",
+         y = "Count") + 
+    theme_minimal()  
+
+ggsave(SamplesPerDiet, 
+       filename = "SamplesPerDiet.pdf",
+       device = "pdf",
+       height = 6, width = 5, units = "in")
+#### for all the plots that follow, try saving them in different formats
 
 ```
 
@@ -285,6 +301,20 @@ cor.test(counts_two_genes_with_meta$Cdh1, counts_two_genes_with_meta$Rdh11, meth
 ##TODO: How can you display the correlation value on the ggplot2?
 
 ```
+6. More often that not, the public data you download might be in an excel sheet. Tidyverse has functions to import excel sheets. For more details refer to the cheatsheet in point 2, below is an example for one of the ways.
+```{r Import Excel, include=FALSE}
+##Follow the below steps to try this exercise:
+#1. Check if you have the required package: library(readxl). If not, then: install.packages("readxl")
+#2. Use the helper readxl_example() with no arguments to list excel sheet examples within this function. (Practically you will have your own excel sheet)
+#3. The function we are looking for here is: read_excel() that reads both xls and xlsx files and detects the format from the extension.
+#4. If you are loading from one of the example sheets use: xlsx_example <- readxl_example("datasets.xlsx"); else if you are importing from your local computer use the function read_excel(). To check what parameters the function needs, use ?read_excel()
+#5. Since we are using an example sheet datasets.xlsx here, do this: read_excel(xlsx_example)
+#6. List the sheet names using the function excel_sheets(). How many sheets are there?
+#7. There are various ways to control which cells are read. You can even specify the sheet here, if providing an Excel-style cell range. Can you read in the mtcars sheet ? :)
+#8. Which function should be used to save an excel sheet? can you find out and try to prepare an excel sheet, with sheet 1 as mtcars, sheet 2 as the counts matrix from the exercise above, and sheet 3 as the metadata table from the exercise above.
+
+```
+
 
 ```{r end of file, include=FALSE}
 
