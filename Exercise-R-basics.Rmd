@@ -1,7 +1,7 @@
 ---
 title: "R Basic Operations"
-author: "CRC1678 INF"
-date: "2025-07-14"
+author: "CRC-1678 retreat"
+date: "`r Sys.Date()`"
 output:
   html_document:
     df_print: paged
@@ -107,7 +107,7 @@ In this chunk we also see:
 # Three ways to assign
 a <- 5 
 3 -> b
-c = 4 #better not use this
+#c = 4 #better not use this
 
 # Print function prints the value of its argument
 print(a)
@@ -210,11 +210,7 @@ class(123)
 str(TRUE)
 ```
 
-Note: Special value `NA` (stands for "Not available") represents missing data. By default, `NA` is logical, but it can be converted to other types.
-
-```{r na}
-class(NA)
-```
+Note: Special value `NA` (stands for "Not available") represents missing data. `NA` can be of any type. You will see it quite often in real data which contain missing values.
 
 Additionally, special value `NaN` which stands for "Not a Number". This value is numeric (double) and identifies an undefined number (for example, `0/0`).
 
@@ -354,6 +350,8 @@ print(numbers)
 
 ##### Indexing
 
+Indexing means accessing element within a data structure (index refers to this element's position).
+
 R uses 1-based indexing (the first element is 1, not 0).
 
 Use square brackets to access elements of a vector:
@@ -450,6 +448,59 @@ print(typeof(my_list[[1]]))
 # use length() to get the last index
 names(my_list) <- letters[1:length(my_list)]
 my_list[["b"]]
+```
+
+#### String methods
+
+There are dedicated functions for working with text strings (type "character").
+
+| Function | Action | Example | Result |
+|----|----|----|----|
+| `toupper()`/`tolower()` | Convert to upper or lower case | `toupper("I love R")` | `"I LOVE R"` |
+| `paste()` | converts its arguments to character and collapses them with optional separator | `paste(letters[1:4],collapse="-")` | `"a-b-c-d"` |
+| `paste0()` | shortcut for `paste(..., sep="")` | `paste0(1,2)` | `"12"` |
+| `strsplit()` | split the string (reverse of paste) (returns a list) | `strsplit("ATGCTGTCTATGCTGATCGTGATG", split = "ATG")` | `[[1]] [1] ""          "CTGTCT"    "CTGATCGTG"` |
+| `sprintf()` | print formatted string | `sprintf("Ratio of positive in sample %s is %.2f", "mock", 1/3)` | `"Ratio of positive in sample mock is 0.33"` |
+| `substr()` | extract or replace substring | `substr("ATGCGTGATCG", start = 1, stop = 3)` | `"ATG"` |
+
+Package `stringr` offers more string methods - check the [cheatsheet](https://rstudio.github.io/cheatsheets/strings.pdf).
+
+```{r}
+# practice string methods
+paste("atg occurs", 123, "times")
+```
+
+#### Regular expressions
+
+Regular expressions (or regex for short, check [Wikipedia](https://en.wikipedia.org/wiki/Regular_expression) if you are not familiar with them) allow you to work with strings using patterns more complex than a simple exact match.
+
+Here are main rules for regular expressions in R:
+
+| Pattern | Meaning | Example | String | Matches |
+|----|----|----|----|----|
+| `.` | any character | `.` | `"ATCG"` | "A", "T", "C" and "G" |
+| `[]` | any of the characters inside | `[AT]` | `"ATCG"` | "A" and "T" |
+| `^` | start of the string | `[^A]` | `"AATAAA"` | only the first "A" |
+| `$` | end of the string | `[T$]` | `"AATAAA"` | no match |
+| `|` | matches one or the other expression | `[A|C]` | `"AATAAA"` | matches all "A" |
+| `*` | zero or more of the expression | `A*` | `c("GC", "TT", "AG")` | matches all three |
+| `+` | one or more of the expression | `A+` | `c("GC", "TT", "AG")` | matches only "AG" |
+| `\\` | "escapes" special character for literal match | `\\+` | `"23 + 45"` | matches "+" |
+
+Main functions in R to work with them are:
+
+| Function | Action | Example | Result |
+|----|----|----|----|
+| `grep()` | Find pattern in a character vector (returns index of the matched element) | `grep("[AT]", c("GCGTT", "CGCGCG", "AGG"))` | `1 3` |
+| `grepl()` | Is there pattern in a character vector ? (returns logical) | `grepl("[AT]", c("GCGTT", "CGCGCG", "AGG"))` | `TRUE FALSE  TRUE` |
+| `sub()` | Replace first occurrence of pattern | `sub("[AT]", "G",  c("TTT", "ATA", "GGGTT"))` | `"GTT"   "GTA"   "GGGGT"` |
+| `gsub()` | Replace all occurrences of pattern | `gsub("[AT]", "G",  c("TTT", "ATA", "GGGTT"))` | `"GGG"   "GGG"   "GGGGG"` |
+
+For more rules and functions, check the [cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/regex.pdf).
+
+```{r}
+# practice regular expressions
+gsub("[AT]", "G",  c("TTT", "ATA", "GGGTT"))
 ```
 
 #### Matrices and arrays
@@ -584,59 +635,6 @@ We can also make use of vector recycling here to extend our data to simulate GO 
 
 ```{r}
 df$GO_term <- c("neuronal", "immune") #no need to specify 1000 values
-```
-
-#### String methods
-
-There are dedicated functions for working with text strings (type "character").
-
-| Function | Action | Example | Result |
-|----|----|----|----|
-| `toupper()`/`tolower()` | Convert to upper or lower case | `toupper("I love R")` | `"I LOVE R"` |
-| `paste()` | converts its arguments to character and collapses them with optional separator | `paste(letters[1:4],collapse="-")` | `"a-b-c-d"` |
-| `paste0()` | shortcut for `paste(..., sep="")` | `paste0(1,2)` | `"12"` |
-| `strsplit()` | split the string (reverse of paste) (returns a list) | `strsplit("ATGCTGTCTATGCTGATCGTGATG", split = "ATG")` | `[[1]] [1] ""          "CTGTCT"    "CTGATCGTG"` |
-| `sprintf()` | print formatted string | `sprintf("Ratio of positive in sample %s is %.2f", "mock", 1/3)` | `"Ratio of positive in sample mock is 0.33"` |
-| `substr()` | extract or replace substring | `substr("ATGCGTGATCG", start = 1, stop = 3)` | `"ATG"` |
-
-Package `stringr` offers more string methods - check the [cheatsheet](https://rstudio.github.io/cheatsheets/strings.pdf).
-
-```{r}
-# practice string methods
-paste("atg occurs", 123, "times")
-```
-
-#### Regular expressions
-
-Regular expressions (or regex for short, check [Wikipedia](https://en.wikipedia.org/wiki/Regular_expression) if you are not familiar with them) allow you to work with strings using patterns more complex than a simple exact match.
-
-Here are main rules for regular expressions in R:
-
-| Pattern | Meaning | Example | String | Matches |
-|----|----|----|----|----|
-| `.` | any character | `.` | `"ATCG"` | "A", "T", "C" and "G" |
-| `[]` | any of the characters inside | `[AT]` | `"ATCG"` | "A" and "T" |
-| `^` | start of the string | `[^A]` | `"AATAAA"` | only the first "A" |
-| `$` | end of the string | `[T$]` | `"AATAAA"` | no match |
-| `|` | matches one or the other expression | `[A|C]` | `"AATAAA"` | matches all "A" |
-| `*` | zero or more of the expression | `A*` | `c("GC", "TT", "AG")` | matches all three |
-| `+` | one or more of the expression | `A+` | `c("GC", "TT", "AG")` | matches only "AG" |
-| `\\` | "escapes" special character for literal match | `\\+` | `"23 + 45"` | matches "+" |
-
-Main functions in R to work with them are:
-
-| Function | Action | Example | Result |
-|----|----|----|----|
-| `grep()` | Find pattern in a character vector (returns index of the matched element) | `grep("[AT]", c("GCGTT", "CGCGCG", "AGG"))` | `1 3` |
-| `grepl()` | Is there pattern in a character vector ? (returns logical) | `grepl("[AT]", c("GCGTT", "CGCGCG", "AGG"))` | `TRUE FALSE  TRUE` |
-| `sub()` | Replace first occurrence of pattern | `sub("[AT]", "G",  c("TTT", "ATA", "GGGTT"))` | `"GTT"   "GTA"   "GGGGT"` |
-| `gsub()` | Replace all occurrences of pattern | `gsub("[AT]", "G",  c("TTT", "ATA", "GGGTT"))` | `"GGG"   "GGG"   "GGGGG"` |
-
-For more rules and functions, check the [cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/regex.pdf).
-
-```{r}
-# practice regular expressions
-gsub("[AT]", "G",  c("TTT", "ATA", "GGGTT"))
 ```
 
 ### Statistics and plotting in base R
@@ -795,7 +793,7 @@ for (element in vector) {
 #  for example, we take a squre root (built-in sqrt() function)
 # from the grade from our students dataframe
 for(gene in c("Gene_10", "Gene_100")){
-  print(df[df$gene_name==gene, ])
+  print(df[gene, ])
 }
 ```
 

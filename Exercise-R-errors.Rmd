@@ -1,7 +1,7 @@
 ---
 title: "Correct errors in R code"
-author: "Copilot + Svetlana"
-date: "2025-07-14"
+author: "CRC-1678 retreat"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 

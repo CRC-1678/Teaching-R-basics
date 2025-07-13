@@ -1,3 +1,7 @@
+# tokens
+.env
+.Renviron
+
 # vscode
 .vscode
 
@@ -60,4 +64,4 @@ rsconnect/
 docker-compose.yml
 rserver.conf
 Dockerfile
-
+rsession.conf

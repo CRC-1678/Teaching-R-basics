@@ -3,6 +3,7 @@ title: "Introduction to R"
 author: "CRC1678 INF"
 format: 
   revealjs:
+    center: false
     smaller: true
     scrollable: true
     slide-number: true
@@ -22,9 +23,11 @@ editor: visual
 ## **Credits**
 
 -   Yashna for co-working on many aspects
--   CECAD core facility for sharing their materials
+-   CECAD core facility and Jan Großbach for sharing their materials
 -   Julian for providing reasons not to use R
--   Copilot for helping with the exercises
+-   GitHub Copilot for helping with the exercises
+
+![](images/dragon-meme-julian.png)
 
 ## Code of Conduct
 
@@ -70,11 +73,11 @@ editor: visual
 
 -   [crc1678-inf\@uni-koeln.de](mailto:crc1678-inf@uni-koeln.de)
 
--   [open an issue](https://github.com/CRC-1678/Teaching-R-basics/issues/new/choose) in course GitHub repository
+-   [open an issue](https://github.com/CRC-1678/Teaching-R-basics/issues/new/choose) in the GitHub repository of this course
 
 -   [book a Zoom consultation](https://doodle.com/bp/crc1678/crc1678inf-introductory-meeting)
 
-**In general**
+**For R**
 
 -   Use `?` or `help()` inside R
 
@@ -82,47 +85,62 @@ editor: visual
 
 ## Set up
 
+::: panel-tabset
+### Set up
+
 You should have already:
 
 -   R+RStudio installed
 -   necessary packages installed: `tidyverse`
+-   Git repository cloned: <https://github.com/CRC-1678/Teaching-R-basics>
 
-**RStudio projects**
+### RStudio projects
 
-Projects in RStudio are helpful to make your work more shareable and reproducible.
+Projects in RStudio make your work shareable and reproducible.
 
--   Code and data are organized in a directory - you can use relative file paths
-
--   You can store and share project-specific settings in `.Rproj` file
-
--   You can use version control (Git) to track changes
+-   Code and data in organized directory
 
 ``` r
-# does not work on your collaborator's unix-based system
-data_file <- "C:/Users/svetlana/Documents/R/learning-r-beginners-2025/data/data.csv"
-# use relative path (or a package "here") - works on all systems
+# does not work on your friend's machine
+data_file <- "C:/Users/svetlana/Documents/R/Teaching-R-basics/counts.txt"
+# use relative path (or a package "here") - works on all machines
 data_file <- "data/data.csv"
 ```
 
+-   Project-specific settings in `.Rproj` file
+
+-   Version control (Git)
+:::
+
+::: notes
+Ask if they have question on setup.\
+Switch to live and show how to click on .Rproj file.
+:::
+
 ## Live coding
 
--   Open RStudio
--   If you haven't, open `Exercise-R-basics.Rmd` - we will go through it together
--   If you already did: open `Exercise-R-errors.Rmd` and work on it on your own
+-   Open RStudio, navigate to Teaching-R-basics project
+-   Open `Exercise-R-basics.Rmd` - we will go through it together
+-   If you know the basics but still wish to practice: `Exercise-R-errors.Rmd` - work on your own - we will provide solutions in the end
+-   If you wish to practice `tidyverse`: `DataManipulationAndVisualization.Rmd` - work on your own - we will go through it in the end if we have time
+
+::: notes
+Show them Rproj options quickly by clicking on the Rproj file again.
+:::
 
 ## R startup
 
-You can change the behavior or R/Rstudio at startup by modifying several files. The full overview can be found at [Posit](https://docs.posit.co/ide/user/ide/guide/environments/r/managing-r.html).
+Full guide to R startup configuration at [Posit](https://docs.posit.co/ide/user/ide/guide/environments/r/managing-r.html).
 
-Most useful are `.Rprofile` and `.Renviron` which are executed at the start of R session.
+`.Rprofile` and `.Renviron` are executed at the start of R session.
 
--   `.Renviron` is used to set environment variables. This is useful for providing credentials such as API keys. This is not R code but a simple text file with `KEY=VALUE` pairs, one per line. For example, you can set your GitHub token like this:
+-   `.Renviron`: set environment variables. Structure: `KEY=VALUE` (one per line).
 
 ``` bash
 GITHUB_PAT=your_github_token_here
 ```
 
--   `.Rprofile` is used to set options and this is R code. You can use it to set options, load packages which you always use or provide custom functions. For example, you can change your default prompt to always be sure when you are in R console:
+-   `.Rprofile`: set options. Structure: R code. Example: load packages, provide custom functions, change your R prompt.
 
 ``` r
 options(prompt = "R> ")
@@ -130,24 +148,35 @@ options(prompt = "R> ")
 
 ## R environment setup {.custom-small}
 
-There are many possibilities to set up your development environment with R.
-
 | Setup | Pros | Cons |
 |----|----|----|
 | local installation (what we did) | stable, fast, offline | "user" vs "system" package (Linux), limited resources |
-| get R in an isolated `conda` environment | simple set up | not all R packages available |
-| your institution's rserver on HPC | large resources | no control over set-up / update |
-| container ([rocker](https://rocker-project.org/images/) images) | full control, reproducible, portable | needs admin rights, rebuild to update |
-| cloud ([Posit cloud](https://posit.cloud/) / [Google Colab](https://colab.research.google.com/)) | simple and fast setup | pay for resources, online, not confidential |
+| your institution's rserver on the cluster | large resources | no control over set-up |
+| `conda` environment | simple set up | not all R packages available |
+| container ( e.g. [rocker](https://rocker-project.org/images/) images) | full control, reproducible, portable | needs admin rights, rebuild to update |
+| cloud ([Posit cloud](https://posit.cloud/) / [Google Colab](https://colab.research.google.com/)) | simple, fast setup | pay for resources, online, not confidential |
 
-## Resources
-
-A subjective selection of books and resources to keep learning:
+## Useful resources
 
 -   [CECAD bioinformatics core facility basic R course](https://github.com/CECADBioinformaticsCoreFacility/Basic_R_course_CGA?tab=readme-ov-file)
--   Hadley Wickham's [R for data science](https://r4ds.hadley.nz/) - basic knowledge about base R and tidyverse
+-   **Hadley Wickham's [R for data science](https://r4ds.hadley.nz/)** - base R and tidyverse from ggplot2's author
 -   Patrick Burns' [R inferno](https://www.burns-stat.com/pages/Tutor/R_inferno.pdf) - "If you are using R and you think you’re in hell, this is a map for you"
--   A list of books from [Bioconductor](https://www.bioconductor.org/help/bioconductor-books/) - includes orchestrated analysis of data (e.g. HiC, single cell, mass spectrometry)
--   [Computational genomics with R](https://compgenomr.github.io/book/)(2020) - basics to classical machine learning, focus on genomics data
+-   Books on [Bioconductor](https://www.bioconductor.org/help/bioconductor-books/) - full guides to analyse data types (HiC, single cell, mass spectrometry)
+-   [Computational genomics with R](https://compgenomr.github.io/book/)(2020) - basics -\> classical machine learning, focus on genomics data
 -   [Efficient R programming](https://csgillespie.github.io/efficientR/) - increase computational and programming efficiency in R
--   [Comics](https://allisonhorst.com/r-packages-functions) showing what useful R functions can do for your data
+-   [**Comics**](https://allisonhorst.com/r-packages-functions) - nice pictures about tidyverse
+
+## Getting LLM helpers
+
+To directly get LLM help from within RStudio:
+
+-   enable GitHub Copilot in Tools -\> Global Options -\> Copilot
+-   or use `ellmer` package to access a wide range of APIs
+
+``` r
+library(ellmer)
+# save your token in .Renviron first
+chat <- chat_huggingface(api_key = Sys.getenv("huggingface_token"))
+#Using model = "meta-llama/Llama-3.1-8B-Instruct".
+chat$chat("Tell me three jokes about statisticians")
+```
