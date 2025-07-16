@@ -152,7 +152,8 @@ options(prompt = "R> ")
 |----|----|----|
 | local installation (what we did) | stable, fast, offline | "user" vs "system" package (Linux), limited resources |
 | your institution's rserver on the cluster | large resources | no control over set-up |
-| `conda` environment | simple set up | not all R packages available |
+| `renv` [package](https://rstudio.github.io/renv/) | record and share all packages in project | can get very slow for large projects |
+| `conda` environment (use [pixi](https://pixi.sh/v0.24.1/ide_integration/r_studio/)) | simple set up | not all R packages available |
 | container ( e.g. [rocker](https://rocker-project.org/images/) images) | full control, reproducible, portable | needs admin rights, rebuild to update |
 | cloud ([Posit cloud](https://posit.cloud/) / [Google Colab](https://colab.research.google.com/)) | simple, fast setup | pay for resources, online, not confidential |
 
