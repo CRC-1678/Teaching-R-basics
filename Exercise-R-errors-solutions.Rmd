@@ -1,0 +1,239 @@
+---
+title: "Correct errors in R code"
+author: "Copilot + Svetlana"
+date: "2025-07-14"
+output: html_document
+---
+
+```{r setup, echo=FALSE}
+# let rmarkdown not stop on error and knit the document
+knitr::opts_chunk$set(error=TRUE)
+```
+
+## R errors
+
+I was too lazy learning R and asked Copilot to do the R course homework for me. Unfortunately, the code contained mistakes, and I got errors and unexpected results. (Always check what your LLM gives you.)
+
+R is not always very explicit in its error messages, and sometimes it even passes an error silently on.
+
+Let's try to understand the errors and fix that faulty code! Feel free to work in pairs because 2 brains is better than one :-) :-)
+
+### 1. Variables naming
+
+Variable cannot start with a number (but can end with one):
+
+```{r}
+#2bit <- "hg38.2bit"
+bit2 <- "hg38.2bit"
+```
+
+Variable cannot contain `-`(but can contain `_`):
+
+```{r}
+#two-bit-file <- "hg38.2bit"
+two_bit_file <- "hg38.2bit"
+```
+
+Case sensitive typos:
+
+```{r}
+twoBit <- "hg38.2bit"
+#print(TwoBit)
+print(twoBit)
+```
+
+Do not overwrite built-in names:
+
+```{r}
+#print <- "Printing answer.."
+# if you ran the line above, make it good again with:
+#rm(print)
+print_statement <- "Printing answer.."
+help(print)
+```
+
+### 2. Basic data types and operations
+
+Cannot coerce letters to numeric:
+
+```{r}
+#pi <- as.numeric("3.14p")
+pi <- as.numeric("3.14")
+pi
+```
+
+Cannot use "+" with strings (unlike python). Use `paste()`.
+
+```{r}
+n <- 10
+#print("Reporting " + n + " top results")
+paste("Reporting ", n , " top results")
+```
+
+To convert vector to list, use `as.list()`. `list()` will give you a list oflength 1 with your vector as the first element.
+
+```{r}
+#my_list_1_to_5 <- list(1:5)
+my_list_1_to_5 <- as.list(1:5)
+my_list_1_to_5[4]
+```
+
+Vectorized functions do not work on a list. 2 ways:
+
+1.  Convert list to a vector with `unlist()`
+2.  Use function `do.call()` on the list.
+
+Of course, it only works if the list can be coerced to numeric (does not contain characters).
+
+```{r}
+x <- list(1, 2, 3)
+#sum(x)
+sum(unlist(x))
+# or
+do.call(sum,x)
+```
+
+Factors are enumerated categories and thus are of class numeric and start with 1. Levels of the factor are of class character.
+
+```{r}
+f <- factor(c("10", "20", "30"))
+#as.numeric(f)
+as.numeric(levels(f))
+```
+
+To add a new category to a factor, make sure that it is present in levels first.
+
+```{r}
+mycolors <- factor(c("red", "blue", "green"))
+# first change the levels
+levels(mycolors) <- c(levels(mycolors), "yellow")
+mycolors[4] <- "yellow"
+print(mycolors)
+```
+
+### 3. Scope
+
+Variables assigned inside functions are not exported to global environment.
+
+```{r}
+#func = function(){
+#  age = 18    
+#} 
+#print(age)
+
+func = function(){
+  age = 18    
+  print(age)
+} 
+
+func()
+```
+
+We have 2 variables: a counts `i` which is only used to count the rounds, and the `value` which we want to modify.
+
+It helps to introduce a print statement to see which meaning `i` and `value` have in each cycle.
+
+Also, make sure to reset the value in the beginning - otherwise it will keep multiplying every time you run this cell.
+
+```{r}
+#reset the value
+value <- 1
+
+# we want to double the i every time (expect 32)
+for(i in 1:5){
+  print(paste("i:",i))
+  print(value)
+  value <- value * 2
+}
+print("final value:")
+print(value)
+```
+
+### 4. Vector Operations
+
+Remember that vectors are recycled and it can lead to unintended result.
+
+```{r}
+# we want to subset x based on mask and accidentally chose the wrong one - no error
+x <- c("good", "bad", "good", "good", "bad")
+#mask <- c(TRUE, FALSE)
+mask <- c(TRUE, FALSE, TRUE, TRUE, FALSE)
+result <- x[mask]
+print(result)
+```
+
+### 5. Indexing
+
+Remember that R, unlike most languages (but like humans) starts counting at 1, not at 0.
+
+```{r}
+x <- 1:4
+#x[0]
+x[1]
+```
+
+In case of data.frames, remember that single brackets return a `data.frame` (like in case of lists, they return a list). To get actual vector of "age", to which we can apply vectorized functions such as `sum()`, use double brackets.
+
+```{r}
+df <- data.frame(
+  name = c("Alice", "Bob", "Charlie"),
+  age = c(25, 30, 35)
+)
+
+# take mean age of persons
+#mean(df[2])
+mean(df[[2]])
+```
+
+In base R, we need to tell R, to which data frame `name` belongs.
+
+```{r}
+# filter for those who are called Alice
+#print(df[name == "Alice",])
+print(df[df$name == "Alice",])
+```
+
+### 6. Missing values
+
+It is often safer to include na.rm=TRUE.
+
+```{r}
+# imagine the real data has thousands of points and we cannot check missing value by eye
+data <- c(1, 2, NA, 4, 5)
+#mean(data)
+mean(data, na.rm = TRUE)
+```
+
+Potentially any missing value is different, so you cannot compare NA to NA. Thus we usually need a dedicated function `is.na()` which checks for missing value. This function returns a vector of `TRUE` and `FALSE`, indicating which elements in a vector are missing.
+
+For this example, however, we only want to know if the vector contains `NA` at all. Remeber the `%in%` operator?
+
+```{r}
+# here we are trying to determine if data contains NA
+data <- c(1, 2, NA, 4, 5)
+#if(data == NA) {
+  #print("Found NA")
+#}
+if(NA %in% data) {
+  print("Found NA")
+}
+```
+
+### 7. Namespace
+
+These two chunks of code should give the same result, or?
+
+The answer is given to you by modern R already: at the moment you load the `tidyverse` library, it will warn you that `filter()` function is masked. It is safer to use `package::function()` syntax, especially with functions which names are common.
+
+```{r}
+x <- 1:100
+#filter(x, rep(1, 3))
+stats::filter(x, rep(1, 3))
+```
+
+```{r}
+library(tidyverse)
+x <- 1:100
+#filter(x, rep(1, 3))
+stats::filter(x, rep(1, 3))
+```
