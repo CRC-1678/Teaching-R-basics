@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Installation.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="installation-instructions">Installation Instructions</h1>
+<h2 id="getting-help">Getting Help</h2>
+<p>If you encounter problems and googling / chatGPTing does not help you can:</p>
+<ul>
+<li>write us on the <a href="https://crc1678-inf.slack.com/archives/C090Z8C91M2">slack channel</a> or on our email <a href="mailto:crc1678-inf@uni-koeln.de">crc1678-inf@uni-koeln.de</a></li>
+<li><a href="https://github.com/CRC-1678/Teaching-R-basics/issues/new/choose">open an issue</a> in this repository</li>
+<li>search on R-specific resources: <a href="https://www.r-bloggers.com/">R-bloggers</a> and <a href="https://forum.posit.co/">Posit community</a></li>
+</ul>
+<h2 id="terminal">Terminal</h2>
+<p>In Windows, you can use the built-in Command Prompt or PowerShell. Open the Start menu, type &quot;cmd&quot; or &quot;PowerShell&quot;, and press Enter.</p>
+<p>In macOS, you can use the Terminal application. Open Spotlight (Cmd + Space), type &quot;Terminal&quot;, and press Enter.</p>
+<p>In Linux, you can use the terminal emulator that comes with your distribution. You can usually find it in the applications menu or by pressing Ctrl + Alt + T.</p>
+<h2 id="git">Git</h2>
+<p>Git is the version control system which is central to modern code development. Git allows you to track and record any changes in your code. <a href="https://github.com/">GitHub</a> is a popular git hosting and development platform which allows you to share the code with others, collaboratively develop it, test, run and deploy. If you publish your analysis, it will be mandatory for you to provide the code and most likely you will use GitHub for that. Another popular platform, especially in academia, is <a href="https://gitlab.com/">GitLab</a> - your organization may already provide an institutional account for it.</p>
+<p><strong>Check if you have git installed</strong></p>
+<ol>
+<li>Open a terminal.</li>
+<li>Type the following command and press Enter:<pre class="hljs"><code><div>git --version
+</div></code></pre>
+</li>
+<li>If Git is installed, you will see the version number. If not, you will need to install it as described below.</li>
+</ol>
+<h3 id="install-git">Install Git</h3>
+<p><strong>Windows</strong></p>
+<ol>
+<li>Download the Git installer from the <a href="https://git-scm.com/download/win">official Git website</a>.</li>
+<li>Run the installer and follow the instructions.</li>
+</ol>
+<p><strong>macOS</strong></p>
+<ol>
+<li>Open a terminal.</li>
+<li>Install Homebrew if you haven't already by running:<pre class="hljs"><code><div>/bin/bash -c <span class="hljs-string">"<span class="hljs-variable">$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)</span>"</span>
+</div></code></pre>
+</li>
+<li>Install Git using Homebrew:<pre class="hljs"><code><div>brew install git
+</div></code></pre>
+</li>
+</ol>
+<p><strong>Linux</strong></p>
+<ol>
+<li>Open a terminal.</li>
+<li>Use your package manager to install Git. For example, on Debian/Ubuntu:<pre class="hljs"><code><div>sudo apt update
+sudo apt install git
+</div></code></pre>
+</li>
+</ol>
+<h3 id="github">GitHub</h3>
+<p>If you don't have a GitHub account, create one at https://github.com.</p>
+<p><em>Optional: GitHub Desktop:</em> If you prefer a graphical interface for Git, you can install <a href="https://desktop.github.com/">GitHub Desktop</a>.</p>
+<h3 id="configure-git">Configure Git</h3>
+<p>After installing Git, you need to configure it with your name and email address. Open a terminal and run the following commands, replacing <code>Your Name</code> and <code>you@example.com</code> with your actual name and email address:</p>
+<pre class="hljs"><code><div>git config --global user.name <span class="hljs-string">"Your Name"</span>
+git config --global user.email <span class="hljs-string">"you@example.com"</span>
+</div></code></pre>
+<h3 id="clone-the-course-repository">Clone the course repository</h3>
+<ol>
+<li>Open a terminal.</li>
+<li>Navigate to the path where you want to clone the repository.</li>
+<li>Use the following command to clone the repository:</li>
+</ol>
+<pre class="hljs"><code><div>git <span class="hljs-built_in">clone</span> https://github.com/CRC-1678/Teaching-R-basics.git
+</div></code></pre>
+<p>It will download the contents of this repository into a Teaching-R-basics folder.</p>
+<h2 id="r">R</h2>
+<h3 id="check-if-you-have-r-installed">Check if you have R installed</h3>
+<h4 id="linux-and-macos">Linux and macOS</h4>
+<ol>
+<li>Open a terminal.</li>
+<li>Type the following command and press Enter:<pre class="hljs"><code><div>R --version
+</div></code></pre>
+</li>
+<li>If R is installed, you will see the version number. If not, you will need to install it as described below.</li>
+</ol>
+<p>Note: on linux, you may see a hint saying:</p>
+<pre class="hljs"><code><div>Command 'R' not found, but can be installed with:
+sudo apt install r-base-core
+</div></code></pre>
+<p>It is not recommended to install r-base-core via apt because the R version is not up-to-date. Follow instructions below to install R from the CRAN repository.</p>
+<h4 id="windows">Windows</h4>
+<p>Press the &quot;Windows&quot; key, type &quot;R&quot;, and press Enter. If R is installed, the R console will open and display the version number. If not, you will need to install it as described below.</p>
+<h3 id="install-r">Install R</h3>
+<p>Install R from the <a href="https://cran.r-project.org/">CRAN website</a>.</p>
+<h4 id="windows">Windows</h4>
+<p>Go to &quot;Download R for Windows&quot; -&gt; &quot;base&quot; -&gt; &quot;Download R x.x.x for Windows&quot; (where x.x.x is the latest version, in our case 4.5.0). Run the installer and follow th instructions.</p>
+<h4 id="macos">macOS</h4>
+<p>Go to &quot;Download R for macOS&quot; -&gt; &quot;R-4.x.x.pkg&quot; (where x.x.x is the latest version, in our case 4.5.0). Run the installer and follow the instructions.</p>
+<h4 id="linux">Linux</h4>
+<p>Go to &quot;Download R for Linux&quot; and follow the instructions for your specific distribution. For example, for Ubuntu/Debian:</p>
+<ol>
+<li>Open a terminal.</li>
+<li>Add the CRAN repository and install R:<pre class="hljs"><code><div><span class="hljs-comment"># update indices</span>
+sudo apt update
+<span class="hljs-comment"># make sure helper packages are installed:</span>
+sudo apt install --no-install-recommends software-properties-common dirmngr
+<span class="hljs-comment"># add the signing key (by Michael Rutter) for these repos</span>
+wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+<span class="hljs-comment"># Optional: to verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc </span>
+<span class="hljs-comment"># Fingerprint will be: E298A3A825C0D65DFD57CBB651716619E084DAB9</span>
+<span class="hljs-comment"># add the repo from CRAN -- lsb_release adjusts to 'noble' or 'jammy' or ... as needed</span>
+sudo add-apt-repository <span class="hljs-string">"deb https://cloud.r-project.org/bin/linux/ubuntu <span class="hljs-variable">$(lsb_release -cs)</span>-cran40/"</span>
+<span class="hljs-comment"># You will need to press [Enter] to finish</span>
+<span class="hljs-comment"># install R itself</span>
+sudo apt install --no-install-recommends r-base
+</div></code></pre>
+</li>
+</ol>
+<p>Check your R version after install - it should be <code>4.5.1</code> or higher.</p>
+<h3 id="install-rstudio">Install Rstudio</h3>
+<p>RStudio is an integrated development environment (IDE) for R that provides a user-friendly interface and is being maintained by the <a href="https://posit.co/">Posit</a> company.</p>
+<p>Go to the <a href="https://posit.co/download/rstudio-desktop/">RStudio download page</a> and download the installer for your operating system.</p>
+<h4 id="windows">Windows</h4>
+<p>Run the installer (for example, <code>RStudio-2025.05.1-513.exe</code>) and follow the instructions.</p>
+<h4 id="macos">macOS</h4>
+<p>Run the installer (for example, <code>RStudio-2025.05.1-513.dmg</code>) and follow the instructions.</p>
+<h4 id="linux">Linux</h4>
+<ol>
+<li>Open a terminal.</li>
+<li>Download the latest RStudio .deb package, for example <code>rstudio-2025.05.1-513-amd64.deb</code>.</li>
+<li>Enter the directory with the downloaded .deb (such as <code>Downloads</code>) and install the RStudio:<pre class="hljs"><code><div>sudo apt install ./rstudio-*.deb
+</div></code></pre>
+</li>
+</ol>
+<p><em>Note:</em> if you get the error <code>E: unmet dependencies.</code> or similar, try <code>sudo apt --fix-broken-install</code> as suggested. It may happen if you follow the instructions on Posit website and use <code>dpkg</code> instead of <code>apt</code>.</p>
+<p>You can delete the downloaded .deb file now.</p>
+<p>Open RStudio by searching for it in your system's app menu and clicking on the logo. You should see a default screen similar to this:</p>
+<p><img src="images/rstudio_start.png" alt=""></p>
+<p>On the left you see the R console with a greeting message which also shows you your R version and suggests some first commands. You will use the console to type R commands. On the bottom right you see your files and directories. You can click on the &quot;Teaching-R-basics&quot; folder to navigate to the course materials.</p>
+<h3 id="install-r-packages">Install R packages</h3>
+<p>R packages are collections of R functions, data, and documentation that extend the functionality of R.</p>
+<p><em>CRAN</em></p>
+<p>R packages come from several sources. Most stable and reliable source is CRAN (Comprehensive R Archive Network), which provides the R itself. Basic command to install an R package from CRAN is <code>install.packages(&quot;package_name&quot;)</code>.</p>
+<p>Go to RStudio and type in the R console the command to install the <code>tidyverse</code> package, which we will use in this course:</p>
+<pre class="hljs"><code><div>install.packages(<span class="hljs-string">"tidyverse"</span>)
+</div></code></pre>
+<p>If install was successful, you should see something like:</p>
+<pre class="hljs"><code><div>** testing if installed package can be loaded from final location
+** testing if installed package keeps a record of temporary installation path
+* DONE (tidyverse)
+</div></code></pre>
+<p>If you see an error message, check the <a href="#note-on-system-dependencies">Note on system dependencies</a> below.</p>
+<p>You can verify that the package was installed by opening the &quot;Packages&quot; tab in the bottom right pane of RStudio. You should see <code>tidyverse</code> in the list of installed packages.</p>
+<p><em>Bioconductor</em></p>
+<p>Bioconductor is a repository of R packages for bioinformatics and computational biology. To install Bioconductor packages, you first need to install the BiocManager package and then use it to install other packages. More info on the <a href="https://www.bioconductor.org/install/">Bioconductor website</a>.</p>
+<p><em>GitHub</em></p>
+<p>Many packages are available only on GitHub, especially those that are in development. There are several ways to install a package from GitHub, for example, you can use <code>remotes</code> or <code>pak</code> package which contain commands to install from GitHub.</p>
+<p><strong>Note on system dependencies</strong></p>
+<p>Sometimes (especially on Linux and macOS) you will try to install a package with the above command and get a message <code>installation of package '...' had non-zero exit status</code>. This message means that your package failed to install. Often this lies in missing dependencies on your host system outside of R. You can solve this by scrolling your log in the R console looking for something like <code>ERROR: dependency '...' is not available for package '...'</code> or <code>ERROR: failed to compile ...</code>. Then you need to install the missing dependency on your system (not in R) using your package manager (e.g., <code>apt</code> on Debian/Ubuntu, <code>brew</code> on macOS, or <code>yum</code> on CentOS).</p>
+<p>One way to reduce this problem is to use <code>pak</code> package's function to calculate system requirements before installing a package, for example for tidyverse on ubuntu, run:</p>
+<pre class="hljs"><code><div>pak::pkg_sysreqs(<span class="hljs-string">"tidyverse"</span>, sysreqs_platform=<span class="hljs-string">"ubuntu"</span>)
+</div></code></pre>
+<p>You will get a list of packages tidyverse depends on and their system dependencies, as well as a command to install them on your platform, for example:</p>
+<pre class="hljs"><code><div>apt-get -y install libx11-dev libcurl4-openssl-dev ..... [etc]
+</div></code></pre>
+<p>Alternatively, you can use an online tool - Posit's <a href="https://packagemanager.posit.co/client/#/">Package Manager</a> to find system dependencies of a package.</p>
+<h3 id="upgrading">Upgrading</h3>
+<p>You will need to upgrade R and RStudio on a regular basis to be able to use newer packages and get latest developments and fixes.</p>
+<p><strong>R</strong></p>
+<p><em>Windows and macOS</em></p>
+<p>Download the latest version of R from the <a href="https://cran.r-project.org/">CRAN website</a> and install it as described above.</p>
+<p><em>Linux</em></p>
+<p>Use your package manager to update R. For example, on Debian/Ubuntu:</p>
+<pre class="hljs"><code><div>sudo apt update
+sudo apt upgrade r-base
+</div></code></pre>
+<p><strong>RStudio</strong></p>
+<p>Go to Help -&gt; Check for Updates in RStudio. If there is a new version available, follow the instructions to download and install it.</p>
+<p><strong>R packages</strong></p>
+<p>To update all installed R packages, you can use the following command in the R console:</p>
+<pre class="hljs"><code><div>update.packages(ask = <span class="hljs-literal">FALSE</span>)
+</div></code></pre>
+<h3 id="uninstalling">Uninstalling</h3>
+<p>This project sets up a learning environment locally, but you may decide to switch to a different setup, be it conda or a containerized environment or the RStudio server provided on your HPC cluster. In this case, you may want to uninstall the software you installed on your local laptop.</p>
+<p><strong>R and RStudio</strong></p>
+<p><em>Windows and macOS</em></p>
+<p>Follow usual uninstall procedure for your operating system. On Windows, you can do it via &quot;Add or remove programs&quot; in the Settings. On macOS, you can drag the R and RStudio applications to the Trash.</p>
+<p><em>Linux</em></p>
+<ol>
+<li>Open a terminal.</li>
+<li>Use your package manager to remove R and RStudio. For example, on Debian/Ubuntu:<pre class="hljs"><code><div>sudo apt remove --purge r-base rstudio
+sudo apt autoremove
+</div></code></pre>
+</li>
+</ol>
+<p><strong>R packages</strong></p>
+<p>To uninstall a single R package, type the R console:</p>
+<pre class="hljs"><code><div>remove.packages(<span class="hljs-string">"package_name"</span>)
+</div></code></pre>
+
+</body>
+</html>
